@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spadafy — Your First &amp; Last VDI Partner</title>
+  <meta name="description" content="Spadafy — VDI and End User Computing partner. Homepage prototype v2.">
+  <link rel="preload" href="assets/img/hero-bg.jpg" as="image">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="nav" data-state="default">
+    <div class="nav-default">
+      <a class="nav-logo" href="#home" aria-label="Spadafy — home"><img src="assets/icons/logo-full.svg" width="258" height="32" alt="Spadafy"></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#home" class="is-active">Home</a>
+        <a href="#services">Work</a>
+        <a href="#team">About</a>
+        <a href="#healthcheck">Health Check</a>
+      </nav>
+    </div>
+
+    <button class="nav-pill" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Open menu">
+      <img src="assets/icons/logo-s.svg" width="54" height="28" alt="">
+      <span class="nav-pill-icon"><img src="assets/icons/icon-burger.svg" width="32" height="32" alt=""></span>
+    </button>
+
+    <div class="nav-panel" id="nav-panel" role="dialog" aria-modal="false" aria-label="Menu" hidden>
+      <div class="np-body">
+        <div class="np-heading">
+          <a href="#home" class="np-logo" aria-label="Spadafy — home"><img src="assets/icons/logo-full.svg" width="258" height="32" alt="Spadafy"></a>
+          <button class="np-close" type="button" aria-label="Close menu"><img src="assets/icons/icon-close.svg" width="32" height="32" alt=""></button>
+        </div>
+        <nav class="np-list" aria-label="Menu">
+          <a href="#home" class="is-active">Home</a>
+          <a href="tech.html">Tech</a>
+          <a href="#team">About</a>
+          <a href="#healthcheck">Health Check</a>
+        </nav>
+      </div>
+      <div class="np-info">
+        <div class="np-index">
+          <div class="np-cols">
+            <div class="np-col np-col--connect">
+              <p class="np-muted">Connect</p>
+              <ul>
+                <li><a href="#" rel="noopener">LinkedIn</a></li>
+                <li><a href="#" rel="noopener">X/Twitter</a></li>
+                <li><a href="#" rel="noopener">Youtube</a></li>
+              </ul>
+            </div>
+            <div class="np-col">
+              <p class="np-muted">Seattle <span class="np-dot">•</span> <time class="np-clock" data-tz="America/Los_Angeles">11:24:34</time></p>
+              <ul>
+                <li><a href="mailto:info@spadafy.com">info@spadafy.com</a></li>
+                <li>8228 Fairway Dr NE | Seattle,<br>WA 98115</li>
+              </ul>
+            </div>
+          </div>
+          <a class="np-cta" href="#contact">
+            <span>Let’s Talk</span>
+            <img src="assets/icons/icon-arrow-up-right-sm.svg" width="12" height="12" alt="">
+          </a>
+        </div>
+        <div class="np-legal">
+          <div><span class="np-legal-w">Spadafy © 2026</span><span>Led By Engineers, Driven By Results</span></div>
+          <div><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ 1–2. HERO + INTRO (one scene, image stays put) ============ -->
+    <section class="s-hero" id="home" aria-label="Intro">
+      <div class="hi-bg" aria-hidden="true">
+        <!-- Future: replace <img> with <video autoplay muted loop playsinline> -->
+        <img src="assets/img/hero-bg.jpg" alt="" width="1920" height="1080">
+      </div>
+
+      <div class="hi-content">
+        <div class="hero-screen">
+          <h1 class="hero-title">Your First &amp; Last<br>VDI Partner</h1>
+        </div>
+
+        <div class="intro-pin-track" aria-hidden="false">
+          <div class="intro-pin">
+            <p class="intro-label">So, who are we?</p>
+            <p class="intro-ok">OK<br>before we go any further there’s something you should know.</p>
+          </div>
+        </div>
+
+        <div class="intro-panel">
+          <p class="intro-text fill" data-fill="intro1">We’re very serious about virtual desktop infrastructure <em>{VDI}</em> and End User Computing.</p>
+          <div class="intro-mask" aria-hidden="true">
+            <div class="intro-mask-img"><img src="assets/img/hero-bg.jpg" alt=""></div>
+          </div>
+          <p class="intro-text fill" data-fill="intro2">We bring deep expertise and help companies figure out what technology they should use, how to implement it correctly, and then we help manage and support it all once it’s in place.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. TEAM ============ -->
+    <section class="s-team scene" id="team" aria-labelledby="team-title">
+      <div class="stage team-stage">
+        <div class="team-track">
+          <div class="team-labels">
+            <p>15+ years of VDI expertise.</p>
+            <p class="team-labels-r">15+ years of making technology seamless, so people can do their best work.</p>
+          </div>
+          <ul class="team-row">
+            <li class="member"><div class="member-img" style="--h:409"><img src="assets/img/team-01.jpg" alt="Rod Janson" loading="lazy"></div><p class="member-name">Rod Janson</p><p class="member-role">Co-Founder</p></li>
+            <li class="member"><div class="member-img" style="--h:349"><img src="assets/img/team-02.jpg" alt="Marc Leger" loading="lazy"></div><p class="member-name">Marc Leger</p><p class="member-role">Co-Founder</p></li>
+            <li class="member"><div class="member-img" style="--h:391"><img src="assets/img/team-03.jpg" alt="Earl Lumpkins" loading="lazy"></div><p class="member-name">Earl Lumpkins</p><p class="member-role">CISO</p></li>
+            <li class="member"><div class="member-img" style="--h:335"><img src="assets/img/team-04.jpg" alt="Nick Volosin" loading="lazy"></div><p class="member-name">Nick Volosin</p><p class="member-role">CTO</p></li>
+            <li class="member"><div class="member-img" style="--h:374"><img src="assets/img/team-05.jpg" alt="Kevin González" loading="lazy"></div><p class="member-name">Kevin González</p><p class="member-role">Partner - CWO<br>Technology Lead</p></li>
+            <li class="member"><div class="member-img" style="--h:404"><img src="assets/img/team-06.jpg" alt="Dan Godlewski" loading="lazy"></div><p class="member-name">Dan Godlewski</p><p class="member-role">Partner - Technology Lead</p></li>
+            <li class="member"><div class="member-img" style="--h:321"><img src="assets/img/team-07.jpg" alt="Bill Sivill" loading="lazy"></div><p class="member-name">Bill Sivill</p><p class="member-role">VP IT Infrastructure</p></li>
+            <li class="member"><div class="member-img" style="--h:378"><img src="assets/img/team-08.jpg" alt="Kyle Musch" loading="lazy"></div><p class="member-name">Kyle Musch</p><p class="member-role">VP of Technology Solutions</p></li>
+            <li class="member member--cta"><a href="#team">Get to know the team better</a></li>
+          </ul>
+        </div>
+        <h2 class="team-title" id="team-title"><span>We’re serious about what we do,</span><span>but we don’t take ourselves too seriously.</span></h2>
+      </div>
+    </section>
+
+    <!-- ============ 4. BREAK ============ -->
+    <section class="s-break scene" aria-label="When we're in, we're all in">
+      <div class="stage break-stage">
+        <img class="break-bg" src="assets/img/break-bg.jpg" alt="" loading="lazy">
+        <div class="break-card">
+          <h2 class="break-title fill" data-fill="breakTitle">When We're In, We're All In.</h2>
+          <p class="break-text fill" data-fill="breakText">That means helping your organization design, implement, operate and modernize the environments that your employees rely on every day, from A to Z, improving end-user experience so that everything simply works as it should.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. GREEN FLAGS ============ -->
+    <section class="s-flags scene" aria-labelledby="flags-title">
+      <div class="stage flags-stage">
+      <h2 class="flags-title" id="flags-title">Our green flags</h2>
+      <ol class="flags">
+        <li class="flag" style="--i:0">
+          <div class="flag-head"><span class="flag-no">Flag 001</span><h3>40,000+ total number of desktops managed</h3></div>
+          <p class="flag-desc">Virtual desktops we run day to day for organisations of every size.</p>
+          <div class="flag-map" data-map="desktops" role="img" aria-label="World map with managed desktops lit up across North America, Europe and Asia"></div>
+        </li>
+        <li class="flag" style="--i:1">
+          <div class="flag-head"><span class="flag-no">Flag 002</span><h3>200+ customers</h3></div>
+          <p class="flag-desc">Customers across North America, Europe, the Middle East, Asia and beyond.</p>
+          <div class="flag-map" data-map="customers" role="img" aria-label="Map: HQ in the USA, customers in Europe, Middle East, APAC and LATAM"></div>
+        </li>
+        <li class="flag" style="--i:2">
+          <div class="flag-head"><span class="flag-no">Flag 003</span><h3>Global delivery experience</h3></div>
+          <p class="flag-desc">Delivery teams working across North America, Europe and Asia.</p>
+          <div class="flag-map" data-map="regions" role="img" aria-label="Map: delivery in North America, Europe and Asia"></div>
+        </li>
+        <li class="flag" style="--i:3">
+          <div class="flag-head"><span class="flag-no">Flag 004</span><h3>15 years of VDI experience</h3></div>
+          <p class="flag-desc">Building and running virtual desktop infrastructure since 2011.</p>
+          <div class="flag-map" data-map="timeline" role="img" aria-label="World map showing growth from 2011 to 2026"></div>
+        </li>
+        <li class="flag flag--last" style="--i:4">
+          <div class="flag-head"><span class="flag-no">Flag 005</span><h3>Expertise across 30+ technology partners</h3></div>
+          <div class="flag-logos">
+            <div class="flag-logos-row">
+              <img src="assets/img/logo-azure.png" alt="Microsoft Azure" style="--w:363" loading="lazy">
+              <img src="assets/img/logo-citrix.png" alt="Citrix" style="--w:149" loading="lazy">
+              <img src="assets/img/logo-nerdio.png" alt="Nerdio" style="--w:319" loading="lazy">
+            </div>
+            <div class="flag-logos-row">
+              <img src="assets/img/logo-imprivata.png" alt="Imprivata" style="--w:260" loading="lazy">
+              <img src="assets/img/logo-omnissa.png" alt="Omnissa" style="--w:257" loading="lazy">
+            </div>
+          </div>
+        </li>
+      </ol>
+      </div>
+    </section>
+
+    <!-- ============ 6–7. BREAK SERVICES → SERVICES ============ -->
+    <section class="s-services scene" id="services" aria-labelledby="services-title">
+      <div class="stage sv-stage">
+        <div class="sv-target" aria-hidden="true"></div>
+
+        <div class="sv-frame">
+          <img class="sv-break-img" src="assets/img/break-services.jpg" alt="" loading="lazy">
+          <div class="sv-media" aria-hidden="true">
+            <img data-svc="1" src="assets/img/service-1.jpg" alt="">
+            <img data-svc="2" src="assets/img/service-2.jpg" alt="">
+            <img data-svc="3" src="assets/img/service-3.jpg" alt="">
+            <img data-svc="4" src="assets/img/service-4.jpg" alt="">
+            <img data-svc="5" src="assets/img/service-5.jpg" alt="">
+            <img data-svc="6" src="assets/img/service-6.jpg" alt="">
+          </div>
+          <div class="sv-ui">
+            <p class="sv-label">Services</p>
+            <p class="sv-num" aria-live="polite">1</p>
+            <div class="sv-mark" aria-hidden="true">
+              <!-- The S builds itself: two starting strokes → dotted outline → fill from the same strokes → solid outline -->
+              <svg viewBox="-2 -2 235 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <path id="sm-path" d="M226.996 32.6582H96.3333H39.4424C36.1195 32.6595 33.4249 35.2915 33.4236 38.5371C33.4236 41.7838 36.1187 44.4196 39.4424 44.4209H191.553C213.06 44.4216 230.499 61.4505 230.5 82.458C230.5 103.466 213.061 120.499 191.553 120.5H166.155H4.89414V88.3369H122.345H191.553C194.877 88.3362 197.571 85.7051 197.571 82.458C197.571 79.2116 194.876 76.5798 191.553 76.5791H39.4424C17.9349 76.5778 0.5 59.545 0.5 38.5371C0.501308 17.5304 17.9357 0.501278 39.4424 0.5H56.631H85.381H226.996V32.6582Z"/>
+                  <mask id="sm-mask-line" maskUnits="userSpaceOnUse" x="-10" y="-10" width="255" height="145">
+                    <use href="#sm-path" class="sm-ml" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+                    <use href="#sm-path" class="sm-ml" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+                  </mask>
+                  <path id="sm-spine" d="M232 16.58H39.44A21.96 21.96 0 0 0 39.44 60.5H191.55A21.96 21.96 0 0 1 191.55 104.42H-1"/>
+                  <mask id="sm-mask-fill" maskUnits="userSpaceOnUse" x="-10" y="-10" width="255" height="145">
+                    <use href="#sm-spine" class="sm-mf" stroke="#fff" stroke-width="36" stroke-linecap="butt" fill="none"/>
+                    <use href="#sm-spine" class="sm-mf" stroke="#fff" stroke-width="36" stroke-linecap="butt" fill="none"/>
+                  </mask>
+                </defs>
+                <use href="#sm-path" class="sm-fill" fill="#fff" mask="url(#sm-mask-fill)"/>
+                <use href="#sm-path" class="sm-dots" stroke="#fff" stroke-width="1" stroke-dasharray="0.5 2" stroke-linecap="round" mask="url(#sm-mask-line)"/>
+                <use href="#sm-path" class="sm-solid" stroke="#fff" stroke-width="1" mask="url(#sm-mask-line)" opacity="0"/>
+              </svg>
+            </div>
+            <a class="sv-cta" href="#contact">Let’s Talk</a>
+          </div>
+        </div>
+
+        <div class="sv-copy">
+          <h2 class="sv-title" id="services-title">Connected at every level: our thinking,<br>our people,<br>and our services.</h2>
+          <div class="sv-text">
+            <p>Technology can be complex. We get that.</p>
+            <p>Spadafy exists to make it feel simple. We look at the whole picture, from identity and security to infrastructure, cloud and everything in between.</p>
+            <p>Every part plays a role. Every service pulls its weight. It’s a connected system, designed to work together.</p>
+          </div>
+        </div>
+
+        <div class="sv-cards">
+          <div class="sv-cards-col">
+            <article class="sv-card"><div><h3>VDI Implementation</h3><p>Spadafy designs and deploys virtual desktop environments tailored to your users, applications, security, and infrastructure. From platform setup and image design to app delivery, profile management, testing, and rollout, we manage the entire deployment process.</p></div><a href="#contact">Learn more →</a></article>
+            <article class="sv-card"><div><h3>VDI assessments and architecture design</h3><p>We assess existing VDI and end-user computing environments to identify performance, capacity, and operational challenges. We then design a future-ready architecture and roadmap aligned with business goals, user experience, security, and growth needs.</p></div><a href="#contact">Learn more →</a></article>
+            <article class="sv-card"><div><h3>VDI Managed Services</h3><p>We provide ongoing VDI management and engineering support, including monitoring, maintenance, troubleshooting, patching, upgrades, and performance optimization. Acting as an extension of your IT team, we keep environments stable, secure, and continuously improved.</p></div><a href="#contact">Learn more →</a></article>
+            <article class="sv-card"><div><h3>User Experience &amp; Performance Optimization</h3><p>We analyze the end-user experience across login times, application performance, profiles, desktops, and infrastructure to uncover bottlenecks. Using real-world data, we optimize VDI environments for faster, more reliable, and consistent user experiences.</p></div><a href="#contact">Learn more →</a></article>
+            <article class="sv-card"><div><h3>Hybrid Cloud Modernization</h3><p>Spadafy helps organizations modernize legacy infrastructure with hybrid environments that blend on-premises platforms and public cloud services. We optimize workload placement, resiliency, scalability, and cost efficiency while creating a practical path to modernization.</p></div><a href="#contact">Learn more →</a></article>
+            <article class="sv-card"><div><h3>Imprivata Support</h3><p>We provide implementation, optimization, troubleshooting, and ongoing support for Imprivata environments. We help improve authentication workflows, tap-and-go access, shared workstation experiences, and integration with VDI, clinical applications, and endpoint platforms.</p></div><a href="#contact">Learn more →</a></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 8. BREAK CARE ============ -->
+    <section class="s-breakcare" aria-labelledby="care-title">
+      <h2 class="bc-title" id="care-title"><span>A few things we care about.</span><span class="bc-accent">A lot.</span></h2>
+      <div class="bc-text">
+        <p>At the heart of our technology are the people who use it everyday and give it purpose.</p>
+        <p>The best technology helps people do their best work.</p>
+      </div>
+    </section>
+
+    <!-- ============ 9. CARE ============ -->
+    <section class="s-care scene" aria-label="What we care about">
+      <div class="stage care-stage">
+        <div class="care-media">
+          <img class="care-img" src="assets/img/care-1.jpg" alt="A doctor smiling at a young patient" loading="lazy">
+          <img class="care-img" src="assets/img/care-2.jpg" alt="A man looking at a curved monitor" loading="lazy">
+          <img class="care-img" src="assets/img/care-3.jpg" alt="A woman focused on her work at a desk" loading="lazy">
+        </div>
+        <div class="care-shade" aria-hidden="true"></div>
+        <div class="care-texts">
+          <div class="care-text"><h3>Giving doctors more time<br>with patients.</h3><p>A clinician needs access to the applications their work depends on.</p></div>
+          <div class="care-text"><h3>Work from anywhere.<br>Stay connected everywhere</h3><p>Give employees seamless access to their familiar desktop and applications from virtually anywhere.</p></div>
+          <div class="care-text"><h3>Less time fixing.<br>More time improving and building</h3><p>IT needs a manageable way to support people, desktops and access, focusing on what’s next, not what’s broken.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 10. TESTIMONIALS ============ -->
+    <section class="s-testimonials" aria-labelledby="t-title">
+      <h2 class="t-title" id="t-title"><span>Good headlines from our partners</span><span class="t-sub">yes, there was someone else before you.</span></h2>
+      <div class="t-card" aria-roledescription="carousel" aria-label="Testimonials">
+        <img class="t-quote-mark" src="assets/icons/icon-quote.svg" width="113" height="89" alt="">
+        <div class="t-top">
+          <div class="t-bars" role="tablist" aria-label="Choose testimonial"></div>
+          <div class="t-author"><p class="t-role"></p><p class="t-org"></p></div>
+        </div>
+        <blockquote class="t-quote" aria-live="polite"></blockquote>
+        <div class="t-arrows">
+          <button class="t-arrow" type="button" data-dir="-1" aria-label="Previous testimonial"><img src="assets/icons/icon-chevron-left.svg" width="20" height="28" alt=""></button>
+          <button class="t-arrow" type="button" data-dir="1" aria-label="Next testimonial"><img src="assets/icons/icon-chevron-right.svg" width="20" height="28" alt=""></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 11. HEALTH CHECK ============ -->
+    <section class="s-health" id="healthcheck" aria-labelledby="hc-title">
+      <div class="hc-head">
+        <h2 class="hc-title" id="hc-title">Sometimes you just need another set of eyes.</h2>
+        <p class="hc-lead">We’ve spent years working in VDI and infrastructure environments of all shapes and sizes. Our free Health Check puts that experience to work with a quick review of your environment and the challenges you’re seeing.</p>
+      </div>
+      <ol class="hc-steps">
+        <li class="hc-step" style="--o:620"><div class="hc-row"><span class="hc-no">01</span><div class="hc-body"><h3>Book a Free<br>Consultation</h3><p>Get started by scheduling a free consultation. We’ll listen to your needs and explore how we can help bring your project to life.</p></div></div></li>
+        <li class="hc-step" style="--o:847"><div class="hc-row"><span class="hc-no">02</span><div class="hc-body"><h3>Review Your Environment</h3><p>We’ll assess your existing VDI setup, looking at performance, configuration, capacity and potential areas of risk. We’ll document our findings so you have a clear picture of how things stand.</p></div></div></li>
+        <li class="hc-step" style="--o:1085"><div class="hc-row"><span class="hc-no">03</span><div class="hc-body"><h3>Get a Clear View of What’s Next</h3><p>We’ll walk you through the findings, explain what’s working well and highlight the areas worth prioritizing. Then together we can discuss next steps!</p></div></div></li>
+      </ol>
+    </section>
+
+    <!-- ============ 12. CONTACT ============ -->
+    <section class="s-contact" id="contact" aria-labelledby="contact-title">
+      <div class="ct-copy">
+        <h2 class="ct-title" id="contact-title">It’s like they say,<br>communication is key.</h2>
+        <p class="ct-text">We’re in it for the long haul, shoot us a message.<br>We’re quick texters, don’t worry.</p>
+      </div>
+      <a class="ct-cta" href="mailto:info@spadafy.com">
+        <span>Let’s Talk</span>
+        <img src="assets/icons/icon-arrow-up-right.svg" width="32" height="32" alt="">
+      </a>
+    </section>
+
+    <!-- ============ 13. INTRO TO NEXT PAGE ============ -->
+    <section class="s-next scene" aria-label="Next page: The Tech">
+      <div class="stage next-stage">
+        <a class="next-card" href="tech.html" aria-label="Go to The Tech">
+          <img src="assets/img/tech.jpg" alt="" loading="lazy">
+          <span class="next-shade" aria-hidden="true"></span>
+          <span class="next-title">The Tech</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="flag-maps-points.js"></script>
+  <script src="flag-maps.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
