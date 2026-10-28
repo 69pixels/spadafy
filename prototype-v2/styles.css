@@ -290,11 +290,40 @@ em { font-style: italic; font-synthesis: style; }
   font-size: calc(28 * var(--u)); line-height: 1.1; letter-spacing: -.01em; color: var(--charcoal);
 }
 .flag-head, .flag-desc, .flag-logos { z-index: 1; }
-.flag-img { position: absolute; z-index: 0; top: 0; height: calc(440 * var(--u)); width: auto; pointer-events: none; }
-.flag-img--1 { left: calc(1028 * var(--u)); }
-.flag-img--2 { left: calc(1028 * var(--u)); }
-.flag-img--3 { left: calc(1028 * var(--u)); }
-.flag-img--4 { left: calc(1058 * var(--u)); }
+.flag-map {
+  --map-dot: #d4d4d4; --map-highlight: #0ab574; --map-label: #1a1a2e;
+  position: absolute; z-index: 0; left: calc(1107 * var(--u)); top: calc(36 * var(--u));
+  width: calc(718 * var(--u)); aspect-ratio: 119 / 60; pointer-events: none; user-select: none;
+}
+
+/* Animated dotted maps (flag-maps.js). Each element sets --fm-delay / --fm-dur;
+   they only run in data-state="play", which the scroll scene sets when a card opens. */
+.fm-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.fm-base { fill: var(--map-dot); }
+.fm-hl { fill: var(--map-highlight); }
+.fm-arcs { fill: none; stroke: var(--map-highlight); stroke-width: .22; stroke-linecap: round; }
+.flag-map circle, .flag-map path { transform-box: fill-box; transform-origin: center; }
+.fm-label {
+  position: absolute; transform: translate(-50%, calc(-100% - 6px)); white-space: nowrap;
+  padding: .25em .6em; background: var(--map-label); color: var(--white);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: calc(14 * var(--u)); line-height: 1.2; letter-spacing: .08em; text-transform: uppercase;
+}
+.fm-label::after { content: ""; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -1px); border: 5px solid transparent; border-top-color: var(--map-label); }
+
+.flag-map[data-state="idle"] :is(.fm-fade, .fm-twinkle, .fm-draw, .fm-pop, .fm-light) { opacity: 0; }
+.flag-map[data-state="play"] .fm-fade { animation: fm-fade var(--fm-dur, 600ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-twinkle { animation: fm-twinkle var(--fm-dur, 3s) ease-in-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-draw { stroke-dasharray: 1; animation: fm-draw var(--fm-dur, 800ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-pop { animation: fm-pop var(--fm-dur, 450ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-light { animation: fm-light var(--fm-dur, 500ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-pulse { animation: fm-pulse 2.4s ease-out 2; }
+.flag-map[data-paused] * { animation-play-state: paused !important; }
+@keyframes fm-fade { from { opacity: 0; } }
+@keyframes fm-twinkle { 0% { opacity: 0; transform: scale(.75); } 50% { opacity: .4; transform: scale(.75); } 75% { opacity: 1; transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes fm-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes fm-pop { 0% { transform: scale(0); } 60% { transform: scale(1.3); } 100% { transform: scale(1); } }
+@keyframes fm-light { from { opacity: 0; transform: scale(2); } }
+@keyframes fm-pulse { from { opacity: .5; transform: scale(1); } to { opacity: 0; transform: scale(3.5); } }
 .flag-logos { position: absolute; left: calc(310 * var(--u)); top: calc(119.5 * var(--u)); display: flex; flex-direction: column; gap: calc(32 * var(--u)); }
 .flag-logos-row { display: flex; align-items: center; gap: calc(64 * var(--u)); }
 .flag-logos img { width: calc(var(--w) * var(--u)); height: auto; }
@@ -518,7 +547,9 @@ em { font-style: italic; font-synthesis: style; }
   .flag-no { width: auto; padding: 0; font-size: 16px; }
   .flag-head h3 { width: calc(100vw - 32px); font-size: 24px; }
   .flag-desc { left: 0; top: 104px; width: 100%; text-indent: 0; font-size: 18px; }
-  .flag-img { top: auto; bottom: 0; left: 50% !important; transform: translateX(-50%); height: auto; width: 115%; }
+  .flag-map { top: auto; bottom: 0; left: 50%; transform: translateX(-50%); width: 115%; }
+  .fm-label { font-size: 9px; }
+  .fm-desk { display: none; }
   .flag-logos { left: 0; top: 104px; gap: 20px; }
   .flag-logos-row { flex-wrap: wrap; gap: 20px 28px; }
   .flag-logos img { width: calc(var(--w) * .45px); }
