@@ -216,15 +216,28 @@
     fl = { pad, start, stackTop, step, cardH, travel, hold, k };
     flagsSec.style.height = (H + (travel + hold) * k) + 'px';
   }
+  // Card maps play while their card is open (mostly uncovered and on screen)
+  const flagMaps = flagEls.map(el => {
+    const m = $('.flag-map', el);
+    return m && window.FlagMap ? window.FlagMap.mount(m) : null;
+  });
   function renderFlags() {
     const { r, s } = sceneProgress(flagsSec);
-    if (r.bottom < 0 || r.top > H) return;
+    if (r.bottom < 0 || r.top > H) { flagMaps.forEach(m => m && m.setOpen(false)); return; }
     const c = Math.min(s / fl.k, fl.travel);
     flagsTitle.style.transform = `translate3d(0,${fl.pad - c}px,0)`;
-    flagEls.forEach((el, i) => {
+    const ys = flagEls.map((el, i) => {
       const natural = fl.start + i * fl.cardH - c;
       const y = Math.max(fl.stackTop + i * fl.step, natural);
       el.style.transform = `translate3d(0,${y}px,0)`;
+      return y;
+    });
+    const stageTop = Math.max(r.top, Math.min(0, r.bottom - H));
+    flagMaps.forEach((m, i) => {
+      if (!m) return;
+      const top = stageTop + ys[i];
+      const bottom = Math.min(top + fl.cardH, i < ys.length - 1 ? stageTop + ys[i + 1] : Infinity);
+      m.setOpen(Math.min(bottom, H) - Math.max(top, 0) >= fl.cardH * .6);
     });
   }
 
@@ -349,7 +362,8 @@
     svCopy.style.opacity = String(1 - copyFade);
     const inset = { top: t.top * bf, left: t.left * bf, right: (W - t.left - t.width) * bf, bottom: (H - t.top - t.height) * bf };
     svFrame.style.clipPath = `inset(${inset.top}px ${inset.right}px ${inset.bottom}px ${inset.left}px round ${sv.rad * bf}px)`;
-    svMedia.style.opacity = String(clamp((b - .45) / .4));
+    // first service visual fades in only after the frame has finished closing in (start of C)
+    svMedia.style.opacity = String(clamp((s - AL - B) / (C * .4)));
     const uiOn = clamp((b - .7) / .3);
     svUi.style.opacity = String(uiOn);
     svUi.style.pointerEvents = uiOn > .5 ? 'auto' : 'none';
