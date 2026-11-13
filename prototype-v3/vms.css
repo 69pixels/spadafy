@@ -73,7 +73,27 @@
 .cmp-head { display: flex; flex-direction: column; gap: calc(8 * var(--u)); padding: 0 calc(64 * var(--u)); margin-bottom: calc(80 * var(--u)); }
 .cmp-head h3 { font-family: var(--f-display); font-weight: 700; font-size: calc(48 * var(--u)); line-height: calc(40 * var(--u)); letter-spacing: calc(-.96 * var(--u)); white-space: nowrap; }
 .cmp-head p { font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); color: var(--ch-80); font-weight: 500; }
-.cmp-head img { width: calc(40 * var(--u)); height: calc(40 * var(--u)); margin-top: calc(12 * var(--u)); }
+/* who-runs-it ring: segments grow on hover (transform only, layout untouched) and show a tooltip */
+.pie { position: relative; display: block; width: calc(50 * var(--u)); height: calc(50 * var(--u)); margin-top: calc(12 * var(--u)); }
+.pie svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.pie-seg {
+  cursor: default; outline: none; transform-box: view-box; transform-origin: 20px 20px;
+  transition: transform .35s var(--ease-out), filter .25s;
+}
+.pie-seg:hover, .pie-seg:focus-visible, .pie-seg.is-on { transform: scale(1.22); }
+.pie-seg:focus-visible { filter: drop-shadow(0 0 1.5px var(--charcoal)); }
+.pie-tip {
+  position: absolute; left: var(--tx, 50%); top: var(--ty, 0px); z-index: 2; pointer-events: none; white-space: nowrap;
+  padding: calc(6 * var(--u)) calc(12 * var(--u)); border-radius: 999px; background: var(--charcoal); color: var(--white);
+  font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.16 * var(--u)); font-weight: 500;
+  opacity: 0; transform: translate(-50%, calc(-100% - 10 * var(--u))) scale(.92); transform-origin: 50% 100%;
+  transition: opacity .2s, transform .25s var(--ease-out);
+}
+.pie-tip::after {
+  content: ""; position: absolute; left: 50%; top: 100%; width: calc(10 * var(--u)); height: calc(10 * var(--u));
+  background: inherit; transform: translate(-50%, -50%) rotate(45deg); border-radius: calc(2 * var(--u));
+}
+.pie.is-tip .pie-tip { opacity: 1; transform: translate(-50%, calc(-100% - 16 * var(--u))) scale(1); }
 .c-orange { color: var(--orange); }
 .c-pink { color: var(--pink); }
 .models-cta { padding: calc(20 * var(--u)) calc(24 * var(--u)); }

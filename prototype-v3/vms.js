@@ -138,6 +138,27 @@
     });
   });
 
+  /* who-runs-it rings: tooltip follows the hovered / focused segment */
+  $$('[data-pie]').forEach(pie => {
+    const tip = $('.pie-tip', pie);
+    const show = seg => { tip.textContent = seg.dataset.label; pie.classList.add('is-tip'); };
+    const hide = () => pie.classList.remove('is-tip');
+    /* the tooltip rides just above the cursor */
+    const follow = e => {
+      const r = pie.getBoundingClientRect();
+      pie.style.setProperty('--tx', (e.clientX - r.left).toFixed(1) + 'px');
+      pie.style.setProperty('--ty', (e.clientY - r.top).toFixed(1) + 'px');
+    };
+    const centre = () => { pie.style.setProperty('--tx', '50%'); pie.style.setProperty('--ty', '0px'); };
+    $$('.pie-seg', pie).forEach(seg => {
+      seg.addEventListener('pointerenter', e => { follow(e); show(seg); });
+      seg.addEventListener('pointermove', follow);
+      seg.addEventListener('pointerleave', hide);
+      seg.addEventListener('focus', () => { centre(); show(seg); });
+      seg.addEventListener('blur', hide);
+    });
+  });
+
   /* contact form: prototype only */
   const form = $('.ct-form');
   form.addEventListener('submit', e => {
