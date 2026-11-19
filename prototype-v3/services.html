@@ -3,38 +3,442 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Spadafy — Services</title>
+  <title>Services — Spadafy</title>
+  <meta name="description" content="We design, deploy, run and optimize virtual desktops, plus the access, infrastructure and partners around them.">
+  <link rel="stylesheet" href="assets/vendor/lenis.css">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Placeholder: the Services page is not designed yet. This is the landing frame
-       the homepage "fall into the next page" hands over to. */
-    .page-hero { position: relative; height: var(--vh); display: grid; place-items: center; overflow: hidden; background: #515151; color: var(--white); }
-    .page-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .page-hero::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.2); }
-    .page-hero h1 { position: relative; z-index: 1; font-family: var(--f-display); font-weight: 700; font-size: calc(140 * var(--u)); line-height: .84; text-align: center; animation: pageIn 1s var(--ease-out) both; }
-    .page-back { position: absolute; z-index: 1; left: calc(40 * var(--u)); bottom: calc(40 * var(--u)); font-weight: 500; font-size: calc(16 * var(--u)); color: var(--soft-60); transition: color .2s; }
-    .page-back:hover { color: var(--white); }
-    @keyframes pageIn { from { opacity: 0; transform: translateY(12px); } }
-  </style>
+  <link rel="stylesheet" href="vms.css">
+  <link rel="stylesheet" href="services.css">
+  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('anim');</script>
 </head>
-<body>
-  <header class="nav" data-state="collapsed">
+<body class="vms svc">
+
+  <!-- ============ NAV (same component as the homepage) ============ -->
+  <header class="nav" id="nav" data-state="default">
     <div class="nav-box">
       <div class="nav-row">
-        <a class="nav-logo" href="index.html" aria-label="Spadafy — back to the homepage"><img class="logo-s" src="assets/icons/menu-logo.svg" alt="" style="opacity:1"></a>
-        <div class="nav-cta-wrap"><a class="nav-cta" href="index.html#cta">Let’s talk</a></div>
+        <a class="nav-logo" href="index.html" aria-label="Spadafy — home">
+          <img class="logo-full" src="assets/icons/logo-full.svg" alt="Spadafy">
+          <img class="logo-s" src="assets/icons/menu-logo.svg" alt="">
+        </a>
+        <nav class="nav-links" aria-label="Main">
+          <button class="nav-link" type="button" data-panel="services" aria-expanded="false" aria-controls="nav-panel">Services <img src="assets/icons/caret.svg" alt=""></button>
+          <a class="nav-link" href="index.html#about">About</a>
+          <a class="nav-link" href="free-vdi-health-check.html">Health Check</a>
+          <button class="nav-link" type="button" data-panel="index" aria-expanded="false" aria-controls="nav-panel">Index <img src="assets/icons/caret.svg" alt=""></button>
+        </nav>
+        <div class="nav-cta-wrap"><a class="nav-cta" href="#contact">Let’s talk <span aria-hidden="true">→</span></a></div>
+      </div>
+
+      <div class="nav-panel" id="nav-panel" aria-hidden="true">
+        <div class="np-info">
+          <div>
+            <p class="np-title" data-np-title>Services</p>
+            <p class="np-text" data-np-text>From the first assessment to everyday support.</p>
+          </div>
+          <a class="np-view" href="services.html">View <span aria-hidden="true">→</span></a>
+        </div>
+        <ul class="np-grid" data-np-grid></ul>
       </div>
     </div>
   </header>
-  <main class="page-hero">
-    <img src="assets/img/outro-services.jpg" alt="">
-    <h1>Services</h1>
-    <a class="page-back" href="index.html">← Back to Home</a>
+
+  <main id="top">
+
+    <!-- ============ HERO (1932:4392) ============ -->
+    <section class="hero sv-hero" aria-label="Services">
+      <img class="hero-bg" src="assets/services/hero.jpg" alt="">
+      <div class="hero-shade"></div>
+      <div class="hero-fade"></div>
+      <div class="hero-text sv-hero-text">
+        <h1 class="h2">VDI is our core, and we’ve got everything else that your desktops covered.</h1>
+        <div class="sv-hero-row">
+          <div class="sv-hero-btns">
+            <a class="pill pill-lg pill-orange" href="#contact">Talk to a VDI expert</a>
+            <a class="pill pill-lg pill-white" href="free-vdi-health-check.html">Free VDI Health Check</a>
+          </div>
+          <p class="t24">We design, deploy, run and optimize virtual desktops, plus the access, infrastructure and partners around them.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BODY: blocks slide over the hero ============ -->
+    <div class="body" id="body">
+      <div class="body-bg" aria-hidden="true"></div>
+
+      <!-- Intro statement: pinned, words light up with scroll (1932:4428) -->
+      <section class="s-intro" id="s-intro" aria-label="About Spadafy">
+        <div class="block si-stage">
+          <p class="sr-only">For over 15 years, we’ve helped organisations give people secure, reliable access to the desktops and applications they need, wherever work takes them. Everything we do is guided by a simple belief: Technology should feel simple.</p>
+          <p class="h2 si-text" aria-hidden="true" data-words><span data-w>For over 15 years, we’ve helped organisations give people secure, reliable access to the desktops and applications they need, wherever work takes them. Everything we do is guided by a simple belief:</span><br><span class="si-belief" data-w>Technology should feel simple.</span></p>
+        </div>
+      </section>
+
+      <!-- We're the Whole Package: tabs (1932:4431) -->
+      <section class="block v-white sv-package" id="package" aria-labelledby="package-t">
+        <div class="sv-package-top">
+          <div class="v-head sv-head-c">
+            <h2 class="h2" id="package-t">We’re the Whole Package</h2>
+            <p class="t24 ch-80">You decide who runs day-to-day operations.<br>The engineering depth is the same in both.</p>
+          </div>
+          <div class="tabs" data-tabs>
+            <div class="tabs-list" role="group" aria-label="Jump to a service group"></div>
+            <div class="tabs-panels"></div>
+          </div>
+        </div>
+        <div class="also">
+          <p class="t24 ch-60">Also ask us about</p>
+          <ul class="sv-chips">
+            <li>Security and vCISO</li>
+            <li>Unified Communications</li>
+            <li>Managed backup</li>
+            <li>DR and business continuity</li>
+            <li>Identity services</li>
+            <li>Microsoft 365</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Layers we cover (1932:4492) -->
+      <section class="block v-white sv-layers" id="layers" aria-labelledby="layers-t">
+        <div class="v-head sv-head-w">
+          <h2 class="h2" id="layers-t">We’re the Whole Package</h2>
+          <p class="t24 ch-80">A happy environment depends on many layers, and humbly-speaking, we know all of them.</p>
+        </div>
+        <ul class="lay-grid">
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6"><img src="assets/services/ic-people.svg" alt="">People and workflows</h3>
+              <p class="t24 ch-60" style="--w:432">Clinicians, remote staff and shared workstations, each with different needs.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="free-vdi-health-check.html">Health Check<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+              <li><a class="tag tag-lg" href="healthcare-sso.html">Healthcare SSO<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6" style="--g:16"><img src="assets/services/ic-endpoints.svg" alt="">Endpoints and access</h3>
+              <p class="t24 ch-60" style="--w:452">Scanners, printers, headsets and the devices that run them.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="igel-endpoint-solutions.html">IGEL<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6"><img src="assets/services/ic-identity.svg" alt="">Identity and authentication</h3>
+              <p class="t24 ch-60" style="--w:518">Tap-and-go sign-in, MFA and badge access without the friction.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="healthcare-sso.html">Healthcare SSO<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6"><img src="assets/services/ic-desktop.svg" alt="">Desktop and app delivery</h3>
+              <p class="t24 ch-60" style="--w:413">Desktops and apps delivered reliably to every user.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="vdi-infrastructure.html">VDI Infrastructure<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+              <li><a class="tag tag-lg" href="vdi-managed-services.html">Managed Services<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6"><img src="assets/services/ic-images.svg" alt="">Images, profiles and apps</h3>
+              <p class="t24 ch-60" style="--w:501">Lean golden images, fast profiles and apps that are easy to manage.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="nerdio-solutions.html">Nerdio<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+              <li><a class="tag tag-lg" href="vdi-managed-services.html">Managed Services<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6"><span class="lay-ic"><img src="assets/services/ic-monitoring.svg" alt=""></span>Monitoring and experience</h3>
+              <p class="t24 ch-60" style="--w:477">What users actually feel: logon times, latency and responsiveness.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="vdi-managed-services.html">Managed Services<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+              <li><a class="tag tag-lg" href="free-vdi-health-check.html">Health Check<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6"><img src="assets/services/ic-infra.svg" alt="">Infrastructure and cloud</h3>
+              <p class="t24 ch-60" style="--w:499">Servers, storage, networking and cloud, sized for real workloads.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="hybrid-cloud.html">Hybrid Cloud<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+              <li><a class="tag tag-lg" href="vdi-infrastructure.html">VDI Infrastructure<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay">
+            <div class="lay-top">
+              <h3 class="h6"><img src="assets/services/ic-protection.svg" alt="">Protection and security</h3>
+              <p class="t24 ch-60" style="--w:416">Backup, recovery and security that keep desktops available.</p>
+            </div>
+            <ul class="tags">
+              <li><a class="tag tag-lg" href="hybrid-cloud.html">Hybrid Cloud<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+              <li><a class="tag tag-lg" href="vdi-infrastructure.html">VDI Infrastructure<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+            </ul>
+          </li>
+          <li class="lay lay-goat">
+            <p class="t32">When something breaks, we trace it across all layers.</p>
+            <a class="pill pill-lg pill-dark" href="vendor-partners.html">See all partners</a>
+            <img src="assets/services/goat-layers.png" alt="">
+          </li>
+        </ul>
+      </section>
+
+      <!-- Choose a specific service: timeline, then table (1932:4661) -->
+      <section class="block v-white sv-choose" id="choose" aria-labelledby="choose-t">
+        <div class="v-head sv-head-w">
+          <h2 class="h2" id="choose-t">Choose a specific service,<br>or let us give you a hand across all.</h2>
+          <p class="t24 ch-80">Choose a specific service, or let us give you a hand across all.</p>
+        </div>
+        <div class="choose-body">
+          <div class="tl" data-timeline>
+            <div class="tl-track" aria-hidden="true">
+              <span class="tl-line"></span>
+              <span class="tl-cell"><img class="tl-dot" src="assets/services/tl-dot.svg" alt=""><i class="tl-tick"></i></span>
+              <span class="tl-cell"><img class="tl-dot" src="assets/services/tl-dot.svg" alt=""><i class="tl-tick"></i></span>
+              <span class="tl-cell"><img class="tl-dot" src="assets/services/tl-dot.svg" alt=""><i class="tl-tick"></i></span>
+              <span class="tl-cell"><img class="tl-dot" src="assets/services/tl-dot.svg" alt=""><i class="tl-tick"></i></span>
+              <span class="tl-cell"><img class="tl-dot" src="assets/services/tl-dot.svg" alt=""><i class="tl-tick"></i><i class="tl-tick tl-tick-end"></i></span>
+            </div>
+            <ol class="tl-steps">
+              <li class="tl-step">
+                <h3 class="t32"><span>01</span> Assess</h3>
+                <p class="t24 ch-60">Map users, apps and performance gaps.</p>
+                <ul class="tags">
+                  <li><a class="tag" href="free-vdi-health-check.html">VDI Health Check<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                </ul>
+              </li>
+              <li class="tl-step">
+                <h3 class="t32"><span>02</span> Design</h3>
+                <p class="t24 ch-60">Right-sized architecture built around your users.</p>
+                <ul class="tags tags-col">
+                  <li><a class="tag" href="vdi-infrastructure.html">VDI Infrastructure<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                  <li><a class="tag" href="hybrid-cloud.html">Hybrid Cloud<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                </ul>
+              </li>
+              <li class="tl-step">
+                <h3 class="t32"><span>03</span> Deploy</h3>
+                <p class="t24 ch-60">From pilot group to full rollout, without disruption.</p>
+                <ul class="tags">
+                  <li><a class="tag" href="vdi-infrastructure.html">VDI Infrastructure<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                  <li><a class="tag" href="nerdio-solutions.html">Nerdio<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                  <li><a class="tag" href="healthcare-sso.html">Healthcare SSO<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                  <li><a class="tag" href="igel-endpoint-solutions.html">IGEL<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                </ul>
+              </li>
+              <li class="tl-step">
+                <h3 class="t32"><span>04</span> Run</h3>
+                <p class="t24 ch-60">Monitoring, support, patching, upgrades.</p>
+                <ul class="tags">
+                  <li><a class="tag" href="vdi-managed-services.html">VDI Managed Services<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                </ul>
+              </li>
+              <li class="tl-step">
+                <h3 class="t32"><span>05</span> Optimize</h3>
+                <p class="t24 ch-60">Performance, capacity and cost tuning.</p>
+                <ul class="tags">
+                  <li><a class="tag" href="vdi-managed-services.html">VDI Managed Services<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                  <li><a class="tag" href="nerdio-solutions.html">Nerdio<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                  <li><a class="tag" href="free-vdi-health-check.html">VDI Health Check<img src="assets/services/ic-chip-arrow.svg" alt=""></a></li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+
+          <div class="mx" role="table" aria-label="Service models compared" data-matrix>
+            <div class="mx-row mx-head" role="row">
+              <span class="mx-label" role="columnheader"><span class="sr-only">Question</span></span>
+              <span role="columnheader">VDI Health Check</span>
+              <span role="columnheader">Project Solutions</span>
+              <span role="columnheader">Retainer Services</span>
+              <span role="columnheader">Full Managed Services</span>
+            </div>
+            <div class="mx-row" role="row">
+              <span class="mx-label" role="rowheader">When it fits</span>
+              <span role="cell">You want a clear picture of current health.</span>
+              <span role="cell">You build, migrate, or modernize.</span>
+              <span role="cell">Your team runs operations and needs senior engineering capacity.</span>
+              <span role="cell">You want ongoing operational ownership.</span>
+            </div>
+            <div class="mx-row" role="row">
+              <span class="mx-label" role="rowheader">Who runs daily operations</span>
+              <span role="cell">Your team.</span>
+              <span role="cell">Your team, after handover.</span>
+              <span role="cell">Your team.</span>
+              <span role="cell">Spadafy, for the agreed operations.</span>
+            </div>
+            <div class="mx-row" role="row">
+              <span class="mx-label" role="rowheader">What happens</span>
+              <span role="cell">Our engineers review the agreed configuration, monitoring data, and selected functions.</span>
+              <span role="cell">We design, deploy, and hand over to your team.</span>
+              <span role="cell">We add senior engineering hours each month for troubleshooting, escalation, maintenance, and upgrades.</span>
+              <span role="cell">Recurring monitoring, maintenance, troubleshooting, and Level 2/3 support within scope.</span>
+            </div>
+            <div class="mx-row" role="row">
+              <span class="mx-label" role="rowheader">What you get</span>
+              <span role="cell">Documented findings, prioritized actions, and an engineering readout.</span>
+              <span role="cell">A validated environment, documentation, and knowledge transfer.</span>
+              <span role="cell">A monthly engineering-hours allocation with a dedicated team that knows your environment.</span>
+              <span role="cell">The agreed operations owned by a dedicated team, for a fixed fee.</span>
+            </div>
+          </div>
+        </div>
+        <a class="pill pill-lg pill-orange choose-cta" href="vdi-managed-services.html#models">Compare models</a>
+      </section>
+
+      <!-- Trusted to run it every day: stats and case studies (1932:4837) -->
+      <section class="block sv-trust" id="trust" aria-labelledby="trust-t">
+        <div class="trust-row">
+          <div class="trust-left">
+            <div class="trust-head">
+              <h2 class="h2" id="trust-t">Trusted to run it<br>every day</h2>
+              <p class="t24">Numbers, a real engagement and a client voice behind every claim on this page.</p>
+            </div>
+            <div class="trust-foot">
+              <dl class="stats">
+                <div><dt class="t20 soft-80">Total desktops managed</dt><dd class="t32" data-count="40000" data-suffix="+">40,000+</dd></div>
+                <div><dt class="t20 soft-80">Delivery experience</dt><dd class="t32">Global</dd></div>
+                <div><dt class="t20 soft-80">Customers</dt><dd class="t32" data-count="200" data-suffix="+">200+</dd></div>
+                <div><dt class="t20 soft-80">Years of VDI</dt><dd class="t32" data-count="15">15</dd></div>
+              </dl>
+              <div class="pager cs-pager">
+                <button class="pg pg-prev" type="button" data-cs-prev aria-controls="cases" aria-label="Previous case study">Prev.</button>
+                <button class="pg pg-next" type="button" data-cs-next aria-controls="cases" aria-label="Next case study">Next</button>
+              </div>
+            </div>
+          </div>
+          <div class="cs-view" id="cases" role="region" aria-label="Case studies" tabindex="0">
+            <ul class="cs-track" data-cases></ul>
+          </div>
+        </div>
+        <ul class="trust-logos">
+          <li><img src="assets/logos/omnissa.png" style="--w:164.4" alt="Omnissa"></li>
+          <li><img src="assets/logos/microsoft.svg" style="--w:151.4" alt="Microsoft"></li>
+          <li><img src="assets/logos/controlup.svg" style="--w:208.2" alt="ControlUp"></li>
+          <li><img src="assets/logos/citrix.png" style="--w:103.6" alt="Citrix"></li>
+          <li><img src="assets/logos/imprivata.svg" style="--w:176.1;--drop:5.8" alt="Imprivata"></li>
+          <li><img src="assets/logos/dell.svg" style="--w:249.9;--drop:6.3" alt="Dell Technologies"></li>
+          <li><img src="assets/logos/logo-11.svg" style="--w:181.8" alt="Nutanix"></li>
+          <li><img src="assets/logos/logo-12.svg" style="--w:106" alt="Cisco"></li>
+          <li><img src="assets/logos/logo-13.svg" style="--w:134" alt="Veeam"></li>
+        </ul>
+      </section>
+
+      <!-- Big brains. No ego. (1932:4922) -->
+      <section class="block v-white sv-brains" id="brains" aria-labelledby="brains-t">
+        <div class="brains-top">
+          <h2 class="h2" id="brains-t">Big brains. No ego.</h2>
+          <ul class="brains">
+            <li><img src="assets/services/ic-headset.svg" alt=""><div><h3 class="t24">You talk to the engineer who does the work</h3><p class="t20 ch-60">Small team, same people for years, direct access</p></div></li>
+            <li><img src="assets/services/ic-question.svg" alt=""><div><h3 class="t24">We ask the hard questions early</h3><p class="t20 ch-60">We explain options and push back on unnecessary complexity</p></div></li>
+            <li><img src="assets/services/ic-security.svg" alt=""><div><h3 class="t24">Nothing goes live untested</h3><p class="t20 ch-60">Pilots, agreed acceptance criteria, rollback plans</p></div></li>
+            <li><img src="assets/services/ic-console.svg" alt=""><div><h3 class="t24">We look past the VDI console</h3><p class="t20 ch-60">Issues traced across devices, sign-in, apps and infrastructure</p></div></li>
+            <li><img src="assets/services/ic-college.svg" alt=""><div><h3 class="t24">We leave your team stronger</h3><p class="t20 ch-60">Documentation and knowledge transfer on every project</p></div></li>
+          </ul>
+        </div>
+        <div class="also">
+          <p class="t24 ch-80">What you get</p>
+          <ul class="sv-chips sv-chips-check">
+            <li><img src="assets/services/ic-check-circle.svg" alt="">Documented findings</li>
+            <li><img src="assets/services/ic-check-circle.svg" alt="">Design with assumptions</li>
+            <li><img src="assets/services/ic-check-circle.svg" alt="">Pilot and test results</li>
+            <li><img src="assets/services/ic-check-circle.svg" alt="">Rollback plan</li>
+            <li><img src="assets/services/ic-check-circle.svg" alt="">Runbooks and handover</li>
+            <li><img src="assets/services/ic-check-circle.svg" alt="">Named engineers</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- FAQ (1932:4986) -->
+      <section class="block v-white v-faq" id="faq" aria-labelledby="faq-t">
+        <h2 class="h2" id="faq-t">Frequently Asked Questions</h2>
+        <div class="faq" data-faq>
+          <div class="qa"><button class="qa-q" type="button" aria-expanded="false"><span>Must the entire environment be under management</span></button><div class="qa-a" hidden><p>No. We can scope specific platforms and components, with clear responsibilities for Spadafy, your team and other providers.</p></div></div>
+          <div class="qa is-open"><button class="qa-q" type="button" aria-expanded="true"><span>Can you work alongside our EUC team</span></button><div class="qa-a"><p>Yes. Choose Spadafy ownership of defined operations or engineering support while your team retains daily management.</p></div></div>
+          <div class="qa"><button class="qa-q" type="button" aria-expanded="false"><span>Which platforms can you support</span></button><div class="qa-a" hidden><p>Omnissa Horizon, Citrix, Azure Virtual Desktop and Windows 365, matched to each platform’s operating model.</p></div></div>
+          <div class="qa"><button class="qa-q" type="button" aria-expanded="false"><span>Does a retainer include continuous monitoring</span></button><div class="qa-a" hidden><p>Retainers cover requested or scheduled engineering. Monitoring needs an explicit agreement; Full Managed Services includes it.</p></div></div>
+          <div class="qa"><button class="qa-q" type="button" aria-expanded="false"><span>How are patches and production changes handled</span></button><div class="qa-a" hidden><p>They follow agreed testing, windows and approvals. We check technical functions; application owners validate workflows.</p></div></div>
+          <div class="qa"><button class="qa-q" type="button" aria-expanded="false"><span>How are coverage and response commitments set</span></button><div class="qa-a" hidden><p>In the statement of work, based on your operating requirements, service model and environment.</p></div></div>
+          <div class="qa"><button class="qa-q" type="button" aria-expanded="false"><span>What if an issue involves another vendor</span></button><div class="qa-a" hidden><p>We collect evidence and coordinate escalation. Where we have authorized access, we manage the case with the vendor.</p></div></div>
+          <div class="qa"><button class="qa-q" type="button" aria-expanded="false"><span>Discuss your VDI support requirements</span></button><div class="qa-a" hidden><p>Tell us about your platforms and current support setup in the form below, and an engineer will get back to you.</p></div></div>
+        </div>
+      </section>
+
+      <!-- "S" zoom → green section: pinned, driven by scroll (1932:5018 → 1932:5020) -->
+      <section class="s-zoom" id="health-check" aria-labelledby="eyes-t">
+        <div class="block sz-stage">
+          <div class="sz-green" aria-hidden="true"></div>
+          <div class="sz-fit sz-fit-s" aria-hidden="true"><img class="sz-s" src="assets/services/s-symbol.svg" alt=""></div>
+          <div class="stk stk-1" aria-hidden="true">
+            <span class="stk-1-outline"><img src="assets/services/sticker-goat-1-outline.svg" alt=""></span>
+            <span class="stk-1-img"><img src="assets/services/sticker-goat-1.png" alt=""></span>
+          </div>
+          <div class="stk stk-2" aria-hidden="true">
+            <span class="stk-2-back"><i></i></span>
+            <span class="stk-2-img"><img src="assets/services/sticker-goat-2.png" alt=""></span>
+          </div>
+          <div class="sz-fit">
+            <h2 class="h1 sz-title" id="eyes-t">Sometimes you just need another set of eyes.</h2>
+            <ol class="sz-cards">
+              <li class="sz-card"><h3><span>1</span>Book a Free Consultation</h3><p class="t24 ch-80">Get started by scheduling a free consultation. We’ll listen to your needs and explore how we can help bring your project to life.</p></li>
+              <li class="sz-card"><h3><span>2</span>Review Your Environment</h3><p class="t24 ch-80">We’ll assess your existing VDI setup, looking at performance, configuration, capacity and potential areas of risk.</p></li>
+              <li class="sz-card"><h3 style="--w:256.4"><span>3</span>Get a Clear View of What’s Next</h3><p class="t24 ch-80">We’ll walk you through the findings, explain what’s working well and highlight the areas worth prioritizing.</p></li>
+            </ol>
+            <div class="sz-cta-wrap"><a class="pill pill-dark sz-cta" href="free-vdi-health-check.html">Request a Health Check</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact (1932:5049) -->
+      <section class="v-contact" id="contact" aria-labelledby="contact-t">
+        <div class="block v-white ct-left">
+          <div class="v-head">
+            <h2 class="h2" id="contact-t">Discuss your VDI support requirements</h2>
+            <p class="t24 ch-80">Share your platforms, current support setup and priorities.<br>We’ll help define the service model, scope and responsibilities.</p>
+          </div>
+          <ul class="ct-points">
+            <li><img src="assets/services/ct-sync.svg" alt=""><p class="t20 ch-80">Proactive patching and health checks keep your VDI stable, not just repaired when it breaks.</p></li>
+            <li><img src="assets/services/ct-group.svg" alt=""><p class="t20 ch-80">A whole team of specialists, so critical knowledge never depends on one or two people.</p></li>
+            <li><img src="assets/services/ct-energy.svg" alt=""><p class="t20 ch-80">Extra engineering capacity when you need it, with response times backed by clear SLAs.</p></li>
+          </ul>
+        </div>
+        <form class="block v-white ct-form" action="#" novalidate>
+          <div class="fields">
+            <label class="field"><span class="sr-only">Name (required)</span><input name="name" placeholder="Name" required autocomplete="name"><img src="assets/vms/ic-required.svg" alt=""></label>
+            <label class="field"><span class="sr-only">Company (required)</span><input name="company" placeholder="Company" required autocomplete="organization"><img src="assets/vms/ic-required.svg" alt=""></label>
+            <label class="field"><span class="sr-only">Email (required)</span><input name="email" type="email" placeholder="Email" required autocomplete="email"><img src="assets/vms/ic-required.svg" alt=""></label>
+            <label class="field field-select"><span class="sr-only">Service</span>
+              <select name="service">
+                <option selected>VDI Managed Services</option>
+                <option>Free VDI Health Check</option>
+                <option>VDI Infrastructure</option>
+                <option>Healthcare SSO and Authentication</option>
+                <option>Hybrid Cloud &amp; Infrastructure Modernization</option>
+                <option>Vendor Partners</option>
+                <option>IGEL Endpoint Solutions</option>
+                <option>Nerdio Solutions</option>
+              </select>
+              <img src="assets/vms/ic-caret.svg" alt="">
+            </label>
+            <label class="field field-msg"><span class="sr-only">Message</span><textarea name="message" placeholder="Message"></textarea></label>
+            <button class="send" type="submit"><span>Send message</span><img src="assets/vms/ic-arrow-up-right.svg" alt=""></button>
+          </div>
+          <p class="legal">By pressing send you agree with our <a href="#">Privacy Policy</a> and <a href="#">Terms of Use</a></p>
+        </form>
+      </section>
+    </div>
   </main>
-  <script>
-    const r = document.documentElement;
-    const set = () => { r.style.setProperty('--u', r.clientWidth / 1920 + 'px'); r.style.setProperty('--vh', innerHeight + 'px'); };
-    set(); addEventListener('resize', set);
-  </script>
+
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="services-data.js"></script>
+  <script src="services.js"></script>
 </body>
 </html>
