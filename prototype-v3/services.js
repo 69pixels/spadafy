@@ -367,7 +367,7 @@
   const counters = $$('[data-count]');
   if (!reduce) counters.forEach(el => { el.textContent = '0' + (el.dataset.suffix || ''); });
 
-  const view = $('.cs-view'), track = $('[data-cases]'), prevBtn = $('[data-cs-prev]'), nextBtn = $('[data-cs-next]');
+  const view = $('.cs-view'), track = $('[data-cases]');
   (window.CASE_STUDIES || []).forEach((c, i, all) => {
     const li = document.createElement('li');
     li.className = 'cs-card';
@@ -387,17 +387,10 @@
   const cards = $$('.cs-card', track);
   const cardStep = () => cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : view.clientWidth;
   const maxScroll = () => view.scrollWidth - view.clientWidth;
-  function setPager() {
-    prevBtn.disabled = view.scrollLeft < 4;
-    nextBtn.disabled = view.scrollLeft > maxScroll() - 4;
-  }
   const go = dir => {
     const s = cardStep(), i = Math.round(view.scrollLeft / s) + dir;
     view.scrollTo({ left: clamp(i * s, 0, maxScroll()), behavior: reduce ? 'auto' : 'smooth' });
   };
-  prevBtn.addEventListener('click', () => go(-1));
-  nextBtn.addEventListener('click', () => go(1));
-  view.addEventListener('scroll', setPager, { passive: true });
   view.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); go(e.key === 'ArrowRight' ? 1 : -1); }
   });
@@ -543,7 +536,6 @@
     setUnits();
     layoutZoom();
     introLast = zoomLast = -1;
-    setPager();
     scrollers.forEach(s => s());
     placeThumb(true);
     syncCurrent();
