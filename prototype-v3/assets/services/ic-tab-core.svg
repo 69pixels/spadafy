@@ -1,7 +1,1 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Frame">
-<path id="Vector" d="M21 7.99951C20.9996 7.64879 20.9071 7.30432 20.7315 7.00067C20.556 6.69703 20.3037 6.44487 20 6.26951L13 2.26951C12.696 2.09398 12.3511 2.00156 12 2.00156C11.6489 2.00156 11.304 2.09398 11 2.26951L4 6.26951C3.69626 6.44487 3.44398 6.69703 3.26846 7.00067C3.09294 7.30432 3.00036 7.64879 3 7.99951V15.9995C3.00036 16.3502 3.09294 16.6947 3.26846 16.9983C3.44398 17.302 3.69626 17.5541 4 17.7295L11 21.7295C11.304 21.905 11.6489 21.9975 12 21.9975C12.3511 21.9975 12.696 21.905 13 21.7295L20 17.7295C20.3037 17.5541 20.556 17.302 20.7315 16.9983C20.9071 16.6947 20.9996 16.3502 21 15.9995V7.99951Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="white"/>
-<path id="Vector_2" d="M3.3 7.00078L12 12.0008L20.7 7.00078" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="white"/>
-<path id="Vector_3" d="M12 22V12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="white"/>
-</g>
-</svg>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22.9734L2.5 17.5234V6.47344L12 1.02344L21.5 6.47344V17.5234L12 22.9734ZM4.35 16.5234L11.075 20.3734V12.4734L4.35 8.59844V16.5234ZM5.175 6.99844L12 10.9484L18.825 6.99844L12 3.09844L5.175 6.99844ZM12.925 20.3734L19.65 16.5234V8.59844L12.925 12.4734V20.3734Z" fill="#000"/></svg>

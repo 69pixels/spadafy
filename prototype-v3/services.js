@@ -53,7 +53,8 @@
   /* horizontal scroller: mouse drag that settles on a card (touch and trackpads scroll natively).
      Returns a sync() that marks whether there is anything to scroll. */
   function dragScroll(view, items) {
-    let drag = null, dragged = false;
+    let drag = null, quietUntil = 0;
+    const hush = ms => { quietUntil = Math.max(quietUntil, performance.now() + ms); };
     const step = () => { const it = items(); return it.length > 1 ? it[1].offsetLeft - it[0].offsetLeft : view.clientWidth; };
     const max = () => view.scrollWidth - view.clientWidth;
     view.addEventListener('pointerdown', e => {
@@ -71,7 +72,7 @@
       const moved = drag.moved, from = drag.left;
       drag = null;
       if (!moved) return;
-      dragged = true; setTimeout(() => { dragged = false; }, 0);
+      hush(350);
       /* settle on the nearest card in the drag direction, then hand back to scroll snapping */
       const s = step(), raw = view.scrollLeft / s;
       const i = view.scrollLeft > from ? Math.ceil(raw - .15) : Math.floor(raw + .15);
@@ -85,8 +86,12 @@
     view.addEventListener('pointercancel', end);
     view.addEventListener('lostpointercapture', end);
     view.addEventListener('dragstart', e => e.preventDefault());
-    /* a drag that ends over a card link must not open it */
-    view.addEventListener('click', e => { if (dragged) { e.preventDefault(); e.stopPropagation(); } }, true);
+    /* the row is for dragging: a click right after a drag, or while the row is still gliding (trackpad swipe,
+       snap or settle), must not open a card. Only a click on a row at rest opens one */
+    view.addEventListener('scroll', () => hush(150), { passive: true });
+    view.addEventListener('click', e => {
+      if (performance.now() < quietUntil || drag) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
     return () => view.classList.toggle('can-drag', max() > 2);
   }
   const scrollers = [];
@@ -155,36 +160,48 @@
   }
 
   /* =========================================================
-     1. INTRO — words light up one after another with scroll
+     1. INTRO — letters light up one after another with scroll: gray → a flash of white → orange
      ========================================================= */
   const intro = $('#s-intro');
-  const words = [];
+  const letters = [];
   $$('[data-w]', intro).forEach(seg => {
     const parts = seg.textContent.split(/(\s+)/);
     seg.textContent = '';
     parts.forEach(part => {
       if (!part) return;
       if (/^\s+$/.test(part)) { seg.appendChild(document.createTextNode(' ')); return; }
-      const w = document.createElement('span');
-      w.className = 'w'; w.textContent = part;
-      seg.appendChild(w); words.push(w);
+      const w = document.createElement('span');     /* letters sit in a word span, so lines still only break between words */
+      w.className = 'w';
+      for (const ch of part) {
+        const l = document.createElement('span');
+        l.className = 'l'; l.textContent = ch;
+        w.appendChild(l); letters.push(l);
+      }
+      seg.appendChild(w);
     });
   });
-  const belief = $('.si-belief', intro);
-  const beliefStart = words.indexOf($('.w', belief));
+  /* the lightning wave, in letters: each one brightens to white over LIT, stays white for HOLD, then turns orange over ORANGE.
+     So a short white edge runs ahead of the orange through the whole statement; reversing runs it back */
+  const LIT = 6, HOLD = 4, ORANGE = 10;
+  const introState = letters.map(() => -1);
   let introLast = -1;
   function renderIntro() {
     if (reduce || !near(intro)) return;
-    /* the reveal runs over 10%–85% of the pin, so the first and last words get a moment */
+    /* the reveal runs over 10%–85% of the pin, so the first and last letters get a moment */
     const p = clamp((sceneProgress(intro) - .1) / .75);
-    const k = Math.round(p * 1000);
+    const k = Math.round(p * 4000);
     if (k === introLast) return;
     introLast = k;
-    const pos = p * words.length;
-    for (let i = 0; i < words.length; i++) {
-      words[i].style.opacity = (.15 + .85 * clamp(pos - i)).toFixed(3);
+    const pos = p * (letters.length + LIT + HOLD + ORANGE);
+    for (let i = 0; i < letters.length; i++) {
+      const t = pos - i;
+      const lit = clamp(t / LIT), o = smooth((t - LIT - HOLD) / ORANGE);
+      const key = Math.round(lit * 100) * 1000 + Math.round(o * 100);
+      if (key === introState[i]) continue;          /* only touch letters whose look changed */
+      introState[i] = key;
+      letters[i].style.opacity = (.15 + .85 * lit).toFixed(2);
+      letters[i].style.setProperty('--o', (o * 100).toFixed(0) + '%');
     }
-    belief.classList.toggle('is-lit', pos > beliefStart + .5);
   }
 
   /* =========================================================
@@ -311,18 +328,21 @@
      3. TIMELINE → TABLE → BUTTON — one sequence, once, on enter
      ========================================================= */
   const choose = $('#choose'), tl = $('[data-timeline]', choose), mx = $('[data-matrix]', choose);
-  const LINE = 1100, STEP0 = 350, STEP = 320;
+  /* the green line crosses the track at an even pace; each step starts the moment it reaches that step's marker */
+  const LINE = 1800, STEP0 = 150;
+  tl.style.setProperty('--line', LINE + 'ms');
+  const tlTrack = $('.tl-track', tl);
+  const reach = cell => STEP0 + LINE * cell.offsetLeft / tlTrack.offsetWidth;
+  let seqEnd = LINE;
   $$('.tl-cell', tl).forEach((cell, i) => {
-    const d = STEP0 + i * STEP;
-    $('.tl-dot', cell).style.setProperty('--d', d + 'ms');
-    $$('.tl-tick', cell).forEach(t => t.style.setProperty('--d', d + 'ms'));
-  });
-  let seqEnd = 0;
-  $$('.tl-step', tl).forEach((step, i) => {
-    const d = STEP0 + i * STEP + 80;
-    [$('h3', step), $('p', step), $('.tags', step)].forEach((el, j) => {
-      el.classList.add('sq'); el.style.setProperty('--d', (d + j * 90) + 'ms');
-      seqEnd = Math.max(seqEnd, d + j * 90 + 600, LINE);
+    const d = Math.round(reach(cell));
+    $('.tl-mark', cell).style.setProperty('--d', d + 'ms');
+    const tick = $('.tl-tick', cell);                 /* ticks sit mid-column, so they light as the line passes them */
+    tick.style.setProperty('--d', Math.round(STEP0 + LINE * (cell.offsetLeft + tick.offsetLeft) / tlTrack.offsetWidth) + 'ms');
+    const step = $$('.tl-step', tl)[i];
+    [$('h3', step), $('p', step), ...$$('.tl-tags li', step)].forEach((el, j) => {
+      el.classList.add('sq'); el.style.setProperty('--d', (d + 60 + j * 90) + 'ms');
+      seqEnd = Math.max(seqEnd, d + 60 + j * 90 + 600);
     });
   });
   const tableAt = seqEnd + 100;
@@ -388,16 +408,26 @@
      ========================================================= */
   const zoom = $('#health-check');
   const zGreen = $('.sz-green', zoom), zS = $('.sz-s', zoom), zFitS = $('.sz-fit-s', zoom);
-  const zTitle = $('.sz-title', zoom), zCards = $$('.sz-card', zoom), zCta = $('.sz-cta', zoom);
+  const zTitle = $('.sz-title', zoom), zLead = $('.sz-lead', zoom), zChips = $$('.sz-chips li', zoom);
+  const zCards = $$('.sz-card', zoom), zCta = $('.sz-cta', zoom);
   const stk1 = $('.stk-1', zoom), stk2 = $('.stk-2', zoom);
   const fits = $$('.sz-fit', zoom);
+  const zShape = $('.sz-s-shape', zoom), zLine = $('.sz-s-line', zoom);
+  const zLen = zLine.getTotalLength();
+  zLine.style.strokeDasharray = `${zLen} ${zLen}`;
+  /* the S draws itself from the moment the stage enters at the bottom of the screen until .7 of a screen into the pin;
+     after .8 pinned screens the original 3.4-screen zoom runs, unchanged */
+  const DRAWN = .7, DRAW = .8;
+  const zStage = $('.sz-stage', zoom);
   let zoomFull = 4;                                  /* scale at which the S's middle bar covers the stage */
+  let zStageH = 0;                                   /* the stage hugs its content, so it can be taller than the screen */
   function layoutZoom() {
     const stageW = W - 16 * U, stageH = H - 16 * U;
     const fit = Math.min(1, stageH / (1080 * U), stageW / (1904 * U));
     fits.forEach(f => f.style.setProperty('--fit', fit.toFixed(4)));
     /* the bar (Figma 338→1566 × 417→663) is centred on the frame, so scaling from the centre keeps it covering */
     zoomFull = Math.max(stageH / (245.6 * U * fit), stageW / (1228 * U * fit)) * 1.08;
+    zStageH = zStage.offsetHeight;
   }
   const show = (el, k, y = 40) => {
     el.style.opacity = k.toFixed(3);
@@ -413,10 +443,17 @@
   let zoomLast = -1;
   function renderZoom() {
     if (reduce || !near(zoom)) return;
-    const p = sceneProgress(zoom);
-    const k = Math.round(p * 2000);
+    const r = zoom.getBoundingClientRect();
+    const pinned = 8 * U - r.top;                    /* scroll into the pin; negative while the stage slides in */
+    const k = Math.round(pinned);
     if (k === zoomLast) return;
     zoomLast = k;
+    /* draw: a thick stroke runs along the band from the top-right end to the bottom-left one, masking the S in.
+       Linear, so the snake follows the scroll; once drawn the mask comes off and the plain path zooms as before */
+    const d = clamp((H - r.top) / (H - 8 * U + DRAWN * H));
+    zLine.style.strokeDashoffset = (zLen * (1 - d)).toFixed(2);
+    if (d < 1) zShape.setAttribute('mask', 'url(#sz-s-draw)'); else zShape.removeAttribute('mask');
+    const p = clamp((pinned - DRAW * H) / Math.max(1, r.height - zStageH - DRAW * H));
     /* 0 → .36: the S scales up from its centre; green fades in under it near the end, so no edge shows */
     const z = easeIO(p / .36);
     zS.style.transform = `scale(${lerp(1, zoomFull, z).toFixed(4)})`;
@@ -424,6 +461,8 @@
     zFitS.style.visibility = p > .38 ? 'hidden' : 'visible';
     /* then the content, one piece after another */
     show(zTitle, easeOut((p - .4) / .1), 60);
+    show(zLead, easeOut((p - .44) / .1), 40);
+    zChips.forEach((c, i) => show(c, easeOut((p - .48 - i * .015) / .07), 24));
     pop(stk1, (p - .5) / .08, -12);
     pop(stk2, (p - .56) / .08, 12);
     zCards.forEach((c, i) => show(c, easeOut((p - .63 - i * .05) / .08)));
