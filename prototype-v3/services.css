@@ -223,9 +223,6 @@
 .stats > div { display: flex; flex-direction: column-reverse; gap: calc(4 * var(--u)); }
 .stats dd { margin: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .stats dt { white-space: nowrap; }
-.cs-pager .pg { color: var(--white); }
-.cs-pager .pg:hover:not(:disabled) { background: var(--soft-30); }
-.cs-pager .pg:disabled { color: var(--soft-30); }
 
 /* carousel: clipped to the block, the next card peeks in */
 .cs-view {
