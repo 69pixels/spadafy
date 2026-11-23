@@ -190,7 +190,13 @@
      GREEN FLAGS — the hovered card opens, the others fold
      ========================================================= */
   const flags = $$('.fl');
-  const openFlag = i => flags.forEach((el, n) => el.classList.toggle('is-open', n === i));
+  /* every card has its own animated map; it plays while its card is open and the row is on screen */
+  const flagMaps = flags.map(el => { const m = $('.flag-map', el); return m && window.FlagMap ? window.FlagMap.mount(m) : null; });
+  const flagRow = $('#fl-row');
+  let flagOpen = 0, flagOn = false;
+  const syncMaps = () => flagMaps.forEach((m, n) => m && m.setOpen(flagOn && n === flagOpen));
+  new IntersectionObserver(es => { flagOn = es[0].isIntersecting; syncMaps(); }, { threshold: .5 }).observe(flagRow);
+  const openFlag = i => { flags.forEach((el, n) => el.classList.toggle('is-open', n === i)); flagOpen = i; syncMaps(); };
   let flagTimer = 0;
   flags.forEach((el, i) => {
     el.addEventListener('pointerenter', () => { clearTimeout(flagTimer); flagTimer = setTimeout(() => openFlag(i), 70); });
@@ -377,7 +383,6 @@
     ['.sv-intro-main > *', 120, 0], ['.sv-intro-note', 0, 250],
     ['.flags .h2', 0, 0], ['.fl-row', 0, 100], ['.fl-partners', 0, 300],
     ['.team-title', 0, 0], ['.btn-orange', 0, 200], ['.member', 70, 0],
-    ['.break-text > *', 140, 0],
     ['.t-side', 0, 0], ['.t-main', 0, 150],
     ['.hc-head > *', 120, 0], ['.hc-cards li', 130, 0], ['.hc-btn', 0, 200],
     ['.ct-left', 0, 0], ['.ct-form', 0, 150]
@@ -446,7 +451,7 @@
   function layout() {
     setUnits();
     const stage = H - 16 * U;
-    about.style.height = (stage + H * 1.4) + 'px';
+    about.style.height = (stage + H * .7) + 'px';          // half the scroll it had (1.4 screens)
     care.style.height = (stage + H * 4.2) + 'px';
     next.style.height = (200 * U + H * 2.6) + 'px';
     syncTeam();

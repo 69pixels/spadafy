@@ -255,7 +255,36 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .fl.is-open .fl-c { opacity: 0; transition: opacity .15s; }
 .fl.is-open .fl-o { opacity: 1; transition: opacity .4s var(--ease-out) .18s; }
 .fl-map { position: absolute; left: 0; top: 0; right: 0; height: calc(304 * var(--u)); overflow: hidden; }
-.fl-map img { position: absolute; left: calc(50% - 295 * var(--u)); top: calc(8 * var(--u)); width: calc(553 * var(--u)); height: calc(308 * var(--u)); object-fit: cover; }
+/* animated dotted maps (flag-maps.js): one per card, each plays while its card is open */
+.flag-map {
+  --map-dot: #d4d4d4; --map-highlight: #0ab574; --map-label: #1a1a2e;
+  position: absolute; left: calc(50% - 295 * var(--u)); top: calc(8 * var(--u)); width: calc(553 * var(--u)); aspect-ratio: 119 / 60; pointer-events: none; user-select: none;
+}
+.fm-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.fm-base { fill: var(--map-dot); }
+.fm-hl { fill: var(--map-highlight); }
+.fm-arcs { fill: none; stroke: var(--map-highlight); stroke-width: .22; stroke-linecap: round; }
+.flag-map circle, .flag-map path { transform-box: fill-box; transform-origin: center; }
+.fm-label {
+  position: absolute; transform: translate(-50%, calc(-100% - 6px)); white-space: nowrap;
+  padding: .25em .6em; background: var(--map-label); color: var(--white);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: calc(11 * var(--u)); line-height: 1.2; letter-spacing: .08em; text-transform: uppercase;
+}
+.fm-label::after { content: ""; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -1px); border: 5px solid transparent; border-top-color: var(--map-label); }
+.flag-map[data-state="idle"] :is(.fm-fade, .fm-twinkle, .fm-draw, .fm-pop, .fm-light) { opacity: 0; }
+.flag-map[data-state="play"] .fm-fade { animation: fm-fade var(--fm-dur, 600ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-twinkle { animation: fm-twinkle var(--fm-dur, 3s) ease-in-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-draw { stroke-dasharray: 1; animation: fm-draw var(--fm-dur, 800ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-pop { animation: fm-pop var(--fm-dur, 450ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-light { animation: fm-light var(--fm-dur, 500ms) ease-out var(--fm-delay, 0ms) both; }
+.flag-map[data-state="play"] .fm-pulse { animation: fm-pulse 2.4s ease-out 2; }
+.flag-map[data-paused] * { animation-play-state: paused !important; }
+@keyframes fm-fade { from { opacity: 0; } }
+@keyframes fm-twinkle { 0% { opacity: 0; transform: scale(.75); } 50% { opacity: .4; transform: scale(.75); } 75% { opacity: 1; transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes fm-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes fm-pop { 0% { transform: scale(0); } 60% { transform: scale(1.3); } 100% { transform: scale(1); } }
+@keyframes fm-light { from { opacity: 0; transform: scale(2); } }
+@keyframes fm-pulse { from { opacity: .5; transform: scale(1); } to { opacity: 0; transform: scale(3.5); } }
 .fl-no { position: absolute; left: calc(48 * var(--u)); top: calc(48 * var(--u)); font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.16 * var(--u)); color: var(--charcoal-40); font-weight: 500; }
 .fl-main { position: absolute; left: calc(48 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u)); color: var(--charcoal); white-space: nowrap; }
 .fl-c .fl-main { bottom: calc(48 * var(--u)); }
@@ -309,11 +338,6 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .can-drag.is-drag ~ .drag-hint .dh-r { transform: translateX(calc(4 * var(--u))); }
 .has-hint, .has-hint * { cursor: none; }
 
-/* ---- Break ---- */
-.break { background: var(--charcoal); padding: calc(240 * var(--u)) calc(80 * var(--u)); }
-.break-text { width: calc(862 * var(--u)); display: flex; flex-direction: column; gap: calc(40 * var(--u)); color: var(--white); }
-.break-text p { font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.48 * var(--u)); font-weight: 500; color: var(--soft); }
-
 /* ---- Care: the photo shrinks into a frame, the title leaves upward, then three slides swap in place ---- */
 .care { position: relative; }
 .care-stage { position: sticky; top: var(--gap); height: var(--stage); border-radius: var(--radius); overflow: hidden; background: var(--white); color: var(--charcoal); isolation: isolate; }
@@ -324,10 +348,10 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .ci-3 { object-position: 50% 50%; opacity: 0; }
 .care-shade { position: absolute; inset: 0; background: rgba(0,0,0,.2); }
 .care-title { position: absolute; z-index: 2; left: 50%; top: 0; width: calc(1000 * var(--u)); text-align: center; color: var(--white); will-change: transform; }
-.care-caps { position: absolute; z-index: 2; left: calc(80 * var(--u)); bottom: calc(45 * var(--u)); width: calc(434 * var(--u)); height: calc(176 * var(--u)); will-change: transform, opacity; }
+.care-caps { position: absolute; z-index: 2; left: calc(80 * var(--u)); bottom: calc(45 * var(--u)); width: calc(548 * var(--u)); height: calc(264 * var(--u)); will-change: transform, opacity; }
 .care-cap { position: absolute; left: 0; right: 0; bottom: 0; opacity: 0; }
-.cc-title { font-family: var(--f-display); font-weight: 700; font-size: calc(40 * var(--u)); line-height: calc(40 * var(--u)); color: var(--charcoal); }
-.cc-text { margin-top: calc(24 * var(--u)); width: calc(var(--w) * var(--u)); font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); color: var(--charcoal-40); font-weight: 500; }
+.cc-title { font-family: var(--f-display); font-weight: 700; font-size: calc(60 * var(--u)); line-height: calc(60 * var(--u)); color: var(--charcoal); }
+.cc-text { margin-top: calc(36 * var(--u)); max-width: 100%; width: calc(var(--w) * 1.5 * var(--u)); font-size: calc(30 * var(--u)); line-height: calc(36 * var(--u)); letter-spacing: calc(-.3 * var(--u)); color: var(--charcoal-40); font-weight: 500; }
 
 /* ---- Testimonials ---- */
 .testi { background: var(--white); height: var(--stage); padding: calc(120 * var(--u)) calc(80 * var(--u)); display: flex; align-items: center; gap: calc(20 * var(--u)); }
@@ -369,12 +393,12 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 /* VDI GOAT stickers are pinned to the block corners, so the block clips them as in Figma */
 .stk { position: absolute; z-index: 1; pointer-events: none; }
 .stk span { position: absolute; display: grid; place-items: center; }
-.stk-1 { right: calc(34.26 * var(--u)); top: calc(34.88 * var(--u)); width: calc(310.73 * var(--u)); height: calc(351.62 * var(--u)); }
+.stk-1 { right: calc(11.61 * var(--u)); top: calc(99 * var(--u)); width: calc(310.73 * var(--u)); height: calc(351.62 * var(--u)); }
 .stk-1-outline { left: calc(3.2 * var(--u)); top: calc(10.96 * var(--u)); width: calc(296.33 * var(--u)); height: calc(317.3 * var(--u)); }
 .stk-1-outline img { width: calc(263.04 * var(--u)); height: calc(300.54 * var(--u)); transform: rotate(5.57deg) translate(calc(8.07 * var(--u)), calc(.99 * var(--u))); }
 .stk-1-img { left: calc(3.96 * var(--u)); top: calc(4.92 * var(--u)); width: calc(302.81 * var(--u)); height: calc(341.78 * var(--u)); }
 .stk-1-img img { width: calc(233.36 * var(--u)); height: calc(289.58 * var(--u)); border-radius: calc(11.02 * var(--u)); object-fit: cover; transform: rotate(15.64deg); }
-.stk-2 { left: calc(-44.34 * var(--u)); bottom: calc(-52.45 * var(--u)); width: calc(237.15 * var(--u)); height: calc(278.16 * var(--u)); }
+.stk-2 { left: calc(-38.34 * var(--u)); bottom: calc(-78.57 * var(--u)); width: calc(237.15 * var(--u)); height: calc(278.16 * var(--u)); }
 .stk-2-back { inset: 0; }
 .stk-2-back i { width: calc(181.46 * var(--u)); height: calc(239.4 * var(--u)); border-radius: calc(90.73 * var(--u)); background: var(--charcoal); box-shadow: calc(1 * var(--u)) calc(1 * var(--u)) calc(4 * var(--u)) rgba(0,0,0,.25); transform: rotate(-14.97deg); }
 .stk-2-img { left: calc(11.44 * var(--u)); top: calc(11.54 * var(--u)); width: calc(217.54 * var(--u)); height: calc(254.19 * var(--u)); }
