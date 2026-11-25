@@ -1,0 +1,282 @@
+/* =========================================================
+   Spadafy — About page (desktop 1920 grid).
+   Builds on styles.css (tokens, nav, hero, body, member cards, outro)
+   and vms.css (type helpers, pills, blocks, steps). 1 design px = var(--u).
+   ========================================================= */
+
+/* ---------- Palette tints (Figma variables) ---------- */
+.ab { --blush: #f4e8e8; --mist: #f5dfef; --mint: #e4f5df; --ch-80: rgba(47,47,47,.8); }
+
+/* ---------- Horizontal scenes: a pinned stage whose rail slides sideways ---------- */
+.ab-hs { position: relative; }
+.block.hs-stage {
+  position: sticky; top: var(--gap); height: var(--stage); overflow: hidden; background: var(--white);
+  display: flex; flex-direction: column; gap: calc(56 * var(--u)); padding: calc(80 * var(--u)) 0 calc(64 * var(--u));
+}
+.hs-stage > :not(.hs-view) { padding: 0 calc(80 * var(--u)); }
+.hs-view { flex: 1; min-height: 0; }
+.hs-rail { height: 100%; display: flex; gap: var(--gap); padding: 0 calc(64 * var(--u)); width: max-content; will-change: transform; }
+.hs-label { color: var(--charcoal-60); }
+
+/* ---------- HERO ---------- */
+.ab-hero .hero-bg { object-position: 100% 50%; }
+.ab-hero .hero-fade { height: calc(256 * var(--u)); }
+.ab-hero-text { left: calc(80 * var(--u)); right: auto; bottom: calc(80 * var(--u)); display: flex; flex-direction: column; gap: calc(16 * var(--u)); }
+.ab-hero-text .ab-eyebrow { position: static; width: auto; color: var(--white); font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); }
+.ab-hero h1 { width: calc(1046 * var(--u)); }
+.ab-hero h1 { font-feature-settings: "dlig" 1; }
+
+/* ---------- Intro ---------- */
+.ab-intro { display: flex; justify-content: space-between; align-items: flex-start; padding: calc(80 * var(--u)); }
+.ab-intro-l { display: flex; flex-direction: column; gap: calc(64 * var(--u)); }
+.ab-intro-h { width: calc(639 * var(--u)); font-feature-settings: "dlig" 1; }
+.ab-intro-chips { display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); width: calc(609 * var(--u)); }
+.ab-intro-chips li {
+  display: inline-flex; align-items: center; gap: calc(8 * var(--u)); padding: calc(12 * var(--u)) calc(16 * var(--u)); border-radius: 999px; background: var(--soft);
+  font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; white-space: nowrap;
+}
+.ab-intro-chips img { width: calc(20 * var(--u)); height: calc(20 * var(--u)); flex: none; }
+.ab-intro-p { width: calc(685 * var(--u)); display: flex; flex-direction: column; gap: calc(32 * var(--u)); }
+
+/* ---------- Interactive header: past the jargon, to the people ---------- */
+.ab-untangle { position: relative; }
+.ut-stage {
+  position: sticky; top: var(--gap); height: var(--stage); border-radius: var(--radius); overflow: hidden;
+  background: var(--white); color: var(--charcoal);
+  /* the faint square grid from Figma 2409:864 (19 columns across 1920) */
+  --cell: calc(1920 / 19 * var(--u));
+  background-image: linear-gradient(to right, var(--soft) 1px, transparent 1px), linear-gradient(to bottom, var(--soft) 1px, transparent 1px);
+  background-size: var(--cell) var(--cell); background-position: calc(-8 * var(--u)) calc(-16 * var(--u));
+}
+/* chips sit where Figma puts them (left/top as % of the 1904 × 1064 stage); JS only pushes them out from the centre */
+.tgc-cloud { position: absolute; inset: 0; }
+.tgc-cloud li {
+  position: absolute; left: var(--x); top: var(--y); display: inline-flex; align-items: center; gap: calc(8 * var(--u));
+  padding: calc(8 * var(--u)) calc(16 * var(--u)) calc(8 * var(--u)) calc(12 * var(--u)); border-radius: 999px; background: var(--soft);
+  font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); font-weight: 500; white-space: nowrap;
+  opacity: var(--op, 1); transform-origin: 50% 50%; will-change: transform, opacity, filter;
+}
+.tgc-cloud li.sm { font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); }
+.tgc-cloud li::before { content: ""; flex: none; width: calc(var(--ds, 12) * var(--u)); height: calc(var(--ds, 12) * var(--u)); border-radius: 50%; background: var(--dc, var(--charcoal-40)); }
+.tgc-l1 {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; white-space: nowrap;
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(120 * var(--u)); line-height: calc(126 * var(--u)); letter-spacing: calc(-2.4 * var(--u)); will-change: transform, opacity, filter;
+}
+.tgc-card {
+  position: absolute; left: 50%; top: 50%; width: 0; height: 0; overflow: hidden; border-radius: calc(40 * var(--u));
+  transform: translate(-50%, -50%); background: var(--charcoal);
+}
+.tgc-card > img { position: absolute; left: 50%; top: 50%; width: calc(var(--sw, 1800px)); height: calc(var(--sh, 1000px)); max-width: none; object-fit: cover; transform: translate(-50%, -50%) scale(1.15); will-change: transform; }
+.tgc-shade { position: absolute; inset: 0; background: rgba(0,0,0,.2); }
+/* end state (Figma 2331:2034): headline + paragraph, bottom-left of the team photo */
+.tgc-copy {
+  position: absolute; left: calc(80 * var(--u)); bottom: calc(80 * var(--u)); width: calc(880 * var(--u));
+  display: flex; flex-direction: column; gap: calc(24 * var(--u)); color: var(--white);
+}
+.tgc-l2 {
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(80 * var(--u)); line-height: 1;
+}
+.tgc-p { width: calc(738 * var(--u)); opacity: 0; will-change: transform, opacity; }
+/* each word rises out of its own mask */
+.tgc-l2 span { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.tgc-l2 span b { display: inline-block; font-weight: inherit; transform: translateY(110%); will-change: transform; }
+.tgc-l2 span:nth-last-child(-n+2) b { color: var(--orange); }
+
+
+/* ---------- Big brains. No ego. → Very Damn Invested ---------- */
+.ab-vdi { position: relative; }
+.vdi-stage { position: sticky; top: var(--gap); height: var(--stage); border-radius: var(--radius); overflow: hidden; background: var(--orange); color: var(--white); }
+.vdi-h { margin: 0; font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(200 * var(--u)); line-height: calc(168 * var(--u)); letter-spacing: calc(-4 * var(--u)); }
+.vdi-word { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; justify-content: center; white-space: nowrap; }
+.vw { display: inline-block; white-space: nowrap; }
+.vw b { font-weight: inherit; }
+.vw-rest { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .2em; margin-bottom: -.2em; } /* room for descenders */
+.vw-rest > span { display: inline-block; }
+/* "We’re" rises out of a mask above the line */
+.vdi-were { position: absolute; left: 0; right: 0; top: calc(50% - 263 * var(--u)); text-align: center; overflow: hidden; padding-top: .1em; margin-top: -.1em; }
+.vdi-were > span { display: inline-block; transform: translateY(115%); will-change: transform; }
+.vdi-copy { position: absolute; left: calc(80 * var(--u)); bottom: calc(80 * var(--u)); width: calc(588 * var(--u)); opacity: 0; will-change: transform, opacity; }
+/* the VDI GOAT sticker: the dark outline (rotated 5.57°) under the art (rotated 15.64°) */
+.vdi-goat { position: absolute; right: calc(64 * var(--u)); bottom: calc(6 * var(--u)); width: calc(256 * var(--u)); height: calc(290 * var(--u)); margin: 0; opacity: 0; will-change: transform, opacity; }
+.vdi-goat img { position: absolute; left: 50%; top: 50%; max-width: none; }
+.vdi-goat-o { width: calc(215.6 * var(--u)); height: calc(249 * var(--u)); transform: translate(calc(-50% + 5 * var(--u)), calc(-50% - 4 * var(--u))) rotate(5.57deg); }
+.vdi-goat-i { width: calc(192.3 * var(--u)); height: calc(238.6 * var(--u)); border-radius: calc(11 * var(--u)); object-fit: cover; transform: translate(-50%, -50%) rotate(15.64deg); }
+
+/* ---------- Team (Figma 2193:4066 + drawer 2193:4205) ---------- */
+.ab-team { display: flex; flex-direction: column; gap: calc(64 * var(--u)); padding: calc(80 * var(--u)); }
+.tm-h { width: calc(776 * var(--u)); font-feature-settings: "dlig" 1; }
+.tm-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(8 * var(--u)); }
+.tm-m { display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
+.tm-card { position: relative; display: block; width: 100%; height: calc(400 * var(--u)); padding: 0; border-radius: calc(40 * var(--u)); cursor: pointer; overflow: hidden; isolation: isolate; }
+.tm-photo { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; background: #eeede9; }
+.tm-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; transition: transform 1.2s var(--ease-out), filter .6s; }
+.tm-card:hover .tm-photo img, .tm-card:focus-visible .tm-photo img { transform: scale(1.04); }
+.tm-ph {
+  position: absolute; inset: 0; display: grid; place-items: center; background: var(--soft);
+  color: var(--charcoal-40); font-family: var(--f-display); font-weight: 700; font-size: calc(120 * var(--u)); line-height: 1; letter-spacing: calc(-3 * var(--u));
+}
+.tm-m:nth-child(3n+1) .tm-ph { background: var(--blush); color: var(--orange); }
+.tm-m:nth-child(3n+2) .tm-ph { background: var(--mist); color: var(--pink); }
+.tm-m:nth-child(3n) .tm-ph { background: var(--mint); color: var(--green); }
+/* the glass "Read more" pill; JS moves it with the cursor (--mx/--my), it sits centred for keyboard focus */
+.tm-more {
+  position: absolute; left: 0; top: 0; z-index: 2; padding: calc(16 * var(--u)) calc(20 * var(--u)); border-radius: 999px; pointer-events: none; white-space: nowrap;
+  background: linear-gradient(rgba(47,47,47,.6), rgba(47,47,47,.6)), rgba(255,255,255,.24);
+  -webkit-backdrop-filter: blur(calc(40 * var(--u))); backdrop-filter: blur(calc(40 * var(--u)));
+  color: var(--white); font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500;
+  transform: translate(var(--mx, 50%), var(--my, 65%)) translate(-50%, -50%) scale(.6); opacity: 0;
+  transition: opacity .3s, transform .5s var(--ease-out);
+}
+.tm-card { --mx: 50%; }
+.tm-card:hover .tm-more, .tm-card:focus-visible .tm-more { opacity: 1; transform: translate(var(--mx), var(--my, 260px)) translate(-50%, -50%) scale(1); }
+.tm-card.tracking .tm-more { transition: opacity .3s, transform .18s var(--ease-out); }
+.tm-id { padding: 0 calc(12 * var(--u)); }
+.tm-name { font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); font-weight: 500; color: var(--charcoal); }
+.tm-title { font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: var(--charcoal-40); }
+/* how we work: three columns split by hairlines */
+.tm-values { display: flex; justify-content: space-between; align-items: stretch; }
+.tm-v { display: flex; flex-direction: column; gap: calc(16 * var(--u)); }
+.tm-v-h { display: flex; align-items: center; gap: calc(16 * var(--u)); font-family: var(--f-display); font-weight: 700; font-size: calc(40 * var(--u)); line-height: calc(40 * var(--u)); white-space: nowrap; }
+.tm-v-h img { width: calc(48 * var(--u)); height: calc(48 * var(--u)); flex: none; }
+.tm-v p { width: calc(526 * var(--u)); color: var(--charcoal-60); }
+.tm-v:nth-child(3) p { width: calc(464 * var(--u)); }
+.tm-v:nth-child(5) p { width: calc(519 * var(--u)); }
+.tm-div { flex: none; width: 1px; background: var(--charcoal-40); }
+
+/* the bio drawer */
+.tm-drawer { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: hidden; }
+.tm-drawer::backdrop {
+  background: linear-gradient(rgba(47,47,47,.6), rgba(47,47,47,.6)), rgba(255,255,255,.24);
+  -webkit-backdrop-filter: blur(calc(12 * var(--u))); backdrop-filter: blur(calc(12 * var(--u)));
+  opacity: 0; transition: opacity .45s;
+}
+.tm-drawer.on::backdrop { opacity: 1; }
+.tmd-panel {
+  position: absolute; right: var(--gap); top: var(--gap); bottom: var(--gap); width: calc(1025 * var(--u)); overflow-y: auto; overscroll-behavior: contain;
+  padding: calc(80 * var(--u)); border-radius: var(--radius); background: var(--white); color: var(--charcoal);
+  display: flex; flex-direction: column; gap: calc(64 * var(--u));
+  transform: translateX(calc(100% + 16px)); transition: transform .7s var(--ease-out);
+}
+.tm-drawer.on .tmd-panel { transform: none; }
+.tmd-panel:focus { outline: none; }
+.tm-drawer.out .tmd-panel { transition-duration: .45s; transition-timing-function: cubic-bezier(.55, 0, .75, .2); }
+.tmd-photo { flex: none; position: relative; width: calc(360 * var(--u)); height: calc(450 * var(--u)); border-radius: var(--radius); overflow: hidden; background: #eeede9; }
+.tmd-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; }
+.tmd-photo .tm-ph { font-size: calc(160 * var(--u)); }
+.tmd-body { display: flex; flex-direction: column; gap: calc(24 * var(--u)); align-items: flex-start; }
+.tmd-id { display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+.tmd-name { font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(72 * var(--u)); line-height: calc(64 * var(--u)); }
+.tmd-title { color: var(--charcoal-40); }
+.tmd-in {
+  display: inline-flex; align-items: center; gap: calc(12 * var(--u)); padding: calc(20 * var(--u)) calc(28 * var(--u)); border-radius: 999px;
+  background: #0076b2; color: var(--white); font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); font-weight: 500;
+  transition: background .3s;
+}
+.tmd-in:hover { background: #005f8f; }
+.tmd-in img { width: calc(24 * var(--u)); height: calc(24 * var(--u)); }
+.tmd-close {
+  position: absolute; right: calc(80 * var(--u)); top: calc(80 * var(--u)); width: calc(64 * var(--u)); height: calc(64 * var(--u)); border-radius: 999px;
+  background: var(--soft); display: grid; place-items: center; cursor: pointer; transition: transform .5s var(--ease-out), background .3s;
+}
+.tmd-close:hover { background: #e8e8e8; transform: rotate(90deg); }
+.tmd-close img { width: calc(24 * var(--u)); height: calc(24 * var(--u)); }
+/* the drawer content rises in after the panel lands */
+.tmd-photo, .tmd-body > * { opacity: 0; transform: translateY(calc(24 * var(--u))); transition: opacity .5s, transform .8s var(--ease-out); }
+.tm-drawer.on .tmd-photo, .tm-drawer.on .tmd-body > * { opacity: 1; transform: none; }
+.tm-drawer.on .tmd-photo { transition-delay: .2s; }
+.tm-drawer.on .tmd-body > :nth-child(1) { transition-delay: .28s; }
+.tm-drawer.on .tmd-body > :nth-child(2) { transition-delay: .34s; }
+.tm-drawer.on .tmd-body > :nth-child(3) { transition-delay: .4s; }
+@media (prefers-reduced-motion: reduce) {
+  .tmd-panel, .tmd-photo, .tmd-body > *, .tm-more { transition: none; }
+}
+
+
+.s-mark {
+  display: inline-block; width: calc(360 * var(--u)); height: calc(172 * var(--u)); background: currentColor;
+  -webkit-mask: url(assets/icons/menu-logo.svg) center / contain no-repeat; mask: url(assets/icons/menu-logo.svg) center / contain no-repeat;
+}
+
+/* ---------- Why Spadafy: liquid metamorphosis between the four words ---------- */
+.ab-morph { position: relative; }
+.mo-stage {
+  position: sticky; top: var(--gap); height: var(--stage); overflow: hidden; background: var(--white); color: var(--charcoal);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.mo-defs { position: absolute; }
+.mo-label { position: absolute; left: 50%; top: calc(80 * var(--u)); transform: translateX(-50%); white-space: nowrap; }
+/* the opening copy along the bottom: title left, story right; it lifts and blurs away as the scene starts */
+.mo-intro {
+  position: absolute; left: calc(80 * var(--u)); bottom: calc(80 * var(--u)); display: flex; align-items: center; gap: calc(209 * var(--u)); pointer-events: none;
+}
+.mo-in { width: calc(776 * var(--u)); will-change: opacity, transform, filter; }
+.mo-intro .h2 { font-feature-settings: "dlig" 1; }
+/* the words: each one is blurred in JS, the goo filter thresholds the alpha so they melt into each other */
+.mo-words {
+  position: relative; width: 100%; height: calc(168 * var(--u)); filter: url(#mo-goo);
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(200 * var(--u)); line-height: calc(168 * var(--u)); letter-spacing: calc(-4 * var(--u));
+}
+.mo-w {
+  position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: flex-end; justify-content: center; gap: calc(24 * var(--u));
+  white-space: nowrap; user-select: none; will-change: filter, opacity, transform;
+}
+.mo-ast { align-self: flex-start; margin-left: calc(-20 * var(--u)); font-size: .55em; line-height: 1; color: var(--pink); }
+/* the S from Figma (203 × 135, orange); its artwork sits on the text baseline */
+.mo-s {
+  display: block; flex: none; width: calc(203 * var(--u)); height: calc(135 * var(--u)); background: url(assets/icons/s-better.svg) center / 100% 100% no-repeat;
+}
+.mo-k {
+  position: absolute; left: 50%; top: calc(50% + 164 * var(--u)); transform: translateX(-50%); white-space: nowrap;
+  font-size: calc(32 * var(--u)); line-height: calc(40 * var(--u)); letter-spacing: calc(-.64 * var(--u)); font-weight: 500; color: var(--pink);
+}
+.mo-sub {
+  position: absolute; left: 50%; top: calc(50% + 215 * var(--u)); width: calc(765 * var(--u)); transform: translateX(-50%); text-align: center; opacity: 0;
+  font-family: var(--f-display); font-weight: 700; font-size: calc(40 * var(--u)); line-height: calc(40 * var(--u)); color: var(--charcoal-40);
+  will-change: opacity, transform;
+}
+.mo-dots { position: absolute; left: 50%; bottom: calc(80 * var(--u)); transform: translateX(-50%); display: flex; align-items: center; gap: calc(6 * var(--u)); opacity: 0; }
+.mo-dots li { width: calc(20 * var(--u)); height: calc(20 * var(--u)); border-radius: 50%; background: rgba(0,0,0,.1); transition: background .4s, width .4s var(--ease-out), height .4s var(--ease-out); }
+.mo-dots li.on { width: calc(24 * var(--u)); height: calc(24 * var(--u)); background: var(--charcoal); }
+
+/* ---------- Our point of view (Figma 2331:2043): two equal blocks ---------- */
+.ab-pov { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); height: var(--stage); min-height: calc(1000 * var(--u)); }
+.pov-img { overflow: hidden; isolation: isolate; background: var(--charcoal); color: var(--white); }
+.pov-img > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; z-index: -2; transform: scale(1.12); will-change: transform; }
+.pov-dim { position: absolute; inset: 0; z-index: -1; background: rgba(0,0,0,.2); }
+.pov-eye { position: absolute; left: calc(80 * var(--u)); top: calc(80 * var(--u)); font-size: calc(32 * var(--u)); line-height: calc(40 * var(--u)); letter-spacing: calc(-.64 * var(--u)); font-weight: 500; }
+.pov-h { position: absolute; left: calc(80 * var(--u)); bottom: calc(80 * var(--u)); width: calc(776 * var(--u)); font-feature-settings: "dlig" 1; }
+.pov-side { background: var(--white); padding: calc(80 * var(--u)); display: flex; flex-direction: column; justify-content: space-between; gap: calc(48 * var(--u)); overflow: hidden; }
+/* the statement fills from grey to charcoal, word by word, with the scroll (--k per word, set in JS) */
+.pov-lead { max-width: calc(788 * var(--u)); font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(40 * var(--u)); line-height: calc(40 * var(--u)); }
+.pov-lead .w { color: color-mix(in srgb, var(--charcoal) calc(var(--k, 0) * 100%), rgba(47,47,47,.4)); }
+.pov-list { display: grid; grid-template-columns: 1fr 1fr; gap: calc(24 * var(--u)); }
+.pov-i { display: flex; flex-direction: column; gap: calc(16 * var(--u)); }
+.pov-i:first-child .pov-i-d { width: calc(366 * var(--u)); }
+.pov-i > img { width: calc(48 * var(--u)); height: calc(48 * var(--u)); }
+.pov-i > div { display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+.pov-i-t { font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); font-weight: 500; color: var(--charcoal); }
+.pov-i-d { font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: var(--charcoal-60); }
+
+/* ---------- Health check: fixed intro, steps slide past ---------- */
+.block.hc-stage { flex-direction: row; gap: 0; padding: calc(64 * var(--u)) 0; }
+
+/* ---------- Talk ---------- */
+.ab-talk { display: flex; flex-direction: column; gap: calc(80 * var(--u)); }
+.talk-foot { display: flex; justify-content: space-between; align-items: flex-end; }
+.talk-foot p { width: calc(720 * var(--u)); }
+
+/* ---------- outro: two-line title ---------- */
+.ab .next-title { white-space: normal; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vdi-fade { opacity: 1; transform: none; }
+}
+
+/* ---------- Health check (no S transition): green from the start, stickers slap on ---------- */
+.sz-static .sz-stage { position: relative; top: auto; background: var(--green); }
+.sz-static .stk.rv { opacity: 0; transform: scale(.6) rotate(-12deg); transition: opacity .4s var(--d, 0ms), transform .9s cubic-bezier(.34, 1.56, .64, 1) var(--d, 0ms); }
+.sz-static .stk-2.rv { transform: scale(.6) rotate(12deg); }
+.sz-static .stk.rv.in { opacity: 1; transform: none; }

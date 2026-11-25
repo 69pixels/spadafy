@@ -1,0 +1,92 @@
+/* =========================================================
+   Why Spadafy? — section options (design board).
+   Builds on styles.css + vms.css. 1 design px = var(--u).
+   The letter effect is the Services intro one: dim → flash → final colour.
+   ========================================================= */
+
+.wy { --mint: #e4f5df; --mist: #f5dfef; --blush: #f4e8e8; }
+.wy-body { min-height: 100vh; }
+
+/* ---------- board header / footer ---------- */
+.wy-board {
+  background: var(--white); padding: calc(120 * var(--u)) calc(80 * var(--u)); display: flex; flex-direction: column; gap: calc(40 * var(--u));
+}
+.wy-board > .t24 { width: calc(760 * var(--u)); color: var(--charcoal-60); }
+.wy-back { font-size: calc(20 * var(--u)); line-height: calc(28 * var(--u)); font-weight: 500; color: var(--charcoal-60); }
+.wy-back:hover { color: var(--orange); }
+.wy-toc { display: flex; flex-wrap: wrap; gap: var(--gap); margin-top: calc(24 * var(--u)); }
+.wy-toc a {
+  display: inline-flex; align-items: center; gap: calc(12 * var(--u)); padding: calc(14 * var(--u)) calc(22 * var(--u)); border-radius: 999px;
+  background: var(--soft); font-size: calc(20 * var(--u)); line-height: calc(28 * var(--u)); font-weight: 500; transition: background .2s, color .2s;
+}
+.wy-toc a:hover { background: var(--charcoal); color: var(--white); }
+.wy-toc b { color: var(--orange); }
+.wy-end { flex-direction: row; justify-content: space-between; align-items: center; padding-top: calc(80 * var(--u)); padding-bottom: calc(80 * var(--u)); }
+
+/* ---------- pinned scenes ---------- */
+.wy-scene { position: relative; height: calc(var(--stage) + 2.2 * var(--vh)); }
+.wy-tall { height: calc(var(--stage) + 1.8 * var(--vh)); }
+.wy-stage { position: sticky; top: var(--gap); height: var(--stage); overflow: hidden; padding: calc(80 * var(--u)); }
+.wy-tag {
+  position: absolute; right: calc(32 * var(--u)); top: calc(32 * var(--u)); z-index: 2; padding: calc(8 * var(--u)) calc(16 * var(--u)); border-radius: 999px;
+  font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); font-weight: 500;
+}
+
+/* the letter effect: --from is the dim start, --flash the bright edge, --to where it settles */
+.wy-dark { background: var(--charcoal); color: var(--white); --flash: var(--white); --to: var(--orange); --dim: .15; }
+.wy-dark .wy-tag { background: rgba(255,255,255,.1); color: var(--soft-60); }
+.wy-light { background: var(--white); color: var(--charcoal); --flash: var(--charcoal); --to: var(--orange); --dim: .12; }
+.wy-light .wy-tag { background: var(--soft); color: var(--charcoal-60); }
+[data-w] { color: var(--to); }
+[data-w] .l { opacity: var(--dim); color: color-mix(in srgb, var(--to) var(--o, 0%), var(--flash)); }
+.wy-hl { --to: var(--pink); }
+.wy-eyebrow { color: var(--to); }
+.wy-light .wy-eyebrow { color: var(--charcoal-60); }
+
+/* ---------- A — centred statement ---------- */
+.wy-a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(56 * var(--u)); text-align: center; }
+.wy-a-head { position: absolute; left: calc(80 * var(--u)); top: calc(80 * var(--u)); text-align: left; display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+.wy-a-title { font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); font-weight: 500; color: var(--soft-60); }
+.wy-a-text {
+  width: calc(1500 * var(--u)); font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(72 * var(--u)); line-height: calc(74 * var(--u)); letter-spacing: calc(-1.2 * var(--u));
+}
+.wy-a-foot { width: calc(760 * var(--u)); }
+
+/* ---------- B — split ---------- */
+.wy-b { display: flex; justify-content: space-between; gap: calc(120 * var(--u)); }
+.wy-b-left { flex: 0 0 calc(640 * var(--u)); display: flex; flex-direction: column; gap: calc(24 * var(--u)); }
+.wy-b-title { color: var(--white); font-feature-settings: "dlig" 1; }
+.wy-b-motto { margin-top: auto; color: var(--soft-60); }
+.wy-b-right { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: calc(48 * var(--u)); padding-right: calc(80 * var(--u)); }
+.wy-b-text {
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(56 * var(--u)); line-height: calc(60 * var(--u)); letter-spacing: calc(-.8 * var(--u));
+}
+.wy-b-text-2 { --to: var(--green); }
+
+/* ---------- C — light ---------- */
+.wy-c { display: flex; flex-direction: column; justify-content: center; gap: calc(64 * var(--u)); }
+.wy-c-head { position: absolute; left: calc(80 * var(--u)); top: calc(80 * var(--u)); display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
+.wy-c-text {
+  width: calc(1560 * var(--u)); font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(80 * var(--u)); line-height: calc(80 * var(--u)); letter-spacing: calc(-1.4 * var(--u));
+}
+.wy-c .wy-c-text [data-w]:not(.wy-hl) { --to: var(--charcoal); --flash: var(--orange); }
+.wy-c-foot { align-self: flex-end; width: calc(640 * var(--u)); }
+.wy-c-foot [data-w] { --to: var(--charcoal-60); --flash: var(--orange); }
+
+/* ---------- D — the quote first ---------- */
+.wy-d { display: flex; flex-direction: column; justify-content: space-between; }
+.wy-d-quote {
+  font-family: var(--f-display); font-weight: 700; text-align: center;
+  font-size: calc(220 * var(--u)); line-height: calc(200 * var(--u)); letter-spacing: calc(-5 * var(--u)); white-space: nowrap;
+}
+.wy-d-cols { display: flex; gap: calc(80 * var(--u)); }
+.wy-d-cols p { flex: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wy-scene, .wy-tall { height: auto; }
+  .wy-stage { position: relative; top: 0; }
+  [data-w] .l { opacity: 1; color: var(--to); }
+}
