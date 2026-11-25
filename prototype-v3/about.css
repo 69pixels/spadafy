@@ -267,9 +267,6 @@
 .block.hc-stage { flex-direction: row; gap: 0; padding: calc(64 * var(--u)) 0; }
 
 /* ---------- Talk ---------- */
-.ab-talk { display: flex; flex-direction: column; gap: calc(80 * var(--u)); }
-.talk-foot { display: flex; justify-content: space-between; align-items: flex-end; }
-.talk-foot p { width: calc(720 * var(--u)); }
 
 /* ---------- outro: two-line title ---------- */
 .ab .next-title { white-space: normal; }

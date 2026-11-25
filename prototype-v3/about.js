@@ -497,8 +497,7 @@
     ['.pov-h', 0, 0], ['.pov-eye', 0, 0], ['.pov-i', 120, 0], ['.tm-h', 0, 0], ['.tm-m', 50, 0], ['.tm-v', 120, 0],
     ['.hc-intro .v-head > *', 120, 0], ['.hc-foot > *', 120, 100],
     ['.sz-title', 0, 0], ['.sz-lead', 0, 120], ['.sz-chips li', 50, 200], ['.sz-card', 120, 0], ['.sz-cta', 0, 200], ['.stk', 200, 300],
-    ['.v-contact .v-head > *', 120, 0], ['.ct-points li', 110, 0], ['.fields > *', 60, 0], ['.legal', 0, 400],
-    ['.ab-talk .h1', 0, 0], ['.talk-foot > *', 140, 100]
+    ['.v-contact .v-head > *', 120, 0], ['.ct-points li', 110, 0], ['.fields > *', 60, 0], ['.legal', 0, 400]
   ];
   const heroReveal = ['.ab-eyebrow', '.hero h1'].map((sel, i) => {
     const el = $(sel);
