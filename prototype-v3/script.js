@@ -57,13 +57,13 @@
   const PANELS = {
     services: {
       title: 'Services', text: 'From the first assessment to everyday support.',
-      items: [['VDI Managed Services', 0], ['Free VDI Health Check', '#cta'], ['VDI Infrastructure', 0], ['Healthcare SSO and Authentication', 1],
-              ['IGEL Endpoint Solutions', 1], ['Nerdio Solutions', 1], ['Hybrid Cloud & Infrastructure Modernization', 2], ['Vendor Partners', 2]]
+      items: [['VDI Managed Services', 0], ['Free VDI Health Check', '#health'], ['VDI Infrastructure', 0], ['Healthcare SSO and Authentication', 1],
+              ['Hybrid Cloud & Infrastructure Modernization', 1], ['Vendor Partners', 1]]
     },
     index: {
       title: 'Index', text: 'Jump to any part of this page.',
       items: [['Services', '#services'], ['About', '#about'], ['Our green flags', '#flags'], ['Team', '#team'],
-              ['What we care about', '#care'], ['Testimonials', '#testimonials'], ['Free health check', '#cta'], ['All services', 'services.html']]
+              ['What we care about', '#care'], ['Testimonials', '#testimonials'], ['Free health check', '#health'], ['All services', 'services.html']]
     }
   };
   const npTitle = $('[data-np-title]'), npText = $('[data-np-text]'), npGrid = $('[data-np-grid]');
@@ -130,15 +130,14 @@
      SERVICES — a pinned window: intro scrolls away inside it, then panels slide sideways
      ========================================================= */
   const svTop = $('.sv-top'), svTrack = $('.sv-track'), svWin = $('#sv-window'), svCol = $('#sv-col'), svRail = $('#sv-rail');
-  const SV_AT = [0, .5, 1];                       // rail progress that centres each panel
-  let svD = 0, svB = 0, svWide = false;                           // intro distance, sideways distance (px)
+    let svD = 0, svB = 0, svWide = false;                           // intro distance, sideways distance (px)
   function layoutServices() {
     svD = svRail.offsetTop;
-    svB = H * 2.4;
+    svB = H * 1.5;
     svTrack.style.height = (H - 16 * U + svD + svB) + 'px';
   }
-  function railX(b) {                             // 0..2 with holds on every panel
-    return easeIO((b - .12) / .34) + easeIO((b - .54) / .34);
+  function railX(b) {                             // 0..1: hold on Core VDI, slide, hold on Beyond VDI
+    return easeIO((b - .15) / .7);
   }
   function renderServices() {
     if (!inView(svTrack)) return;
@@ -151,20 +150,20 @@
   }
   function scrollToService(k) {
     const top = svTrack.getBoundingClientRect().top + window.scrollY;
-    const b = [.04, .5, .96][k];
-    scrollTo(top - 8 * U + svD + (k === 0 ? 2 : 0) + (k === 0 ? 0 : b * svB));
+    const b = [0, .92][k];
+    scrollTo(top - 8 * U + svD + (k === 0 ? 2 : b * svB));
   }
 
   /* =========================================================
      ABOUT — text rolls like a drum
      ========================================================= */
   const about = $('#about'), drum = $('#drum');
-  const LINES = ['That means helping', 'your organization design,', 'implement, operate', 'and modernize', 'the environments', 'your employees rely on',
-                 'every day, from A to Z,', 'improving end-user', 'experience so that', 'everything simply works', 'as it should.'];
+  const LINES = ['That means helping your organization', 'design, implement, operate and modernize', 'the environments your employees rely on',
+                 'every day, from A to Z, improving', 'end-user experience so that everything', 'simply works as it should.'];
   const dl = LINES.map(t => { const d = document.createElement('div'); d.className = 'dl'; d.textContent = t; drum.appendChild(d); return d; });
   let drumCur = 0, drumTarget = 0, drumRaf = 0;
   function drawDrum(p) {
-    const R = 520 * U, step = .34;
+    const R = 360 * U, step = .34;
     dl.forEach((el, i) => {
       const d = i - p, a = d * step;
       if (Math.abs(a) > 1.45) { el.style.opacity = '0'; return; }
@@ -175,7 +174,7 @@
     });
   }
   function drumStep() {
-    drumCur += (drumTarget - drumCur) * (reduce ? 1 : .14);
+    drumCur += (drumTarget - drumCur) * (reduce ? 1 : .2);
     if (Math.abs(drumTarget - drumCur) < .002) drumCur = drumTarget;
     drawDrum(drumCur);
     drumRaf = drumCur === drumTarget ? 0 : requestAnimationFrame(drumStep);
@@ -183,45 +182,126 @@
   function renderAbout() {
     if (!inView(about)) return;
     const p = sceneProgress(about);
-    drumTarget = clamp(p / .9) * (LINES.length - 1);
+    drumTarget = clamp(p / .85) * (LINES.length - 1);
     if (!drumRaf) drumRaf = requestAnimationFrame(drumStep);
   }
 
   /* =========================================================
-     TEAM — controls
+     GREEN FLAGS — the hovered card opens, the others fold
      ========================================================= */
-  const track = $('#team-track'), tPrev = $('#team-prev'), tNext = $('#team-next');
-  const members = $$('.member', track);
-  let tIdx = 0;
-  function teamMax() { return Math.max(0, 80 + members.length * 312 + (members.length - 1) * 8 - (1904 - 80)); }
-  function teamSteps() { return Math.ceil(teamMax() / 320); }
-  function setTeam(i) {
-    tIdx = clamp(i, 0, teamSteps());
-    track.style.setProperty('--tx', -Math.min(tIdx * 320, teamMax()));
-    tPrev.disabled = tIdx === 0; tNext.disabled = tIdx === teamSteps();
-  }
-  tPrev.addEventListener('click', () => setTeam(tIdx - 1));
-  tNext.addEventListener('click', () => setTeam(tIdx + 1));
-  setTeam(0);
+  const flags = $$('.fl');
+  /* every card has its own animated map; it plays while its card is open and the row is on screen */
+  const flagMaps = flags.map(el => { const m = $('.flag-map', el); return m && window.FlagMap ? window.FlagMap.mount(m) : null; });
+  const flagRow = $('#fl-row');
+  let flagOpen = 0, flagOn = false;
+  const syncMaps = () => flagMaps.forEach((m, n) => m && m.setOpen(flagOn && n === flagOpen));
+  new IntersectionObserver(es => { flagOn = es[0].isIntersecting; syncMaps(); }, { threshold: .5 }).observe(flagRow);
+  const openFlag = i => { flags.forEach((el, n) => el.classList.toggle('is-open', n === i)); flagOpen = i; syncMaps(); };
+  let flagTimer = 0;
+  flags.forEach((el, i) => {
+    el.addEventListener('pointerenter', () => { clearTimeout(flagTimer); flagTimer = setTimeout(() => openFlag(i), 70); });
+    el.addEventListener('pointerleave', () => clearTimeout(flagTimer));
+    ['focus', 'click'].forEach(ev => el.addEventListener(ev, () => { clearTimeout(flagTimer); openFlag(i); }));
+  });
 
   /* =========================================================
-     CARE — blur clears, then three slides fade
+     TEAM — mouse drag (touch and trackpads scroll natively), with the "← Drag →" pill following the pointer
+     ========================================================= */
+  const teamView = $('#team-view');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  function dragScroll(view, items) {
+    let drag = null, dragged = false;
+    const step = () => { const it = items(); return it.length > 1 ? it[1].offsetLeft - it[0].offsetLeft : view.clientWidth; };
+    const max = () => view.scrollWidth - view.clientWidth;
+    view.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || max() <= 2) return;
+      drag = { x: e.clientX, left: view.scrollLeft, moved: false, id: e.pointerId };
+    });
+    view.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(dx) > 4) { drag.moved = true; view.classList.add('is-drag'); view.setPointerCapture(drag.id); }
+      if (drag.moved) view.scrollLeft = drag.left - dx;
+    });
+    const end = () => {
+      if (!drag) return;
+      const moved = drag.moved, from = drag.left;
+      drag = null;
+      if (!moved) return;
+      dragged = true; setTimeout(() => { dragged = false; }, 0);
+      const s = step(), raw = view.scrollLeft / s;
+      const i = view.scrollLeft > from ? Math.ceil(raw - .15) : Math.floor(raw + .15);
+      const left = clamp(i * s, 0, max());
+      view.scrollTo({ left, behavior: reduce ? 'auto' : 'smooth' });
+      const release = () => view.classList.remove('is-drag');
+      if (reduce || Math.abs(view.scrollLeft - left) < 2) release();
+      else { let t = 0; const done = () => { clearTimeout(t); view.removeEventListener('scrollend', done); release(); }; view.addEventListener('scrollend', done); t = setTimeout(done, 700); }
+    };
+    view.addEventListener('pointerup', end);
+    view.addEventListener('pointercancel', end);
+    view.addEventListener('lostpointercapture', end);
+    view.addEventListener('dragstart', e => e.preventDefault());
+    return () => view.classList.toggle('can-drag', max() > 2);
+  }
+  function dragHint(scroller, host) {
+    const hint = document.createElement('span');
+    hint.className = 'drag-hint'; hint.setAttribute('aria-hidden', 'true');
+    hint.innerHTML = '<span class="drag-hint-pill"><span class="dh-l">←</span>Drag<span class="dh-r">→</span></span>';
+    host.appendChild(hint);
+    let hx = 0, hy = 0, htx = 0, hty = 0, hintOn = false;
+    const hintTarget = e => { const r = host.getBoundingClientRect(); htx = e.clientX - r.left; hty = e.clientY - r.top; };
+    const hintTick = () => {
+      if (!hintOn) return;
+      hx = reduce ? htx : lerp(hx, htx, .25); hy = reduce ? hty : lerp(hy, hty, .25);
+      hint.style.transform = `translate(${hx.toFixed(1)}px, ${hy.toFixed(1)}px)`;
+      requestAnimationFrame(hintTick);
+    };
+    scroller.addEventListener('pointerenter', e => {
+      if (e.pointerType !== 'mouse' || !finePointer.matches || !scroller.classList.contains('can-drag')) return;
+      hintTarget(e); hx = htx; hy = hty;
+      if (!hintOn) { hintOn = true; requestAnimationFrame(hintTick); }
+      hint.classList.add('is-on'); scroller.classList.add('has-hint');
+    });
+    scroller.addEventListener('pointermove', e => { if (hintOn) hintTarget(e); });
+    scroller.addEventListener('pointerleave', () => { hintOn = false; hint.classList.remove('is-on'); scroller.classList.remove('has-hint'); });
+  }
+  const syncTeam = dragScroll(teamView, () => $$('.member', teamView));
+  dragHint(teamView, teamView.parentElement);
+
+  /* =========================================================
+     CARE — the photo shrinks into a frame while the title leaves upward; then three slides swap in place
      ========================================================= */
   const care = $('#care');
-  const ci = $$('.ci'), careTitle = $('.care-title'), careGrad = $('.care-grad'), caps = $$('.care-cap');
+  const careFrame = $('#care-frame'), careTitle = $('.care-title'), careCaps = $('#care-caps'), careShade = $('.care-shade');
+  const ci = $$('.ci'), caps = $$('.care-cap');
+  const seg = (p, a, b) => easeIO((p - a) / (b - a));
+  const mixR = (a, b, t) => ({ x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), w: lerp(a.w, b.w, t), h: lerp(a.h, b.h, t) });
+  let careK = [], careT = [], careDy = 0;
+  function layoutCare() {
+    const SW = W - 16 * U, SH = H - 16 * U;
+    careDy = (SH - 1064 * U) / 2;                         // design is 1904 x 1064; taller or shorter windows centre it
+    const R = (x, y, w, h) => ({ x: x * U, y: y * U + careDy, w: w * U, h: h * U });
+    careK = [{ x: 0, y: 0, w: SW, h: SH }, R(668, 236, 568, 592)];   // full block -> final 568 x 592 frame (same centre, so all four sides move together)
+    careT = [452 * U + careDy, -230 * U + careDy];                    // title top: centred -> gone upward
+    careCaps.style.bottom = (SH / 2 - 487 * U) + 'px';               // captions sit 45px above the bottom edge of the 1064 design stage
+  }
   function renderCare() {
     if (!inView(care)) return;
     const p = sceneProgress(care);
-    const k = easeIO((p - .10) / .24);
-    ci[0].style.filter = k < .995 ? `blur(${(50 * U * (1 - k)).toFixed(2)}px)` : 'none';
-    ci[0].style.transform = k < .995 ? `scale(${(1.12 - .12 * k).toFixed(4)})` : 'none';
-    careTitle.style.opacity = (1 - clamp((p - .10) / .14)).toFixed(3);
-    careGrad.style.opacity = clamp((p - .30) / .08).toFixed(3);
-    ci[1].style.opacity = easeIO((p - .50) / .12).toFixed(3);
-    ci[2].style.opacity = easeIO((p - .80) / .12).toFixed(3);
-    const a0 = clamp((p - .30) / .08) * (1 - clamp((p - .50) / .05));
-    const a1 = clamp((p - .57) / .05) * (1 - clamp((p - .80) / .05));
-    const a2 = clamp((p - .87) / .05);
+    const t = clamp((p - .04) / .46);                      // 0..1, linear in scroll: the frame follows the wheel, no steps
+    const r = mixR(careK[0], careK[1], t);
+    careFrame.style.left = r.x.toFixed(1) + 'px'; careFrame.style.top = r.y.toFixed(1) + 'px';
+    careFrame.style.width = r.w.toFixed(1) + 'px'; careFrame.style.height = r.h.toFixed(1) + 'px';
+    careShade.style.opacity = (1 - clamp(t / .4)).toFixed(3);
+    careTitle.style.transform = `translate3d(-50%, ${lerp(careT[0], careT[1], clamp(t / .8)).toFixed(1)}px, 0)`;
+    const ct = clamp((t - .5) / .5);
+    careCaps.style.opacity = clamp((t - .5) / .25).toFixed(3);
+    careCaps.style.transform = `translateY(${lerp(60 * U, -191 * U, ct).toFixed(1)}px)`;
+    ci[1].style.opacity = seg(p, .60, .66).toFixed(3);
+    ci[2].style.opacity = seg(p, .80, .86).toFixed(3);
+    const a0 = 1 - seg(p, .60, .64);
+    const a1 = seg(p, .62, .66) * (1 - seg(p, .80, .84));
+    const a2 = seg(p, .82, .86);
     [a0, a1, a2].forEach((a, i) => { caps[i].style.opacity = a.toFixed(3); caps[i].style.transform = `translateY(${((1 - a) * 12 * U).toFixed(1)}px)`; });
   }
 
@@ -229,17 +309,17 @@
      TESTIMONIALS — pagination
      ========================================================= */
   const TESTIMONIALS = [
-    { role: 'IT Director', org: 'Denver, CO based Health System', quote: ['Spadafy helped us get a clear picture of what was really happening in our VDI environment.', 'Their team identified issues we had been chasing for months and gave us a practical roadmap to improve performance and stability.'] },
-    { role: 'VP of Infrastructure', org: '', quote: ['What stood out was that Spadafy didn’t just hand us a design and walk away.', 'They helped us architect the solution, implement it, and continue to support the environment as an extension of our internal team.'] },
-    { role: 'Director of End User Computing', org: '', quote: ['Spadafy understands the entire VDI stack, not just one product.', 'They were able to look across the desktop, applications, profiles, storage, and infrastructure to improve the overall user experience.'] }
+    { role: 'IT Director', org: 'Denver, CO based Health System', tags: ['Health Check', 'VDI Managed solution', 'IGEL UML'], quote: ['Spadafy helped us get a clear picture of what was really happening in our VDI environment.', 'Their team identified issues we had been chasing for months and gave us a practical roadmap to improve performance and stability.'] },
+    { role: 'VP of Infrastructure', org: 'Pacific Northwest Regional Health Network', tags: ['VDI Infrastructure', 'VDI Managed Services'], quote: ['What stood out was that Spadafy didn’t just hand us a design and walk away.', 'They helped us architect the solution, implement it, and continue to support the environment as an extension of our internal team.'] },
+    { role: 'Director of End User Computing', org: 'Midwest Multi-Hospital Health System', tags: ['Health Check', 'VDI Infrastructure'], quote: ['Spadafy understands the entire VDI stack, not just one product.', 'They were able to look across the desktop, applications, profiles, storage, and infrastructure to improve the overall user experience.'] }
   ];
-  const tBars = $('#t-bars'), tRole = $('#t-role'), tOrg = $('#t-org'), tQuote = $('#t-quote'), tPrevB = $('#t-prev'), tNextB = $('#t-next');
+  const tDots = $('#t-dots'), tTags = $('#t-tags'), tRole = $('#t-role'), tOrg = $('#t-org'), tQuote = $('#t-quote');
   let tCur = -1, tTimers = [];
-  const barEls = TESTIMONIALS.map((t, i) => {
+  const dotEls = TESTIMONIALS.map((t, i) => {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 't-bar'; b.setAttribute('role', 'tab');
+    b.type = 'button'; b.className = 't-dot'; b.setAttribute('role', 'tab');
     b.setAttribute('aria-label', `Testimonial ${i + 1} of ${TESTIMONIALS.length}: ${t.role}`);
-    b.innerHTML = '<i></i>'; b.addEventListener('click', () => showT(i)); tBars.appendChild(b); return b;
+    b.addEventListener('click', () => showT(i)); tDots.appendChild(b); return b;
   });
   function showT(i) {
     i = clamp(i, 0, TESTIMONIALS.length - 1);
@@ -247,8 +327,13 @@
     tCur = i;
     const t = TESTIMONIALS[i];
     tTimers.forEach(clearTimeout); tTimers = [];
-    barEls.forEach((b, n) => { b.classList.toggle('is-on', n === i); b.setAttribute('aria-selected', String(n === i)); });
+    dotEls.forEach((b, n) => { b.classList.toggle('is-on', n === i); b.setAttribute('aria-selected', String(n === i)); });
     tRole.textContent = t.role; tOrg.textContent = t.org;
+    tTags.innerHTML = '';
+    t.tags.forEach((tag, n) => {
+      const li = document.createElement('li'); li.textContent = tag; li.style.setProperty('--d', (n * 70) + 'ms'); tTags.appendChild(li);
+      if (reduce) li.classList.add('on'); else requestAnimationFrame(() => requestAnimationFrame(() => li.classList.add('on')));
+    });
     tQuote.innerHTML = '';
     const words = [];
     t.quote.forEach(par => {
@@ -261,10 +346,7 @@
       tQuote.appendChild(p);
     });
     words.forEach((w, n) => { if (reduce) w.classList.add('on'); else tTimers.push(setTimeout(() => w.classList.add('on'), 120 + n * 28)); });
-    tPrevB.disabled = i === 0; tNextB.disabled = i === TESTIMONIALS.length - 1;
   }
-  tPrevB.addEventListener('click', () => showT(tCur - 1));
-  tNextB.addEventListener('click', () => showT(tCur + 1));
   showT(0);
 
   /* =========================================================
@@ -277,15 +359,13 @@
     if (r.bottom < 0 || r.top > H) return;
     const pad = 200 * U, range = Math.max(1, r.height - pad - H);
     const p = clamp(-(r.top + pad) / range);
-    const w0 = 431 * U, h0 = 600 * U, w1 = 1261 * U, h1 = 714 * U, r0 = 60 * U;
-    let w, h, rad;
-    if (p < .45) { const k = easeIO(p / .45); w = lerp(w0, w1, k); h = lerp(h0, h1, k); rad = r0; }
-    else { const k = easeIO((p - .45) / .45); w = lerp(w1, W, k); h = lerp(h1, H, k); rad = lerp(r0, 0, k); }
-    nextCard.style.width = w + 'px'; nextCard.style.height = h + 'px'; nextCard.style.borderRadius = rad + 'px';
-    nextTitle.style.opacity = String(p < .3 ? 1 - clamp((p - .1) / .2) : clamp((p - .7) / .2));
-    nextTitle.style.fontSize = (p < .5 ? 64 * U : 140 * U) + 'px';
-    nextTitle.style.lineHeight = p < .5 ? '.9' : '.84';
-    nextShade.style.opacity = String(clamp((p - .6) / .3));
+    /* one continuous grow, linear in scroll: every side moves outward together until the card fills the screen */
+    const k = p;
+    const w = lerp(431 * U, W, k), h = lerp(600 * U, H, k), rad = lerp(60 * U, 0, k);
+    nextCard.style.width = w.toFixed(1) + 'px'; nextCard.style.height = h.toFixed(1) + 'px'; nextCard.style.borderRadius = rad.toFixed(1) + 'px';
+    nextTitle.style.fontSize = lerp(64 * U, 140 * U, k).toFixed(1) + 'px';
+    nextTitle.style.lineHeight = lerp(.9, .84, k).toFixed(3);
+    nextShade.style.opacity = k.toFixed(3);
     if (p >= .995 && !leaving) {
       clearTimeout(leaveTimer);
       leaveTimer = setTimeout(() => {
@@ -301,11 +381,11 @@
      ========================================================= */
   const REVEAL = [
     ['.sv-intro-main > *', 120, 0], ['.sv-intro-note', 0, 250],
-    ['.flags-left h2', 0, 0], ['.flags-right li', 110, 0],
-    ['.team-head .h3', 0, 0], ['.btn-orange', 0, 200], ['.member', 70, 0], ['.pager', 0, 300],
-    ['.break-text > *', 140, 0],
-    ['.t-top > *', 120, 0], ['.t-pager', 0, 300],
-    ['.cta-eyebrow', 0, 0], ['.cta-pink h2', 0, 120], ['.cta-steps li', 130, 0]
+    ['.flags .h2', 0, 0], ['.fl-row', 0, 100], ['.fl-partners', 0, 300],
+    ['.team-title', 0, 0], ['.btn-orange', 0, 200], ['.member', 70, 0],
+    ['.t-side', 0, 0], ['.t-main', 0, 150],
+    ['.hc-head > *', 120, 0], ['.hc-cards li', 130, 0], ['.hc-btn', 0, 200],
+    ['.ct-left', 0, 0], ['.ct-form', 0, 150]
   ];
   /* hero extras reveal on load (not via the observer: the strip sits in the hero's bottom margin) */
   const heroReveal = ['.hero h1', '.hero-text p', '.logos'].map((sel, i) => {
@@ -371,11 +451,12 @@
   function layout() {
     setUnits();
     const stage = H - 16 * U;
-    about.style.height = (stage + H * 4.25) + 'px';
-    care.style.height = (stage + H * 4.4) + 'px';
+    about.style.height = (stage + H * .7) + 'px';          // half the scroll it had (1.4 screens)
+    care.style.height = (stage + H * 4.2) + 'px';
     next.style.height = (200 * U + H * 2.6) + 'px';
-    setTeam(tIdx);
+    syncTeam();
     layoutServices();
+    layoutCare();
     render();
   }
   function render() {

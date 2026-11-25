@@ -54,7 +54,7 @@
   const PANELS = {
     services: {
       title: 'Services', text: 'From the first assessment to everyday support.',
-      items: [['VDI Managed Services', 'vdi-managed-services.html'], ['Free VDI Health Check', 'free-vdi-health-check.html'],
+      items: [['VDI Managed Services', 'vdi-managed-services.html'], ['Free VDI Health Check', 'health-check.html'],
               ['VDI Infrastructure', 'vdi-infrastructure.html'], ['Healthcare SSO and Authentication', 'healthcare-sso.html'],
               ['IGEL Endpoint Solutions', 'igel-endpoint-solutions.html'], ['Nerdio Solutions', 'nerdio-solutions.html'],
               ['Hybrid Cloud & Infrastructure Modernization', 'hybrid-cloud.html'], ['Vendor Partners', 'vendor-partners.html']]

@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="vms.css">
   <link rel="stylesheet" href="services.css">
-  <link rel="stylesheet" href="szoom.css">
   <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('anim');</script>
   <link rel="stylesheet" href="consent.css">
 </head>
@@ -25,7 +24,7 @@
         </a>
         <nav class="nav-links" aria-label="Main">
           <button class="nav-link" type="button" data-panel="services" aria-expanded="false" aria-controls="nav-panel">Services <img src="assets/icons/caret.svg" alt=""></button>
-          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="index.html#about">About</a>
           <a class="nav-link" href="free-vdi-health-check.html">Health Check</a>
           <button class="nav-link" type="button" data-panel="index" aria-expanded="false" aria-controls="nav-panel">Index <img src="assets/icons/caret.svg" alt=""></button>
         </nav>
@@ -187,17 +186,27 @@
             </ul>
           </li>
           <li class="lay lay-goat">
-            <p class="t32">When something breaks, we trace it across all layers.</p>
-            <a class="pill pill-lg pill-dark" href="vendor-partners.html">See all partners</a>
-            <img src="assets/services/goat-layers.svg" alt="">
+            <!-- the card itself: it catches at the top of the screen, then grows over everything (2177:3651 → 2177:4317) -->
+            <div class="lay-pin">
+              <img class="lf-goat" src="assets/services/goat-layers.svg" alt="" aria-hidden="true">
+              <div class="lf-copy">
+                <p class="h2 lf-title">One partner who understands the whole picture.<br>A relationship that grows with you.</p>
+                <a class="pill pill-lg pill-dark lf-cta" href="vendor-partners.html">See all partners</a>
+              </div>
+            </div>
           </li>
         </ul>
+        <!-- without motion the card stays a card, and the closing line follows as a block -->
+        <div class="lay-final">
+          <p class="h2 lf-title">One partner who understands the whole picture.<br>A relationship that grows with you.</p>
+          <a class="pill pill-lg pill-dark" href="vendor-partners.html">See all partners</a>
+        </div>
       </section>
 
       <!-- Choose a specific service: timeline, then table (1932:4661) -->
       <section class="block v-white sv-choose" id="choose" aria-labelledby="choose-t">
         <div class="v-head sv-head-w">
-          <h2 class="h2" id="choose-t">Choose a specific service,<br>or let us give you a hand across all.</h2>
+          <h2 class="h2" id="choose-t">We’re easy when it comes to<br>how we work together.</h2>
           <p class="t24 ch-80">Choose a specific service, or let us give you a hand across all.</p>
         </div>
         <div class="choose-body">
@@ -256,43 +265,60 @@
             </ol>
           </div>
 
-          <div class="mx" role="table" aria-label="Service models compared" data-matrix>
-            <div class="mx-row mx-head" role="row">
-              <span class="mx-label" role="columnheader"><span class="sr-only">Question</span></span>
-              <span role="columnheader">VDI Health Check</span>
-              <span role="columnheader">Project Solutions</span>
-              <span role="columnheader">Retainer Services</span>
-              <span role="columnheader">Full Managed Services</span>
-            </div>
-            <div class="mx-row" role="row">
-              <span class="mx-label" role="rowheader">When it fits</span>
-              <span role="cell">You want a clear picture of current health.</span>
-              <span role="cell">You build, migrate, or modernize.</span>
-              <span role="cell">Your team runs operations and needs senior engineering capacity.</span>
-              <span role="cell">You want ongoing operational ownership.</span>
-            </div>
-            <div class="mx-row" role="row">
-              <span class="mx-label" role="rowheader">Who runs daily operations</span>
-              <span role="cell">Your team.</span>
-              <span role="cell">Your team, after handover.</span>
-              <span role="cell">Your team.</span>
-              <span role="cell">Spadafy, for the agreed operations.</span>
-            </div>
-            <div class="mx-row" role="row">
-              <span class="mx-label" role="rowheader">What happens</span>
-              <span role="cell">Our engineers review the agreed configuration, monitoring data, and selected functions.</span>
-              <span role="cell">We design, deploy, and hand over to your team.</span>
-              <span role="cell">We add senior engineering hours each month for troubleshooting, escalation, maintenance, and upgrades.</span>
-              <span role="cell">Recurring monitoring, maintenance, troubleshooting, and Level 2/3 support within scope.</span>
-            </div>
-            <div class="mx-row" role="row">
-              <span class="mx-label" role="rowheader">What you get</span>
-              <span role="cell">Documented findings, prioritized actions, and an engineering readout.</span>
-              <span role="cell">A validated environment, documentation, and knowledge transfer.</span>
-              <span role="cell">A monthly engineering-hours allocation with a dedicated team that knows your environment.</span>
-              <span role="cell">The agreed operations owned by a dedicated team, for a fixed fee.</span>
-            </div>
-          </div>
+          <ul class="mx" aria-label="Service models compared" data-matrix>
+            <li class="mx-card">
+              <div class="mx-head"><h3 class="h6">VDI Health Check</h3><p class="t20">You want a clear picture of current health.</p></div>
+              <div class="mx-body">
+                <div class="mx-sec"><p class="t20 mx-k">What you get</p>
+                  <ul class="mx-list">
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Documented findings</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Prioritized actions</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>An engineering readout</span></li>
+                  </ul></div>
+                <div class="mx-sec"><p class="t20 mx-k">Who runs daily operations</p><p class="mx-v">Your team.</p></div>
+                <div class="mx-sec"><p class="t20 mx-k">What happens</p><p class="mx-v">Our engineers review the agreed configuration, monitoring data, and selected functions.</p></div>
+              </div>
+            </li>
+            <li class="mx-card">
+              <div class="mx-head"><h3 class="h6">Project Solutions</h3><p class="t20">You build, migrate, or modernize.</p></div>
+              <div class="mx-body">
+                <div class="mx-sec"><p class="t20 mx-k">What you get</p>
+                  <ul class="mx-list">
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Validated environment</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Documentation</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Faster knowledge</span></li>
+                  </ul></div>
+                <div class="mx-sec"><p class="t20 mx-k">Who runs daily operations</p><p class="mx-v">Your team, after handover.</p></div>
+                <div class="mx-sec"><p class="t20 mx-k">What happens</p><p class="mx-v">We design, deploy, and hand over to your team.</p></div>
+              </div>
+            </li>
+            <li class="mx-card">
+              <div class="mx-head"><h3 class="h6">Retainer Services</h3><p class="t20">You run operations and need senior engineering capacity.</p></div>
+              <div class="mx-body">
+                <div class="mx-sec"><p class="t20 mx-k">What you get</p>
+                  <ul class="mx-list">
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Monthly engineering-hours allocation</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Dedicated team</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Full read of your environment</span></li>
+                  </ul></div>
+                <div class="mx-sec"><p class="t20 mx-k">Who runs daily operations</p><p class="mx-v">Your team.</p></div>
+                <div class="mx-sec"><p class="t20 mx-k">What happens</p><p class="mx-v">We add senior engineering hours each month for troubleshooting, escalation, maintenance, and upgrades.</p></div>
+              </div>
+            </li>
+            <li class="mx-card">
+              <div class="mx-head"><h3 class="h6">Full Managed Services</h3><p class="t20">You want ongoing operational ownership.</p></div>
+              <div class="mx-body">
+                <div class="mx-sec"><p class="t20 mx-k">What you get</p>
+                  <ul class="mx-list">
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Agreed operations</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Dedicated team</span></li>
+                    <li><img src="assets/services/ic-check-pink.svg" alt=""><span>Fixed fee</span></li>
+                  </ul></div>
+                <div class="mx-sec"><p class="t20 mx-k">Who runs daily operations</p><p class="mx-v">Spadafy, for the agreed operations.</p></div>
+                <div class="mx-sec"><p class="t20 mx-k">What happens</p><p class="mx-v">Recurring monitoring, maintenance, troubleshooting, and Level 2/3 support within scope.</p></div>
+              </div>
+            </li>
+          </ul>
         </div>
         <a class="pill pill-lg pill-orange choose-cta" href="vdi-managed-services.html#models">Compare models</a>
       </section>
@@ -302,7 +328,7 @@
         <div class="trust-row">
           <div class="trust-left">
             <div class="trust-head">
-              <h2 class="h2" id="trust-t">Trusted to run it<br>every day</h2>
+              <h2 class="h2" id="trust-t">More security?<br>We love security.</h2>
               <p class="t24">Numbers, a real engagement and a client voice behind every claim on this page.</p>
             </div>
             <div class="trust-foot">
@@ -371,25 +397,9 @@
         </div>
       </section>
 
-      <!-- "S" zoom → green section: pinned, driven by scroll (1932:5018 → 1932:5020) -->
+      <!-- Are we good? — the green block scrolls like every other block (1932:5020) -->
       <section class="s-zoom" id="health-check" aria-labelledby="eyes-t">
         <div class="block sz-stage">
-          <div class="sz-green" aria-hidden="true"></div>
-          <!-- melt: blur + alpha threshold turns the S's edges liquid while it zooms -->
-          <svg class="sz-goo-defs" aria-hidden="true" focusable="false" width="0" height="0">
-            <filter id="sz-goo" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.006 0.009" numOctaves="2" seed="7" result="noise"/><feDisplacementMap id="sz-goo-disp" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="wavy"/><feColorMatrix in="wavy" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -11"/></filter>
-          </svg>
-          <div class="sz-melt" aria-hidden="true">
-          <div class="sz-fit sz-fit-s" aria-hidden="true">
-            <!-- same shape as assets/services/s-symbol.svg; while drawing, a thick stroke along the band's centreline masks it in -->
-            <svg class="sz-s" viewBox="0 0 1904 1080" preserveAspectRatio="none" overflow="visible">
-              <mask id="sz-s-draw" maskUnits="userSpaceOnUse" x="0" y="0" width="1904" height="1080">
-                <path class="sz-s-line" d="M1856.11 196.18H338.04A171.91 171.91 0 0 0 338.04 540H1565.97A171.91 171.91 0 0 1 1565.97 883.82H47.89" fill="none" stroke="#fff" stroke-width="270" stroke-linecap="butt"/>
-              </mask>
-              <path class="sz-s-shape" d="M1836.11 318.972H338.038C310.911 318.972 288.92 340.962 288.92 368.089C288.92 395.216 310.911 417.206 338.038 417.206H1565.97L1573.57 417.302C1732.82 421.336 1860.67 551.692 1860.67 711.91C1860.67 872.127 1732.82 1002.48 1573.57 1006.52L1565.97 1006.61H67.8928V761.027H1565.97L1568.5 760.967C1594.45 759.65 1615.09 738.187 1615.09 711.91C1615.09 684.783 1593.09 662.793 1565.97 662.792C1156.66 662.792 747.325 662.792 338.038 662.792C175.277 662.792 43.3342 530.849 43.3342 368.089C43.3342 205.329 175.277 73.3856 338.038 73.3856C341.283 73.3856 362.596 73.3856 362.596 73.3856H1836.11V318.972Z"/>
-            </svg>
-          </div>
-          </div>
           <div class="stk stk-1" aria-hidden="true">
             <span class="stk-1-outline"><img src="assets/services/sticker-goat-1-outline.svg" alt=""></span>
             <span class="stk-1-img"><img src="assets/services/sticker-goat-1.png" alt=""></span>
@@ -414,7 +424,6 @@
             <a class="pill pill-dark sz-cta" href="free-vdi-health-check.html">Request a Health Check</a>
           </div>
         </div>
-        <div class="sz-spacer" aria-hidden="true"></div>
       </section>
 
       <!-- Contact (1932:5049) -->

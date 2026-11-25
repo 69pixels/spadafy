@@ -2,7 +2,7 @@
    Spadafy — Services page (desktop)
    Same motion principles as the other pages: Lenis scroll, nav states, the body
    slides over a sticky hero, staggered reveals. Two pinned scenes are driven by
-   scroll progress (intro words, S zoom → green); the timeline and table play once.
+   scroll progress (the goat card growing to full screen); the intro, timeline and cards play once.
    With reduced motion, html.anim is never set and every section shows its final state.
    ========================================================= */
 (() => {
@@ -14,7 +14,6 @@
   const smooth = t => { t = clamp(t); return t * t * (3 - 2 * t); };
   const easeOut = t => { t = clamp(t); return 1 - Math.pow(1 - t, 3); };
   const easeIO = t => { t = clamp(t); return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
-  const easeBack = t => { t = clamp(t); const c = 2.2; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root = document.documentElement;
 
@@ -42,11 +41,6 @@
     W = root.clientWidth; H = window.innerHeight; U = W / 1920;
     root.style.setProperty('--u', U + 'px');
     root.style.setProperty('--vh', H + 'px');
-  }
-  /* progress of a pinned scene: 0 when the stage pins, 1 when it releases */
-  function sceneProgress(el) {
-    const r = el.getBoundingClientRect(), stageH = H - 16 * U;
-    return clamp((8 * U - r.top) / Math.max(1, r.height - stageH));
   }
   const near = el => { const r = el.getBoundingClientRect(); return r.bottom > -50 && r.top < H + 50; };
 
@@ -95,6 +89,32 @@
     return () => view.classList.toggle('can-drag', max() > 2);
   }
   const scrollers = [];
+
+  /* "← Drag →" pill that trails the pointer over a draggable row (mouse and trackpad only, when there is something to drag).
+     It lives in `host` right after the row, so css can react to the row's .is-drag */
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  function dragHint(view, host) {
+    const hint = document.createElement('span');
+    hint.className = 'drag-hint'; hint.setAttribute('aria-hidden', 'true');
+    hint.innerHTML = '<span class="drag-hint-pill"><span class="dh-l">←</span>Drag<span class="dh-r">→</span></span>';
+    host.appendChild(hint);
+    let hx = 0, hy = 0, htx = 0, hty = 0, on = false;
+    const target = e => { const r = host.getBoundingClientRect(); htx = e.clientX - r.left; hty = e.clientY - r.top; };
+    const tick = () => {
+      if (!on) return;
+      hx = reduce ? htx : lerp(hx, htx, .25); hy = reduce ? hty : lerp(hy, hty, .25);
+      hint.style.transform = `translate(${hx.toFixed(1)}px, ${hy.toFixed(1)}px)`;
+      requestAnimationFrame(tick);
+    };
+    view.addEventListener('pointerenter', e => {
+      if (e.pointerType !== 'mouse' || !finePointer.matches || !view.classList.contains('can-drag')) return;
+      target(e); hx = htx; hy = hty;
+      if (!on) { on = true; requestAnimationFrame(tick); }
+      hint.classList.add('is-on'); view.classList.add('has-hint');
+    });
+    view.addEventListener('pointermove', e => { if (on) target(e); });
+    view.addEventListener('pointerleave', () => { on = false; hint.classList.remove('is-on'); view.classList.remove('has-hint'); });
+  }
 
   /* =========================================================
      NAV — default → collapsed after 24px → open panel
@@ -160,9 +180,11 @@
   }
 
   /* =========================================================
-     1. INTRO — letters light up one after another with scroll: gray → a flash of white → orange
+     1. INTRO — letters light up one after another: gray → a flash of white → orange.
+        It plays by itself, start to finish, as soon as the statement nears the middle of the screen
      ========================================================= */
   const intro = $('#s-intro');
+  const introText = $('.si-text', intro);
   const letters = [];
   $$('[data-w]', intro).forEach(seg => {
     const parts = seg.textContent.split(/(\s+)/);
@@ -181,17 +203,11 @@
     });
   });
   /* the lightning wave, in letters: each one brightens to white over LIT, stays white for HOLD, then turns orange over ORANGE.
-     So a short white edge runs ahead of the orange through the whole statement; reversing runs it back */
-  const LIT = 6, HOLD = 4, ORANGE = 10;
+     So a short white edge runs ahead of the orange through the whole statement */
+  const LIT = 6, HOLD = 4, ORANGE = 10, INTRO_MS = 1700;
   const introState = letters.map(() => -1);
-  let introLast = -1;
-  function renderIntro() {
-    if (reduce || !near(intro)) return;
-    /* the reveal runs over 10%–85% of the pin, so the first and last letters get a moment */
-    const p = clamp((sceneProgress(intro) - .1) / .75);
-    const k = Math.round(p * 4000);
-    if (k === introLast) return;
-    introLast = k;
+  let introT0 = -1;
+  function setIntro(p) {
     const pos = p * (letters.length + LIT + HOLD + ORANGE);
     for (let i = 0; i < letters.length; i++) {
       const t = pos - i;
@@ -202,6 +218,18 @@
       letters[i].style.opacity = (.15 + .85 * lit).toFixed(2);
       letters[i].style.setProperty('--o', (o * 100).toFixed(0) + '%');
     }
+  }
+  function introTick(now) {
+    const p = clamp((now - introT0) / INTRO_MS);
+    setIntro(p);
+    if (p < 1) requestAnimationFrame(introTick);
+  }
+  function renderIntro() {
+    if (reduce || introT0 >= 0) return;
+    const r = introText.getBoundingClientRect();
+    if (r.top + r.height / 2 > H * .62) return;     /* not near the middle yet */
+    introT0 = performance.now();
+    requestAnimationFrame(introTick);
   }
 
   /* =========================================================
@@ -301,31 +329,10 @@
   });
   setCurrent(groups[0], true);
 
-  /* "← Drag →" pill that trails the pointer over the row (mouse and trackpad only, when there is something to drag) */
-  const hint = document.createElement('span');
-  hint.className = 'drag-hint'; hint.setAttribute('aria-hidden', 'true');
-  hint.innerHTML = '<span class="drag-hint-pill"><span class="dh-l">←</span>Drag<span class="dh-r">→</span></span>';
-  tabPanels.appendChild(hint);
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
-  let hx = 0, hy = 0, htx = 0, hty = 0, hintOn = false;
-  const hintTarget = e => { const r = tabPanels.getBoundingClientRect(); htx = e.clientX - r.left; hty = e.clientY - r.top; };
-  const hintTick = () => {
-    if (!hintOn) return;
-    hx = reduce ? htx : lerp(hx, htx, .25); hy = reduce ? hty : lerp(hy, hty, .25);
-    hint.style.transform = `translate(${hx.toFixed(1)}px, ${hy.toFixed(1)}px)`;
-    requestAnimationFrame(hintTick);
-  };
-  row.addEventListener('pointerenter', e => {
-    if (e.pointerType !== 'mouse' || !finePointer.matches || !row.classList.contains('can-drag')) return;
-    hintTarget(e); hx = htx; hy = hty;
-    if (!hintOn) { hintOn = true; requestAnimationFrame(hintTick); }
-    hint.classList.add('is-on'); row.classList.add('has-hint');
-  });
-  row.addEventListener('pointermove', e => { if (hintOn) hintTarget(e); });
-  row.addEventListener('pointerleave', () => { hintOn = false; hint.classList.remove('is-on'); row.classList.remove('has-hint'); });
+  dragHint(row, tabPanels);
 
   /* =========================================================
-     3. TIMELINE → TABLE → BUTTON — one sequence, once, on enter
+     3. TIMELINE → CARDS → BUTTON — one sequence, once, on enter
      ========================================================= */
   const choose = $('#choose'), tl = $('[data-timeline]', choose), mx = $('[data-matrix]', choose);
   /* the green line crosses the track at an even pace; each step starts the moment it reaches that step's marker */
@@ -346,10 +353,10 @@
     });
   });
   const tableAt = seqEnd + 100;
-  $$('.mx-row', mx).forEach((row, i) => { row.classList.add('sq'); row.style.setProperty('--d', (tableAt + 150 + i * 140) + 'ms'); });
+  const mxCards = $$('.mx-card', mx);
+  mxCards.forEach((c, i) => { c.classList.add('sq'); c.style.setProperty('--d', (tableAt + 150 + i * 140) + 'ms'); });
   const cta = $('.choose-cta', choose);
-  cta.classList.add('sq'); cta.style.setProperty('--d', (tableAt + 150 + 5 * 140 + 400) + 'ms');
-  mx.style.transitionDelay = tableAt + 'ms';
+  cta.classList.add('sq'); cta.style.setProperty('--d', (tableAt + 150 + mxCards.length * 140 + 300) + 'ms');
 
   /* =========================================================
      4. TRUST — count-up stats and the case-study carousel
@@ -395,75 +402,52 @@
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); go(e.key === 'ArrowRight' ? 1 : -1); }
   });
   scrollers.push(dragScroll(view, () => cards));
+  dragHint(view, $('.trust-row'));
 
   /* =========================================================
-     5. S ZOOM → GREEN — pinned, every step tied to scroll
+     5. LAYERS → GOAT CARD GROWS TO FULL SCREEN — pinned at the bottom of the block, tied to scroll.
+        .lay-final starts as exactly the goat card's rectangle (clip-path), covers everything as it grows, the goat
+        drifts to the centre and leaves, then the line and button come in
      ========================================================= */
-  const zoom = $('#health-check');
-  const zGreen = $('.sz-green', zoom), zS = $('.sz-s', zoom), zFitS = $('.sz-fit-s', zoom);
-  const zTitle = $('.sz-title', zoom), zLead = $('.sz-lead', zoom), zChips = $$('.sz-chips li', zoom);
-  const zCards = $$('.sz-card', zoom), zCta = $('.sz-cta', zoom);
-  const stk1 = $('.stk-1', zoom), stk2 = $('.stk-2', zoom);
-  const fits = $$('.sz-fit', zoom);
-  const zShape = $('.sz-s-shape', zoom), zLine = $('.sz-s-line', zoom), zMelt = $('.sz-melt', zoom), zDisp = $('#sz-goo-disp');
-  const zLen = zLine.getTotalLength();
-  zLine.style.strokeDasharray = `${zLen} ${zLen}`;
-  /* the S draws itself from the moment the stage enters at the bottom of the screen until .7 of a screen into the pin;
-     after .8 pinned screens the original 3.4-screen zoom runs, unchanged */
-  const DRAWN = .7, DRAW = .8;
-  const zStage = $('.sz-stage', zoom);
-  let zoomFull = 4;                                  /* scale at which the S's middle bar covers the stage */
-  let zStageH = 0;                                   /* the stage hugs its content, so it can be taller than the screen */
-  function layoutZoom() {
-    const stageW = W - 16 * U, stageH = H - 16 * U;
-    const fit = Math.min(1, stageH / (1080 * U), stageW / (1904 * U));
-    fits.forEach(f => f.style.setProperty('--fit', fit.toFixed(4)));
-    /* the bar (Figma 338→1566 × 417→663) is centred on the frame, so scaling from the centre keeps it covering */
-    zoomFull = Math.max(stageH / (245.6 * U * fit), stageW / (1228 * U * fit)) * 1.08;
-    zStageH = zStage.offsetHeight;
+  const lay = $('#layers');
+  const layCard = $('.lay-goat', lay), layPin = $('.lay-pin', lay), lfGoat = $('.lf-goat', layPin);
+  const lfTitle = $('.lf-title', layPin), lfCta = $('.lf-cta', layPin), lfCopy = $('.lf-copy', layPin);
+  const GOAT_W = 191.997, GOAT_H = 237.746, GOAT_BIG = 299.066 / 191.997;   /* Figma 2177:3651 → 2177:4412 */
+  let layGeo = null, layLen = 0, layLast = -1;
+  function layoutLayers() {
+    if (reduce) return;
+    const stageH = H - 16 * U, ch = 368 * U;
+    layLen = .9 * H;                                 /* scroll spent pinned */
+    /* the card's cell plus the room to travel: the pin sticks when the card's bottom reaches the screen's bottom */
+    lay.style.setProperty('--lt', (layLen - 8 * U).toFixed(0) + 'px');
+    /* fractional widths (offsetLeft/offsetWidth round), so the pin meets the block's edges exactly */
+    const lr = lay.getBoundingClientRect(), cr = layCard.getBoundingClientRect();
+    const w = lr.width, l = cr.left - lr.left, cw = cr.width;
+    lay.style.setProperty('--lw', w.toFixed(2) + 'px'); lay.style.setProperty('--ll', l.toFixed(2) + 'px');
+    lay.style.setProperty('--lwh', (layCard.offsetTop + ch + 120 * U).toFixed(0) + 'px');   /* white ends under the grid, with its bottom padding */
+    /* in the pin's own coordinates: the card is its bottom-right rectangle */
+    layGeo = { w, stageH, ch, l, t: stageH - ch, r: w - l - cw, b: 0, cx: l + cw / 2, cy: stageH - ch / 2, r0: 40 * U, r1: 60 * U };
   }
-  const show = (el, k, y = 40) => {
-    el.style.opacity = k.toFixed(3);
-    el.style.transform = k >= 1 ? '' : `translateY(${((1 - k) * y * U).toFixed(1)}px)`;
-    el.style.visibility = k <= 0 ? 'hidden' : '';
-  };
-  const pop = (el, t, rot) => {
-    const k = easeBack(t);
-    el.style.opacity = clamp(t * 3).toFixed(3);
-    el.style.transform = t >= 1 ? '' : `scale(${lerp(.6, 1, k).toFixed(4)}) rotate(${lerp(rot, 0, k).toFixed(2)}deg)`;
-    el.style.visibility = t <= 0 ? 'hidden' : '';
-  };
-  let zoomLast = -1;
-  function renderZoom() {
-    if (reduce || !near(zoom)) return;
-    const r = zoom.getBoundingClientRect();
-    const pinned = 8 * U - r.top;                    /* scroll into the pin; negative while the stage slides in */
-    const k = Math.round(pinned);
-    if (k === zoomLast) return;
-    zoomLast = k;
-    /* draw: a thick stroke runs along the band from the top-right end to the bottom-left one, masking the S in.
-       Linear, so the snake follows the scroll; once drawn the mask comes off and the plain path zooms as before */
-    const d = clamp((H - r.top) / (H - 8 * U + DRAWN * H));
-    zLine.style.strokeDashoffset = (zLen * (1 - d)).toFixed(2);
-    if (d < 1) zShape.setAttribute('mask', 'url(#sz-s-draw)'); else zShape.removeAttribute('mask');
-    const p = clamp((pinned - DRAW * H) / Math.max(1, r.height - zStageH - DRAW * H));
-    /* 0 → .36: the S scales up from its centre; green fades in under it near the end, so no edge shows */
-    const z = easeIO(p / .36);
-    zS.style.transform = `scale(${lerp(1, zoomFull, z).toFixed(4)})`;
-    /* melt: the edges go liquid mid-zoom and settle crisp again at both ends */
-    const mk = Math.sin(Math.PI * clamp(z)), melt = mk * 18 * U;
-    zDisp.setAttribute('scale', (mk * 220 * U).toFixed(1));
-    zMelt.style.filter = mk > .02 ? `blur(${melt.toFixed(2)}px) url(#sz-goo)` : '';
-    zGreen.style.opacity = smooth((p - .27) / .09).toFixed(3);
-    zFitS.style.visibility = p > .38 ? 'hidden' : 'visible';
-    /* then the content, one piece after another */
-    show(zTitle, easeOut((p - .4) / .1), 60);
-    show(zLead, easeOut((p - .44) / .1), 40);
-    zChips.forEach((c, i) => show(c, easeOut((p - .48 - i * .015) / .07), 24));
-    pop(stk1, (p - .5) / .08, -12);
-    pop(stk2, (p - .56) / .08, 12);
-    zCards.forEach((c, i) => show(c, easeOut((p - .63 - i * .05) / .08)));
-    show(zCta, easeOut((p - .8) / .07), 24);
+  function renderLayers() {
+    if (reduce || !layGeo || !near(lay)) return;
+    const g = layGeo;
+    const pinned = 8 * U - (lay.getBoundingClientRect().top + layCard.offsetTop + g.ch - g.stageH);   /* scroll since the card reached the bottom of the screen */
+    const p = clamp(pinned / layLen);
+    const k = Math.round(p * 2000);
+    if (k === layLast) return;
+    layLast = k;
+    /* the card holds for a moment (its neighbours scroll away), then .05 → .5 it grows to the whole stage */
+    const e = smooth((p - .05) / .45);
+    layPin.style.clipPath = `inset(${lerp(g.t, 0, e).toFixed(1)}px ${lerp(g.r, 0, e).toFixed(1)}px ${lerp(g.b, 0, e).toFixed(1)}px ${lerp(g.l, 0, e).toFixed(1)}px round ${lerp(g.r0, g.r1, e).toFixed(1)}px)`;
+    /* the goat grows and glides from the card's centre to the screen's, then fades out */
+    const x = lerp(g.cx, g.w / 2, e), y = lerp(g.cy, g.stageH / 2, e), sc = lerp(1, GOAT_BIG, e);
+    lfGoat.style.transform = `translate(${(x - GOAT_W * U / 2).toFixed(1)}px, ${(y - GOAT_H * U / 2).toFixed(1)}px) rotate(4.53deg) scale(${sc.toFixed(4)})`;
+    lfGoat.style.opacity = (1 - smooth((p - .3) / .17)).toFixed(3);
+    /* then the line, then the button */
+    const kt = easeOut((p - .5) / .14), kb = easeOut((p - .58) / .12);
+    lfCopy.style.visibility = kt <= 0 ? 'hidden' : 'visible';
+    lfTitle.style.opacity = kt.toFixed(3); lfTitle.style.transform = kt >= 1 ? '' : `translateY(${((1 - kt) * 40 * U).toFixed(1)}px)`;
+    lfCta.style.opacity = kb.toFixed(3); lfCta.style.transform = kb >= 1 ? '' : `translateY(${((1 - kb) * 24 * U).toFixed(1)}px)`;
   }
 
   /* =========================================================
@@ -507,6 +491,7 @@
     ['.trust-head > *', 120, 0], ['.stats > div', 90, 0], ['.cs-view', 0, 150], ['.trust-logos', 0, 0],
     ['.brains-top .h2', 0, 0], ['.brains li', 90, 0],
     ['.v-faq .h2', 0, 0], ['.qa', 60, 0],
+    ['.sz-head > *', 120, 0], ['.sz-chips li', 50, 0], ['.sz-card', 90, 0], ['.sz-cta', 0, 0],
     ['.v-head > *', 120, 0], ['.ct-points li', 110, 0], ['.fields > *', 60, 0], ['.legal', 0, 400]
   ];
   const heroReveal = ['.sv-hero h1', '.sv-hero-btns', '.sv-hero-row p'].map((sel, i) => {
@@ -538,14 +523,14 @@
      ========================================================= */
   function layout() {
     setUnits();
-    layoutZoom();
-    introLast = zoomLast = -1;
+    layoutLayers();
+    layLast = -1;
     scrollers.forEach(s => s());
     placeThumb(true);
     syncCurrent();
     render();
   }
-  function render() { setNav(); renderHero(); renderIntro(); renderZoom(); }
+  function render() { setNav(); renderHero(); renderIntro(); renderLayers(); }
   let ticking = false;
   function onScroll() {
     if (openKey && Math.abs(window.scrollY - openAtY) > 400) { openKey = null; }

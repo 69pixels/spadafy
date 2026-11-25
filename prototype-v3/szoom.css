@@ -1,6 +1,6 @@
 /* =========================================================
    Spadafy — "S" zoom → green Health Check scene (Figma 1932:5018 → 1932:5020)
-   Shared by services.html and about.html. Motion-only states live under html.anim
+   Used by about.html (static green block, .sz-static). Motion-only states live under html.anim
    (set by the page script when reduced motion is off); without it the final state shows.
    ========================================================= */
 .pill-dark { background: var(--charcoal); color: var(--white); }

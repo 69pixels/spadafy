@@ -55,7 +55,8 @@
 .s-intro { height: var(--stage); }
 .si-stage { position: sticky; top: var(--gap); height: var(--stage); display: grid; place-items: center; overflow: hidden; background: var(--charcoal); color: var(--white); }
 .si-text { width: calc(1450 * var(--u)); text-align: center; font-feature-settings: "dlig" 1; }
-.anim .s-intro { height: calc(var(--stage) + 1.5 * var(--vh)); }
+/* the statement plays by itself once it nears the middle of the screen, so the pin only needs a short hold */
+.anim .s-intro { height: calc(var(--stage) + .8 * var(--vh)); }
 /* the whole statement ends orange; while animating, each letter mixes white → orange by its --o (set in renderIntro) */
 .si-text { color: var(--orange); }
 .anim .si-text .l { opacity: .15; color: color-mix(in srgb, var(--orange) var(--o, 0%), var(--white)); }
@@ -145,11 +146,12 @@
 .drag-hint.is-on .drag-hint-pill { opacity: 1; transform: translate(-50%, -50%); }
 .drag-hint-pill span { display: inline-block; transition: transform .3s var(--ease-out); }
 /* while dragging the pill squeezes and its arrows pull apart */
-.pk-row.is-drag ~ .drag-hint.is-on .drag-hint-pill { transform: translate(-50%, -50%) scale(.92); }
-.pk-row.is-drag ~ .drag-hint .dh-l { transform: translateX(calc(-4 * var(--u))); }
-.pk-row.is-drag ~ .drag-hint .dh-r { transform: translateX(calc(4 * var(--u))); }
+/* (the same pill serves the service cards and the case studies: it sits after the scroller, in the same parent) */
+.is-drag ~ .drag-hint.is-on .drag-hint-pill { transform: translate(-50%, -50%) scale(.92); }
+.is-drag ~ .drag-hint .dh-l { transform: translateX(calc(-4 * var(--u))); }
+.is-drag ~ .drag-hint .dh-r { transform: translateX(calc(4 * var(--u))); }
 /* the pill stands in for the cursor while it's shown */
-.pk-row.has-hint, .pk-row.has-hint * { cursor: none; }
+.has-hint, .has-hint * { cursor: none; }
 
 /* ---------- Layers (1932:4492) ---------- */
 .sv-layers { display: flex; flex-direction: column; gap: calc(64 * var(--u)); }
@@ -163,14 +165,39 @@
 .lay-top p { width: calc(var(--w) * var(--u)); }
 .lay .tag { padding: calc(12 * var(--u)) calc(16 * var(--u)); border-radius: 999px; background: var(--white); color: var(--ch-80); }
 .lay .tag:hover { color: var(--charcoal); }
+/* goat card (2177:3651): just the illustration, centred, tilted 4.53° as in Figma */
 .lay-goat { overflow: hidden; background: var(--pink); }
-.lay-goat p { width: calc(308 * var(--u)); color: var(--white); }
-.lay-goat > img { position: absolute; left: calc(352.8 * var(--u)); top: calc(72.21 * var(--u)); width: calc(192 * var(--u)); height: calc(237.75 * var(--u)); pointer-events: none; }
+.lf-goat { width: calc(191.997 * var(--u)); height: calc(237.746 * var(--u)); pointer-events: none; }
+.lay-pin { display: contents; }
+.lf-copy { display: none; }
+.lay-goat .lf-goat { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(4.53deg); }
+/* without motion: the closing line (2177:4317) is a block after the grid */
+.lay-final { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(64 * var(--u)); padding: calc(80 * var(--u)); border-radius: var(--radius); background: var(--pink); color: var(--white); text-align: center; }
+.lf-title { width: calc(1682 * var(--u)); max-width: 100%; font-feature-settings: "dlig" 1; }
+
+/* with motion the goat card IS the growing block. It spans the last two rows (the second is just scroll room);
+   inside it, .lay-pin is as big as the whole screen, its bottom on the card's bottom, and is clipped to the card's
+   rectangle (renderLayers opens the clip). It sticks as soon as the card reaches the bottom of the screen: the other
+   cards scroll away, the card stays, then it grows. One card, and it is the one in the grid.
+   The section's white is painted only behind the header and the grid (::before), so once the card has grown, the
+   8px around it is the dark page, as around every other block */
+.anim .sv-layers { overflow: clip; padding-bottom: 0; background: transparent; isolation: isolate; }
+.anim .sv-layers::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: 0; height: var(--lwh, 100%); border-radius: var(--radius); background: var(--white); pointer-events: none; }
+.anim .lay-grid { grid-template-rows: repeat(3, calc(368 * var(--u))) var(--lt, calc(.9 * var(--vh))); }
+.anim .lay-goat { grid-column: 3; grid-row: 3 / 5; display: block; padding: 0; border-radius: 0; background: none; overflow: visible; }
+.anim .lay-pin {
+  display: block; position: sticky; top: var(--gap); z-index: 3; width: var(--lw, 100%); height: var(--stage);
+  margin: calc(368 * var(--u) - var(--stage)) 0 0 calc(var(--ll, 0) * -1);
+  background: var(--pink); clip-path: inset(0 round var(--radius));
+}
+.anim .lay-goat .lf-goat { left: 0; top: 0; transform-origin: 50% 50%; will-change: transform; }
+.anim .lf-copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(64 * var(--u)); text-align: center; color: var(--white); visibility: hidden; }
+.anim .lay-final { display: none; }
 
 /* ---------- Choose a specific service: timeline, then table (1932:4661) ---------- */
 .sv-choose { display: flex; flex-direction: column; align-items: center; gap: calc(64 * var(--u)); padding: calc(80 * var(--u)); }
 .sv-choose .v-head { align-self: flex-start; }
-.choose-body { display: flex; flex-direction: column; gap: calc(64 * var(--u)); width: 100%; }
+.choose-body { display: flex; flex-direction: column; gap: calc(128 * var(--u)); width: 100%; }
 .tl { display: flex; flex-direction: column; gap: calc(32 * var(--u)); }
 .tl-track { position: relative; display: flex; gap: calc(40 * var(--u)); height: calc(7.3 * var(--u)); }
 .tl-line, .tl-run { position: absolute; left: 0; right: 0; top: 50%; height: calc(2 * var(--u)); margin-top: calc(-1 * var(--u)); background: var(--soft); transform-origin: 0 50%; }
@@ -186,14 +213,18 @@
 .tl-tags a { color: var(--orange); font-weight: 500; font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); white-space: nowrap; transition: opacity .2s; }
 .tl-tags a:hover { opacity: .7; }
 
-.mx { display: flex; flex-direction: column; padding: calc(40 * var(--u)); border-radius: var(--radius); background: var(--soft-30); overflow: hidden; }
-.mx-row { display: flex; border-bottom: calc(3 * var(--u)) solid var(--soft); }
-.mx-row > span {
-  flex: 1 1 0; min-width: 0; padding: calc(24 * var(--u)) calc(32 * var(--u)) calc(24 * var(--u)) 0; color: var(--charcoal); font-weight: 500;
-  font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u));
-}
-.mx-row > .mx-label { flex: 0 0 calc(258.68 * var(--u)); padding-right: calc(70 * var(--u)); color: var(--charcoal-60); }
-.mx-head > span { padding-top: 0; font-size: calc(32 * var(--u)); line-height: calc(40 * var(--u)); letter-spacing: calc(-.64 * var(--u)); }
+/* the four service models side by side (2177:3739) */
+.mx { display: flex; align-items: stretch; gap: calc(8 * var(--u)); width: 100%; min-height: calc(672 * var(--u)); }
+.mx-card { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: calc(40 * var(--u)); padding: calc(40 * var(--u)); border-radius: calc(32 * var(--u)); overflow: hidden; background: var(--soft); color: var(--charcoal); }
+.mx-head { display: flex; flex-direction: column; gap: calc(16 * var(--u)); min-height: calc(104 * var(--u)); }
+.mx-body { display: flex; flex-direction: column; gap: calc(32 * var(--u)); }
+.mx-sec { display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+.mx-k { color: var(--charcoal); }
+.mx-v { color: var(--ch-80); font-weight: 500; font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.16 * var(--u)); }
+.mx-list li { display: flex; align-items: center; gap: calc(8 * var(--u)); }
+.mx-list img { flex: none; width: calc(16 * var(--u)); height: calc(16 * var(--u)); }
+.mx-list span { flex: 1 1 0; min-width: 0; padding: calc(12 * var(--u)) 0; border-bottom: calc(1 * var(--u)) solid var(--line, #e3e3e3); color: var(--ch-80); font-weight: 500; font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.16 * var(--u)); }
+.mx-list li:last-child span { border-bottom: 0; }
 
 /* one-shot sequence: the line draws, steps appear one by one, then the table, then the button */
 .anim .sq { opacity: 0; transform: translateY(calc(14 * var(--u))); transition: opacity .6s var(--ease-out) var(--d, 0ms), transform .6s var(--ease-out) var(--d, 0ms); }
@@ -208,18 +239,16 @@
 .anim .tl.is-in .tl-mark { transform: scale(1); }
 .anim .tl-tick { opacity: 0; transition: opacity .4s var(--d, 0ms); }
 .anim .tl.is-in .tl-tick { opacity: 1; }
-.anim .mx { opacity: 0; transition: opacity .5s var(--ease-out); }
-.anim .mx.is-in { opacity: 1; }
 
 /* ---------- Trusted to run it every day (1932:4837) ---------- */
 .sv-trust { display: flex; flex-direction: column; gap: calc(64 * var(--u)); padding: calc(120 * var(--u)) calc(80 * var(--u)); overflow: hidden; background: var(--charcoal); color: var(--white); }
-.trust-row { display: flex; align-items: flex-end; gap: calc(20 * var(--u)); height: calc(704 * var(--u)); }
+.trust-row { position: relative; display: flex; align-items: flex-end; gap: calc(20 * var(--u)); height: calc(704 * var(--u)); }
 .trust-left { flex: 0 0 calc(715 * var(--u)); height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
 .trust-head { display: flex; flex-direction: column; gap: calc(24 * var(--u)); }
 .trust-head .h2 { white-space: nowrap; }
 .trust-head p { width: calc(597.7 * var(--u)); }
 .trust-foot { display: flex; align-items: flex-end; justify-content: space-between; }
-.stats { display: grid; grid-template-columns: calc(221 * var(--u)) calc(211.67 * var(--u)); column-gap: calc(40 * var(--u)); row-gap: calc(32 * var(--u)); margin: 0; }
+.stats { display: grid; grid-template-columns: calc(268 * var(--u)) calc(268 * var(--u)); column-gap: calc(56 * var(--u)); row-gap: calc(32 * var(--u)); margin: 0; }
 .stats > div { display: flex; flex-direction: column-reverse; gap: calc(4 * var(--u)); }
 .stats dd { margin: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .stats dt { white-space: nowrap; }
@@ -248,7 +277,8 @@
 .cs-panel .case-rows > div { font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); }
 .cs-panel .case-rows > div:first-child { padding-top: 0; border-top: 0; }
 
-.trust-logos, .trust-logos.rv.in { display: flex; align-items: flex-end; justify-content: space-between; opacity: .6; }
+/* the logo row sits lower than the content above it: 120 below the row, 40 above the block's bottom padding (Figma 2177:3930) */
+.trust-logos, .trust-logos.rv.in { display: flex; align-items: flex-end; justify-content: space-between; margin: calc(56 * var(--u)) 0 calc(40 * var(--u)); opacity: .6; }
 .trust-logos img { width: calc(var(--w) * var(--u)); height: auto; margin-bottom: calc(var(--drop, 0) * -1 * var(--u)); }
 
 /* ---------- Big brains. No ego. (1932:4922) ---------- */
@@ -263,7 +293,43 @@
 /* ---------- FAQ (1932:4986) ---------- */
 .svc .v-faq { gap: calc(64 * var(--u)); }
 
-/* "S" zoom → green section and the VDI GOAT stickers: see szoom.css */
+/* ---------- "Are we good?" green block (1932:5020): scrolls like every other block ---------- */
+.s-zoom { position: relative; }
+.sz-stage { position: relative; display: flex; justify-content: center; overflow: hidden; background: var(--green); }
+
+/* the green content (1945:1667, 1450 × 962) */
+.sz-body { position: relative; align-self: center; width: calc(1450 * var(--u)); padding: calc(120 * var(--u)) 0; display: flex; flex-direction: column; align-items: center; gap: calc(64 * var(--u)); }
+.sz-head { display: flex; flex-direction: column; align-items: center; gap: calc(40 * var(--u)); width: calc(862 * var(--u)); }
+.sz-title { width: 100%; text-align: center; color: var(--white); font-feature-settings: "dlig" 1; }
+.sz-lead { margin-top: calc(-16 * var(--u)); text-align: center; color: var(--white); }
+.sz-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: calc(8 * var(--u)); width: calc(710 * var(--u)); }
+.sz-chips li {
+  padding: calc(12 * var(--u)) calc(16 * var(--u)); border-radius: 999px; background: rgba(47, 47, 47, .4); color: var(--white); white-space: nowrap;
+  font-weight: 500; font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.16 * var(--u));
+}
+.sz-cards { display: flex; align-items: stretch; gap: calc(8 * var(--u)); width: 100%; }
+.sz-card { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: calc(64 * var(--u)); padding: calc(40 * var(--u)); border-radius: calc(40 * var(--u)); background: var(--white); color: var(--charcoal); }
+.sz-card h3 {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: calc(20 * var(--u));
+  font-family: var(--f-display); font-weight: 700; font-size: calc(40 * var(--u)); line-height: 1; letter-spacing: calc(-.4 * var(--u)); font-feature-settings: "dlig" 1;
+}
+.sz-card h3 span { width: calc(var(--w, 206.12) * var(--u)); }
+.sz-card h3 i { flex: none; display: grid; place-items: center; width: calc(72 * var(--u)); height: calc(72 * var(--u)); border-radius: 50%; background: var(--green); color: var(--white); font-style: normal; }
+.sz-cta { padding: calc(30 * var(--u)) calc(42 * var(--u)); font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); }
+
+/* VDI GOAT stickers: pinned to the stage corners so the frame clips them as in Figma */
+.stk { position: absolute; z-index: 1; pointer-events: none; }
+.stk span { position: absolute; display: grid; place-items: center; }
+.stk-1 { right: calc(11.61 * var(--u)); top: calc(99 * var(--u)); width: calc(310.73 * var(--u)); height: calc(351.62 * var(--u)); }
+.stk-1-outline { left: calc(3.2 * var(--u)); top: calc(10.96 * var(--u)); width: calc(296.33 * var(--u)); height: calc(317.3 * var(--u)); }
+.stk-1-outline img { width: calc(263.04 * var(--u)); height: calc(300.54 * var(--u)); transform: rotate(5.57deg) translate(calc(8.07 * var(--u)), calc(.99 * var(--u))); }
+.stk-1-img { left: calc(3.96 * var(--u)); top: calc(4.92 * var(--u)); width: calc(302.81 * var(--u)); height: calc(341.78 * var(--u)); }
+.stk-1-img img { width: calc(233.36 * var(--u)); height: calc(289.58 * var(--u)); border-radius: calc(11.02 * var(--u)); object-fit: cover; transform: rotate(15.64deg); }
+.stk-2 { left: calc(-38.34 * var(--u)); bottom: calc(-78.57 * var(--u)); width: calc(237.15 * var(--u)); height: calc(278.16 * var(--u)); }
+.stk-2-back { inset: 0; }
+.stk-2-back i { width: calc(181.46 * var(--u)); height: calc(239.4 * var(--u)); border-radius: calc(90.73 * var(--u)); background: var(--charcoal); box-shadow: calc(1 * var(--u)) calc(1 * var(--u)) calc(4 * var(--u)) rgba(0,0,0,.25); transform: rotate(-14.97deg); }
+.stk-2-img { left: calc(11.44 * var(--u)); top: calc(11.54 * var(--u)); width: calc(217.54 * var(--u)); height: calc(254.19 * var(--u)); }
+.stk-2-img img { width: calc(166.74 * var(--u)); height: calc(218.53 * var(--u)); object-fit: cover; transform: rotate(-14.97deg); }
 
 /* ---------- Contact (1932:5049) ---------- */
 .svc .ct-left .h2, .svc .ct-left .v-head p { width: calc(705 * var(--u)); }
