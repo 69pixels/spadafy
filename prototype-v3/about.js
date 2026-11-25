@@ -348,7 +348,11 @@
     tmFrom = card;
     drawer.classList.remove('out');
     drawer.showModal();
-    $('.tmd-panel', drawer).scrollTop = 0;
+    /* focus the panel without letting the browser scroll it into view: it is still off-screen,
+       about to slide in, and that scroll made the drawer jump */
+    const panel = $('.tmd-panel', drawer);
+    panel.focus({ preventScroll: true });
+    drawer.scrollLeft = 0; drawer.scrollTop = 0; panel.scrollTop = 0;
     requestAnimationFrame(() => requestAnimationFrame(() => drawer.classList.add('on')));
   }
   function closeBio() {
@@ -431,10 +435,64 @@
   window.addEventListener('pageshow', () => { leaving = false; });
 
   /* =========================================================
+     INTRO — like the Services statement: once it nears the middle of the screen, a wave runs
+     through the letters, gray → orange → charcoal, and the stats count up
+     ========================================================= */
+  const introSt = $('.ab-intro-st');
+  const introLetters = [];
+  introSt.textContent.trim().split(/\s+/).forEach((word, wi, all) => {
+    const w = document.createElement('span');      /* letters sit in a word span, so lines only break between words */
+    w.className = 'w';
+    for (const ch of word) { const l = document.createElement('span'); l.className = 'l'; l.textContent = ch; w.appendChild(l); introLetters.push(l); }
+    if (wi === 0) introSt.textContent = '';
+    introSt.appendChild(w);
+    if (wi < all.length - 1) introSt.appendChild(document.createTextNode(' '));
+  });
+  const I_ORANGE = 8, I_HOLD = 10, I_BLACK = 14, I_MS = 2000;
+  const introKeys = introLetters.map(() => -1);
+  function setIntroWave(p) {
+    const pos = p * (introLetters.length + I_ORANGE + I_HOLD + I_BLACK);
+    for (let i = 0; i < introLetters.length; i++) {
+      const t = pos - i;
+      const o = smooth(t / I_ORANGE), k = smooth((t - I_ORANGE - I_HOLD) / I_BLACK);
+      const key = Math.round(o * 100) * 1000 + Math.round(k * 100);
+      if (key === introKeys[i]) continue;
+      introKeys[i] = key;
+      introLetters[i].style.setProperty('--o', (o * 100).toFixed(0) + '%');
+      introLetters[i].style.setProperty('--k', (k * 100).toFixed(0) + '%');
+    }
+  }
+  const counts = $$('.ab-stat [data-count]').map(el => ({ el, to: +el.dataset.count }));
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  let introT0 = -1;
+  function introTick(now) {
+    const t = now - introT0;
+    const p = clamp(t / I_MS);
+    setIntroWave(p);
+    const c = easeOut(clamp((t - 500) / 1600));
+    counts.forEach(({ el, to }) => { el.textContent = fmt(to * c); });
+    if (p < 1 || c < 1) requestAnimationFrame(introTick);
+    else introSt.classList.remove('anim');
+  }
+  if (!reduce) {
+    introSt.classList.add('anim'); setIntroWave(0);
+    counts.forEach(({ el }) => { el.textContent = '0'; });
+  }
+  function renderIntro() {
+    if (reduce || introT0 >= 0) return;
+    const r = introSt.getBoundingClientRect();
+    if (r.top + r.height / 2 > H * .62) return;     /* not near the middle yet */
+    introT0 = performance.now();
+    requestAnimationFrame(introTick);
+  }
+  window.addEventListener('scroll', renderIntro, { passive: true });
+  renderIntro();
+
+  /* =========================================================
      SMALL REVEALS — fade + rise, staggered, once
      ========================================================= */
   const REVEAL = [
-    ['.ab-intro-h', 0, 0], ['.ab-intro-chips li', 90, 200], ['.ab-intro-p > p', 140, 120],
+    ['.ab-intro-eye', 0, 0], ['.ab-intro-p', 0, 0], ['.ab-stat', 90, 120],
     ['.ab-name-story .v-head > *', 120, 0], ['.ab-name-copy > *', 140, 100], ['.hs-label', 0, 0], ['.ab-name-motto', 0, 0],
     ['.pov-h', 0, 0], ['.pov-eye', 0, 0], ['.pov-i', 120, 0], ['.tm-h', 0, 0], ['.tm-m', 50, 0], ['.tm-v', 120, 0],
     ['.hc-intro .v-head > *', 120, 0], ['.hc-foot > *', 120, 100],

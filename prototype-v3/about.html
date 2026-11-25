@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="vms.css">
   <link rel="stylesheet" href="szoom.css">
-  <link rel="stylesheet" href="about.css?v=26">
+  <link rel="stylesheet" href="about.css?v=30">
   <link rel="stylesheet" href="consent.css">
 </head>
 <body class="vms ab">
@@ -61,19 +61,21 @@
     <div class="body" id="body">
       <div class="body-bg" aria-hidden="true"></div>
 
-      <!-- Intro (Figma 2296:1637): headline + three checked chips on the left, two paragraphs on the right -->
+      <!-- Intro (Figma 2448:396): eyebrow, one big statement with an indented first line, then the
+           supporting paragraph and four stats. The statement's letters light up gray → orange → charcoal. -->
       <section class="block v-white ab-intro" id="intro" aria-labelledby="intro-t">
-        <div class="ab-intro-l">
-          <h2 class="h2 ab-intro-h" id="intro-t">We want you to get to know us, for real.</h2>
-          <ul class="ab-intro-chips" aria-label="What you’ll find on this page">
-            <li><img src="assets/vms/ic-check-green.svg" alt="" width="20" height="20">The people</li>
-            <li><img src="assets/vms/ic-check-green.svg" alt="" width="20" height="20">The thinking</li>
-            <li><img src="assets/vms/ic-check-green.svg" alt="" width="20" height="20">The little things that make working with us different.</li>
-          </ul>
+        <div class="ab-intro-top">
+          <p class="ab-intro-eye">We want you to get to know us, for real.<br>The people. The thinking. The little things that make working with us different.</p>
+          <h2 class="h2 ab-intro-st" id="intro-t">We’re more than the team that designs and manages your VDI environment. We’re a partner invested in understanding your business and helping you succeed.</h2>
         </div>
-        <div class="t24 ab-intro-p">
-          <p>We’re more than the team that designs and manages your VDI environment. We’re a partner invested in understanding your business and helping you succeed.</p>
-          <p>By putting your priorities first, we deliver technology that fits your needs, improves the user experience, and supports your long-term goals.</p>
+        <div class="ab-intro-foot">
+          <p class="t24 ab-intro-p">By putting your priorities first, we deliver technology that fits your needs, improves the user experience, and supports your long-term goals.</p>
+          <dl class="ab-stats">
+            <div class="ab-stat"><dt><span data-count="15">15</span></dt><dd>Years of VDI</dd></div>
+            <div class="ab-stat"><dt><span data-count="200">200</span>+</dt><dd>Customers</dd></div>
+            <div class="ab-stat ab-stat-w"><dt><span data-count="40000">40,000</span>+</dt><dd>Total desktops managed</dd></div>
+            <div class="ab-stat"><dt>Global</dt><dd>Delivery experience</dd></div>
+          </dl>
         </div>
       </section>
 
@@ -219,7 +221,7 @@
 
       <!-- Bio drawer: slides in from the right over a dimmed, blurred page -->
       <dialog class="tm-drawer" id="tm-drawer" aria-labelledby="tmd-name" data-lenis-prevent>
-        <div class="tmd-panel" tabindex="-1" autofocus>
+        <div class="tmd-panel" tabindex="-1">
           <button class="tmd-close" type="button" aria-label="Close"><img src="assets/vms/ic-close.svg" alt="" width="24" height="24"></button>
           <div class="tmd-photo"><img id="tmd-img" src="" alt=""></div>
           <div class="tmd-body">
@@ -373,7 +375,7 @@
   </main>
 
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="about.js?v=26"></script>
+  <script src="about.js?v=30"></script>
   <script src="consent.js"></script>
 </body>
 </html>

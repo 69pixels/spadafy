@@ -26,17 +26,20 @@
 .ab-hero h1 { width: calc(1046 * var(--u)); }
 .ab-hero h1 { font-feature-settings: "dlig" 1; }
 
-/* ---------- Intro ---------- */
-.ab-intro { display: flex; justify-content: space-between; align-items: flex-start; padding: calc(80 * var(--u)); }
-.ab-intro-l { display: flex; flex-direction: column; gap: calc(64 * var(--u)); }
-.ab-intro-h { width: calc(639 * var(--u)); font-feature-settings: "dlig" 1; }
-.ab-intro-chips { display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); width: calc(609 * var(--u)); }
-.ab-intro-chips li {
-  display: inline-flex; align-items: center; gap: calc(8 * var(--u)); padding: calc(12 * var(--u)) calc(16 * var(--u)); border-radius: 999px; background: var(--soft);
-  font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; white-space: nowrap;
-}
-.ab-intro-chips img { width: calc(20 * var(--u)); height: calc(20 * var(--u)); flex: none; }
-.ab-intro-p { width: calc(685 * var(--u)); display: flex; flex-direction: column; gap: calc(32 * var(--u)); }
+/* ---------- Intro (2448:396): typographic statement + stats ---------- */
+.ab-intro { display: flex; flex-direction: column; gap: calc(64 * var(--u)); padding: calc(80 * var(--u)); }
+.ab-intro-eye { width: calc(395 * var(--u)); font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: var(--charcoal-60); }
+.ab-intro-st { margin: 0; width: calc(1744 * var(--u)); text-indent: calc(588 * var(--u)); line-height: calc(80 * var(--u)); font-feature-settings: "dlig" 1; color: var(--charcoal); }
+/* while it plays, each letter mixes gray → orange by --o, then orange → charcoal by --k (set in about.js) */
+.ab-intro-st .w { display: inline-block; text-indent: 0; }
+.ab-intro-st.anim .l { color: color-mix(in srgb, var(--charcoal) var(--k, 0%), color-mix(in srgb, var(--orange) var(--o, 0%), #dedede)); }
+.ab-intro-foot { display: flex; align-items: center; justify-content: space-between; }
+.ab-intro-p { width: calc(584 * var(--u)); color: var(--charcoal); }
+.ab-stats { display: flex; gap: calc(64 * var(--u)); margin: 0; white-space: nowrap; }
+.ab-stat { display: flex; flex-direction: column; justify-content: space-between; height: calc(104 * var(--u)); }
+.ab-stat-w { width: calc(224 * var(--u)); }
+.ab-stat dt { font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(64 * var(--u)); line-height: calc(64 * var(--u)); color: var(--charcoal); font-variant-numeric: tabular-nums; }
+.ab-stat dd { margin: 0; font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: var(--charcoal-60); }
 
 /* ---------- Interactive header: past the jargon, to the people ---------- */
 .ab-untangle { position: relative; }
@@ -107,7 +110,7 @@
 /* ---------- Team (Figma 2193:4066 + drawer 2193:4205) ---------- */
 .ab-team { display: flex; flex-direction: column; gap: calc(64 * var(--u)); padding: calc(80 * var(--u)); }
 .tm-h { width: calc(776 * var(--u)); font-feature-settings: "dlig" 1; }
-.tm-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(8 * var(--u)); }
+.tm-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(24 * var(--u)) calc(8 * var(--u)); }
 .tm-m { display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
 .tm-card { position: relative; display: block; width: 100%; height: calc(400 * var(--u)); padding: 0; border-radius: calc(40 * var(--u)); cursor: pointer; overflow: hidden; isolation: isolate; }
 .tm-photo { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; background: #eeede9; }
@@ -146,7 +149,7 @@
 .tm-div { flex: none; width: 1px; background: var(--charcoal-40); }
 
 /* the bio drawer */
-.tm-drawer { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: hidden; }
+.tm-drawer { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: clip; }   /* clip, not hidden: a hidden box can still be scrolled by focus, which made the drawer jump */
 .tm-drawer::backdrop {
   background: linear-gradient(rgba(47,47,47,.6), rgba(47,47,47,.6)), rgba(255,255,255,.24);
   -webkit-backdrop-filter: blur(calc(12 * var(--u))); backdrop-filter: blur(calc(12 * var(--u)));
