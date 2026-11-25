@@ -110,7 +110,7 @@
 /* ---------- Team (Figma 2193:4066 + drawer 2193:4205) ---------- */
 .ab-team { display: flex; flex-direction: column; gap: calc(64 * var(--u)); padding: calc(80 * var(--u)); }
 .tm-h { width: calc(776 * var(--u)); font-feature-settings: "dlig" 1; }
-.tm-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(24 * var(--u)) calc(8 * var(--u)); }
+.tm-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(56 * var(--u)) calc(8 * var(--u)); }
 .tm-m { display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
 .tm-card { position: relative; display: block; width: 100%; height: calc(400 * var(--u)); padding: 0; border-radius: calc(40 * var(--u)); cursor: pointer; overflow: hidden; isolation: isolate; }
 .tm-photo { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; background: #eeede9; }
@@ -139,14 +139,14 @@
 .tm-name { font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); font-weight: 500; color: var(--charcoal); }
 .tm-title { font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: var(--charcoal-40); }
 /* how we work: three columns split by hairlines */
-.tm-values { display: flex; justify-content: space-between; align-items: stretch; }
-.tm-v { display: flex; flex-direction: column; gap: calc(16 * var(--u)); }
-.tm-v-h { display: flex; align-items: center; gap: calc(16 * var(--u)); font-family: var(--f-display); font-weight: 700; font-size: calc(40 * var(--u)); line-height: calc(40 * var(--u)); white-space: nowrap; }
+.tm-values { display: flex; align-items: stretch; gap: calc(32 * var(--u)); padding-top: calc(40 * var(--u)); }
+.tm-v { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+.tm-v-h { margin: 0; display: flex; flex-direction: column; align-items: flex-start; gap: calc(24 * var(--u)); font-family: var(--f-body); font-weight: 500; font-size: calc(32 * var(--u)); line-height: calc(40 * var(--u)); letter-spacing: calc(-.64 * var(--u)); color: var(--charcoal); white-space: nowrap; }
 .tm-v-h img { width: calc(48 * var(--u)); height: calc(48 * var(--u)); flex: none; }
 .tm-v p { width: calc(526 * var(--u)); color: var(--charcoal-60); }
 .tm-v:nth-child(3) p { width: calc(464 * var(--u)); }
 .tm-v:nth-child(5) p { width: calc(519 * var(--u)); }
-.tm-div { flex: none; width: 1px; background: var(--charcoal-40); }
+.tm-div { flex: none; width: 1px; background: var(--soft); }
 
 /* the bio drawer */
 .tm-drawer { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: clip; }   /* clip, not hidden: a hidden box can still be scrolled by focus, which made the drawer jump */
@@ -236,8 +236,8 @@
   font-size: calc(32 * var(--u)); line-height: calc(40 * var(--u)); letter-spacing: calc(-.64 * var(--u)); font-weight: 500; color: var(--pink);
 }
 .mo-sub {
-  position: absolute; left: 50%; top: calc(50% + 215 * var(--u)); width: calc(765 * var(--u)); transform: translateX(-50%); text-align: center; opacity: 0;
-  font-family: var(--f-display); font-weight: 700; font-size: calc(40 * var(--u)); line-height: calc(40 * var(--u)); color: var(--charcoal-40);
+  position: absolute; left: 50%; top: calc(50% + 276 * var(--u)); width: calc(537 * var(--u)); transform: translateX(-50%); text-align: center; opacity: 0;
+  font-family: var(--f-body); font-weight: 500; font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); color: var(--charcoal-40);
   will-change: opacity, transform;
 }
 .mo-dots { position: absolute; left: 50%; bottom: calc(80 * var(--u)); transform: translateX(-50%); display: flex; align-items: center; gap: calc(6 * var(--u)); opacity: 0; }
