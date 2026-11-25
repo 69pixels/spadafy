@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Technology can be complicated — section options</title>
+  <link rel="stylesheet" href="assets/vendor/lenis.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vms.css">
+  <link rel="stylesheet" href="why.css">
+  <link rel="stylesheet" href="tangle.css">
+</head>
+<body class="vms wy">
+
+  <!-- Design board: three scroll animations for the About page line
+       "Technology can be complicated. Working with the people behind it shouldn't be."
+       Each one reuses a motion pattern already on the site. -->
+  <main class="body wy-body">
+
+    <header class="block wy-board">
+      <a class="wy-back" href="about.html">← About page</a>
+      <h1 class="h2">Technology can be complicated.<br>Section options</h1>
+      <p class="t24">Three scroll animations for the same two lines. Each one borrows a motion that’s already on the site, so the page stays one family. Scroll slowly through each.</p>
+      <ol class="wy-toc">
+        <li><a href="#opt-a"><b>A</b> Untangle the cable</a></li>
+        <li><a href="#opt-b"><b>B</b> Signal through the noise</a></li>
+        <li><a href="#opt-c"><b>C</b> Past the jargon, to the people</a></li>
+      </ol>
+    </header>
+
+    <!-- ============ A — a knotted cable pulls straight; the letters fall into line ============ -->
+    <section class="wy-scene tg-scene" id="opt-a" aria-label="Technology can be complicated. Working with the people behind it shouldn’t be.">
+      <div class="block wy-stage tg-a">
+        <span class="wy-tag tg-tag-light">A · Untangle the cable · <i>untangle + letter wave</i></span>
+        <svg class="tga-cable" aria-hidden="true" preserveAspectRatio="none">
+          <path class="tga-path" />
+          <circle class="tga-plug tga-plug-a" r="10" />
+          <circle class="tga-plug tga-plug-b" r="10" />
+        </svg>
+        <p class="tga-l1" aria-hidden="true" data-scatter>Technology can be complicated.</p>
+        <p class="tga-l2" aria-hidden="true"><span data-w>Working with the people behind it shouldn’t be.</span></p>
+        <p class="tg-meter" aria-hidden="true"><span>Knots</span> <b class="tga-count">14</b></p>
+      </div>
+    </section>
+
+    <!-- ============ B — the line starts as liquid noise and resolves; then line two lights up ============ -->
+    <section class="wy-scene tg-scene" id="opt-b" aria-label="Technology can be complicated. Working with the people behind it shouldn’t be.">
+      <div class="block wy-stage wy-dark tg-b">
+        <span class="wy-tag">B · Signal through the noise · <i>S melt + Services wave</i></span>
+        <svg class="tg-defs" aria-hidden="true" focusable="false" width="0" height="0">
+          <filter id="tgb-noise" x="-10%" y="-30%" width="120%" height="160%" color-interpolation-filters="sRGB">
+            <feTurbulence id="tgb-turb" type="fractalNoise" baseFrequency="0.012 0.04" numOctaves="2" seed="3" result="noise"/>
+            <feDisplacementMap id="tgb-disp" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </svg>
+        <div class="tgb-l1-wrap" aria-hidden="true"><p class="tgb-l1">Technology can be<br>complicated.</p></div>
+        <p class="tgb-l2" aria-hidden="true"><span data-w>Working with the people behind it shouldn’t be.</span></p>
+        <div class="tgb-meter tg-meter" aria-hidden="true">
+          <span>Noise</span> <b class="tgb-count">100%</b>
+          <i class="tgb-bar"><i></i></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ C — jargon flies past the camera; a card of real people grows in its place ============ -->
+    <section class="wy-scene tg-scene tg-tall" id="opt-c" aria-label="Technology can be complicated. Working with the people behind it shouldn’t be.">
+      <div class="block wy-stage tg-c">
+        <span class="wy-tag tg-tag-light">C · Past the jargon, to the people · <i>depth zoom + outro card</i></span>
+        <ul class="tgc-cloud" aria-hidden="true"></ul>
+        <p class="tgc-l1" aria-hidden="true">Technology can be<br>complicated.</p>
+        <div class="tgc-card" aria-hidden="true">
+          <img src="assets/img/care-3.jpg" alt="">
+          <div class="tgc-shade"></div>
+          <p class="tgc-l2"><span>Working</span> <span>with</span> <span>the</span> <span>people</span> <span>behind</span> <span>it</span> <span>shouldn’t</span> <span>be.</span></p>
+          <ul class="pills tgc-tags">
+            <li><span class="ico" style="--c:var(--orange)"><i style="--m:url(assets/vms/ic-user.svg)"></i></span>Real engineers, real names</li>
+            <li><span class="ico" style="--c:var(--pink)"><i style="--m:url(assets/vms/ic-energy.svg)"></i></span>Straight answers, fast</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="block wy-board wy-end">
+      <p class="t24">That’s all three. Pick one for the About page, or mix parts of them.</p>
+      <a class="pill pill-orange" href="about.html">Back to the About page</a>
+    </footer>
+  </main>
+
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="tangle.js"></script>
+</body>
+</html>

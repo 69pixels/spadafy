@@ -1,0 +1,60 @@
+/* =========================================================
+   Spadafy — "S" zoom → green Health Check scene (Figma 1932:5018 → 1932:5020)
+   Shared by services.html and about.html. Motion-only states live under html.anim
+   (set by the page script when reduced motion is off); without it the final state shows.
+   ========================================================= */
+.pill-dark { background: var(--charcoal); color: var(--white); }
+.pill-dark:hover { filter: brightness(1.25); }
+
+/* ---------- "S" zoom → green section (1932:5018 → 1932:5020): pinned, driven by scroll ---------- */
+/* the stage hugs the green content (120 above and below), never shorter than the screen */
+.s-zoom { position: relative; }
+/* .8 pinned screens to finish drawing the S (it starts as the stage slides in), then the original 3.4 for zoom → green → content */
+/* a spacer, not padding: a sticky stage can only travel inside its parent's content box */
+.anim .sz-spacer { height: calc(4.2 * var(--vh)); }
+.sz-stage { position: sticky; top: var(--gap); min-height: var(--stage); display: flex; flex-direction: column; justify-content: center; overflow: hidden; background: var(--charcoal); }
+.sz-green { position: absolute; inset: 0; background: var(--green); }
+/* the Figma frame (1904 × 1080), scaled down when the viewport is shorter than the design */
+.sz-fit { position: absolute; left: 50%; top: 50%; width: calc(1904 * var(--u)); height: calc(1080 * var(--u)); transform: translate(-50%, -50%) scale(var(--fit, 1)); }
+.sz-fit-s { top: calc(var(--stage) / 2); visibility: hidden; }   /* the S stays centred on the screen part of the stage */
+.sz-s { display: block; width: calc(1904 * var(--u)); height: calc(1080 * var(--u)); transform-origin: 50% 50%; }
+.sz-s-shape { fill: var(--green); }
+.sz-goo-defs { position: absolute; }
+.sz-melt { position: absolute; inset: 0; will-change: filter; }
+.anim .sz-green { opacity: 0; }
+.anim .sz-fit-s { visibility: visible; }
+
+/* the green content (1945:1667, 1450 × 962) */
+.sz-body { position: relative; align-self: center; width: calc(1450 * var(--u)); padding: calc(120 * var(--u)) 0; display: flex; flex-direction: column; align-items: center; gap: calc(64 * var(--u)); }
+.sz-head { display: flex; flex-direction: column; align-items: center; gap: calc(40 * var(--u)); width: calc(862 * var(--u)); }
+.sz-title { width: 100%; text-align: center; color: var(--white); font-feature-settings: "dlig" 1; }
+.sz-lead { margin-top: calc(-16 * var(--u)); text-align: center; color: var(--white); }
+.sz-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: calc(8 * var(--u)); width: calc(710 * var(--u)); }
+.sz-chips li {
+  padding: calc(12 * var(--u)) calc(16 * var(--u)); border-radius: 999px; background: rgba(47, 47, 47, .4); color: var(--white); white-space: nowrap;
+  font-weight: 500; font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.16 * var(--u));
+}
+.sz-cards { display: flex; align-items: stretch; gap: calc(8 * var(--u)); width: 100%; }
+.sz-card { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: calc(64 * var(--u)); padding: calc(40 * var(--u)); border-radius: calc(40 * var(--u)); background: var(--white); color: var(--charcoal); }
+.sz-card h3 {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: calc(20 * var(--u));
+  font-family: var(--f-display); font-weight: 700; font-size: calc(40 * var(--u)); line-height: 1; letter-spacing: calc(-.4 * var(--u)); font-feature-settings: "dlig" 1;
+}
+.sz-card h3 span { width: calc(var(--w, 206.12) * var(--u)); }
+.sz-card h3 i { flex: none; display: grid; place-items: center; width: calc(72 * var(--u)); height: calc(72 * var(--u)); border-radius: 50%; background: var(--green); color: var(--white); font-style: normal; }
+.sz-cta { padding: calc(30 * var(--u)) calc(42 * var(--u)); font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); }
+
+/* VDI GOAT stickers: pinned to the stage corners so the frame clips them as in Figma */
+.stk { position: absolute; z-index: 1; pointer-events: none; }
+.stk span { position: absolute; display: grid; place-items: center; }
+.stk-1 { right: calc(11.61 * var(--u)); top: calc(99 * var(--u)); width: calc(310.73 * var(--u)); height: calc(351.62 * var(--u)); }
+.stk-1-outline { left: calc(3.2 * var(--u)); top: calc(10.96 * var(--u)); width: calc(296.33 * var(--u)); height: calc(317.3 * var(--u)); }
+.stk-1-outline img { width: calc(263.04 * var(--u)); height: calc(300.54 * var(--u)); transform: rotate(5.57deg) translate(calc(8.07 * var(--u)), calc(.99 * var(--u))); }
+.stk-1-img { left: calc(3.96 * var(--u)); top: calc(4.92 * var(--u)); width: calc(302.81 * var(--u)); height: calc(341.78 * var(--u)); }
+.stk-1-img img { width: calc(233.36 * var(--u)); height: calc(289.58 * var(--u)); border-radius: calc(11.02 * var(--u)); object-fit: cover; transform: rotate(15.64deg); }
+.stk-2 { left: calc(-38.34 * var(--u)); bottom: calc(-78.57 * var(--u)); width: calc(237.15 * var(--u)); height: calc(278.16 * var(--u)); }
+.stk-2-back { inset: 0; }
+.stk-2-back i { width: calc(181.46 * var(--u)); height: calc(239.4 * var(--u)); border-radius: calc(90.73 * var(--u)); background: var(--charcoal); box-shadow: calc(1 * var(--u)) calc(1 * var(--u)) calc(4 * var(--u)) rgba(0,0,0,.25); transform: rotate(-14.97deg); }
+.stk-2-img { left: calc(11.44 * var(--u)); top: calc(11.54 * var(--u)); width: calc(217.54 * var(--u)); height: calc(254.19 * var(--u)); }
+.stk-2-img img { width: calc(166.74 * var(--u)); height: calc(218.53 * var(--u)); object-fit: cover; transform: rotate(-14.97deg); }
+

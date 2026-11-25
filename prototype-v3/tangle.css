@@ -1,0 +1,95 @@
+/* =========================================================
+   Technology can be complicated — section options.
+   Builds on styles.css + vms.css + why.css (board, pinned stage, letter wave).
+   1 design px = var(--u).
+   ========================================================= */
+
+.tg-scene { height: calc(var(--stage) + 2.6 * var(--vh)); }
+.tg-tall { height: calc(var(--stage) + 3.2 * var(--vh)); }
+.tg-tag-light { background: rgba(47,47,47,.06); color: var(--charcoal-60); }
+.wy-tag i { font-style: normal; opacity: .6; }
+.tg-defs { position: absolute; }
+
+/* a small live readout, bottom-left, shared by A and B */
+.tg-meter {
+  position: absolute; left: calc(80 * var(--u)); bottom: calc(72 * var(--u)); display: flex; align-items: center; gap: calc(12 * var(--u));
+  font-size: calc(18 * var(--u)); line-height: calc(24 * var(--u)); font-weight: 500; letter-spacing: .04em; text-transform: uppercase;
+}
+.tg-meter span { opacity: .5; }
+.tg-meter b { font-weight: 500; font-variant-numeric: tabular-nums; min-width: 3.2em; }
+
+.tg-display {
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+}
+
+/* ---------- A — untangle the cable ---------- */
+.tg-a { background: var(--soft); color: var(--charcoal); --flash: var(--orange); --to: var(--charcoal); --dim: .12; }
+.tga-cable { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.tga-path { fill: none; stroke: var(--orange); stroke-width: calc(10 * var(--u)); stroke-linecap: round; stroke-linejoin: round; }
+.tga-plug { fill: var(--orange); }
+.tga-plug-b { fill: var(--pink); }
+.tga-l1 {
+  position: absolute; left: calc(80 * var(--u)); top: calc(120 * var(--u));
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(128 * var(--u)); line-height: calc(120 * var(--u)); letter-spacing: calc(-2.4 * var(--u)); white-space: nowrap;
+}
+.tga-l1 .c { display: inline-block; will-change: transform, filter; }
+.tga-l2 {
+  position: absolute; right: calc(80 * var(--u)); bottom: calc(150 * var(--u)); width: calc(1100 * var(--u)); text-align: right;
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(96 * var(--u)); line-height: calc(92 * var(--u)); letter-spacing: calc(-1.8 * var(--u));
+}
+.tga-l2 [data-w] { --to: var(--pink); }
+
+/* ---------- B — signal through the noise ---------- */
+.tg-b { display: flex; flex-direction: column; justify-content: flex-start; padding-top: calc(170 * var(--u)); }
+.tgb-l1-wrap { will-change: filter, transform, opacity; }
+.tgb-l1 {
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; color: var(--white);
+  font-size: calc(200 * var(--u)); line-height: calc(180 * var(--u)); letter-spacing: calc(-4.8 * var(--u));
+}
+.tgb-l2 {
+  position: absolute; left: calc(80 * var(--u)); bottom: calc(150 * var(--u)); width: calc(1500 * var(--u));
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(104 * var(--u)); line-height: calc(100 * var(--u)); letter-spacing: calc(-2 * var(--u));
+}
+.tgb-meter { color: var(--white); }
+.tgb-bar { display: block; width: calc(160 * var(--u)); height: calc(4 * var(--u)); border-radius: 4px; background: rgba(255,255,255,.15); overflow: hidden; }
+.tgb-bar i { display: block; height: 100%; width: 100%; background: var(--orange); transform-origin: 0 50%; }
+
+/* ---------- C — past the jargon, to the people ---------- */
+.tg-c { background: var(--white); color: var(--charcoal); perspective: 1000px; }
+.tgc-cloud { position: absolute; inset: 0; }
+.tgc-cloud li {
+  position: absolute; left: 50%; top: 50%; display: inline-flex; align-items: center; gap: calc(10 * var(--u));
+  padding: calc(12 * var(--u)) calc(22 * var(--u)) calc(12 * var(--u)) calc(14 * var(--u)); border-radius: 999px; background: var(--soft);
+  font-size: calc(22 * var(--u)); line-height: calc(28 * var(--u)); font-weight: 500; white-space: nowrap; will-change: transform, opacity, filter;
+}
+.tgc-cloud li::before { content: ""; width: calc(12 * var(--u)); height: calc(12 * var(--u)); border-radius: 50%; background: var(--dc, var(--charcoal-40)); }
+.tgc-l1 {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; white-space: nowrap;
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(150 * var(--u)); line-height: calc(136 * var(--u)); letter-spacing: calc(-3.4 * var(--u)); will-change: transform, opacity, filter;
+}
+.tgc-card {
+  position: absolute; left: 50%; top: 50%; width: 0; height: 0; overflow: hidden; border-radius: calc(40 * var(--u));
+  transform: translate(-50%, -50%); background: var(--charcoal);
+}
+.tgc-card > img { position: absolute; left: 50%; top: 50%; width: calc(var(--sw, 1800px)); height: calc(var(--sh, 1000px)); max-width: none; object-fit: cover; transform: translate(-50%, -50%) scale(1.15); will-change: transform; }
+.tgc-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(47,47,47,.82) 0%, rgba(47,47,47,.2) 55%, rgba(47,47,47,0) 100%); }
+.tgc-l2 {
+  position: absolute; left: calc(80 * var(--u)); bottom: calc(80 * var(--u)); width: calc(1200 * var(--u)); color: var(--white);
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(112 * var(--u)); line-height: calc(108 * var(--u)); letter-spacing: calc(-2.2 * var(--u));
+}
+/* each word rises out of its own mask */
+.tgc-l2 span { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.tgc-l2 span b { display: inline-block; font-weight: inherit; transform: translateY(110%); will-change: transform; }
+.tgc-l2 span:nth-last-child(-n+2) b { color: var(--orange); }
+.tgc-tags { position: absolute; right: calc(80 * var(--u)); top: calc(80 * var(--u)); width: auto; color: var(--charcoal); }
+.tgc-tags li { padding-right: calc(28 * var(--u)); will-change: transform, opacity; }
+.tgc-tags .ico i { display: block; width: calc(24 * var(--u)); height: calc(24 * var(--u)); background: var(--white); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-scene, .tg-tall { height: auto; }
+}

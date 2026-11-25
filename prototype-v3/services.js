@@ -405,7 +405,7 @@
   const zCards = $$('.sz-card', zoom), zCta = $('.sz-cta', zoom);
   const stk1 = $('.stk-1', zoom), stk2 = $('.stk-2', zoom);
   const fits = $$('.sz-fit', zoom);
-  const zShape = $('.sz-s-shape', zoom), zLine = $('.sz-s-line', zoom);
+  const zShape = $('.sz-s-shape', zoom), zLine = $('.sz-s-line', zoom), zMelt = $('.sz-melt', zoom), zDisp = $('#sz-goo-disp');
   const zLen = zLine.getTotalLength();
   zLine.style.strokeDasharray = `${zLen} ${zLen}`;
   /* the S draws itself from the moment the stage enters at the bottom of the screen until .7 of a screen into the pin;
@@ -450,6 +450,10 @@
     /* 0 → .36: the S scales up from its centre; green fades in under it near the end, so no edge shows */
     const z = easeIO(p / .36);
     zS.style.transform = `scale(${lerp(1, zoomFull, z).toFixed(4)})`;
+    /* melt: the edges go liquid mid-zoom and settle crisp again at both ends */
+    const mk = Math.sin(Math.PI * clamp(z)), melt = mk * 18 * U;
+    zDisp.setAttribute('scale', (mk * 220 * U).toFixed(1));
+    zMelt.style.filter = mk > .02 ? `blur(${melt.toFixed(2)}px) url(#sz-goo)` : '';
     zGreen.style.opacity = smooth((p - .27) / .09).toFixed(3);
     zFitS.style.visibility = p > .38 ? 'hidden' : 'visible';
     /* then the content, one piece after another */

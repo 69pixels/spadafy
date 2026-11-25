@@ -1,0 +1,96 @@
+/* =========================================================
+   Spadafy — legal pages (Privacy Policy)
+   Builds on styles.css + vms.css. 1 design px = var(--u).
+   A dark header block (the nav reads white over it), then a sticky
+   contents card beside the policy text.
+   ========================================================= */
+
+.lg-body { background: var(--charcoal); min-height: 100vh; }
+
+/* ---------- header ---------- */
+.lg-head {
+  background: var(--charcoal); color: var(--white); border: 1px solid rgba(255,255,255,.08);
+  padding: calc(220 * var(--u)) calc(80 * var(--u)) calc(80 * var(--u));
+  display: flex; flex-direction: column; gap: calc(40 * var(--u)); overflow: hidden;
+}
+.lg-eyebrow { color: var(--orange); }
+.lg-title {
+  margin: 0; font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1;
+  font-size: calc(200 * var(--u)); line-height: calc(168 * var(--u)); letter-spacing: calc(-4 * var(--u));
+}
+.lg-meta { display: flex; justify-content: space-between; align-items: flex-end; gap: calc(80 * var(--u)); }
+.lg-meta .t24 { width: calc(720 * var(--u)); color: rgba(255,255,255,.72); }
+.lg-dates { display: flex; gap: calc(48 * var(--u)); margin: 0; }
+.lg-dates dt { font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); color: rgba(255,255,255,.5); font-weight: 500; }
+.lg-dates dd { margin: calc(4 * var(--u)) 0 0; font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); font-weight: 500; }
+.lg-draft {
+  align-self: flex-start; padding: calc(12 * var(--u)) calc(20 * var(--u)); border-radius: 999px;
+  background: rgba(255,82,29,.14); color: var(--white); font-size: calc(18 * var(--u)); line-height: calc(24 * var(--u)); font-weight: 500;
+}
+.lg-draft b { color: var(--orange); font-weight: 700; }
+
+/* placeholders legal still has to fill */
+mark.ph { background: rgba(255,82,29,.14); color: inherit; padding: 0 .2em; border-radius: .25em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+/* ---------- two columns ---------- */
+.lg-cols { display: flex; align-items: flex-start; gap: var(--gap); }
+
+.lg-toc {
+  position: sticky; top: calc(100 * var(--u)); flex: 0 0 calc(480 * var(--u)); background: var(--soft);
+  padding: calc(48 * var(--u)); display: flex; flex-direction: column; gap: calc(24 * var(--u));
+}
+.lg-toc-t { font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); font-weight: 500; color: var(--charcoal-60); }
+.lg-toc-list { counter-reset: toc; display: flex; flex-direction: column; }
+.lg-toc-list li { counter-increment: toc; }
+.lg-toc-list a {
+  position: relative; display: flex; gap: calc(16 * var(--u)); padding: calc(8 * var(--u)) 0;
+  font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: var(--charcoal-60);
+  transition: color .3s, transform .4s var(--ease-out);
+}
+.lg-toc-list a::before { content: counter(toc, decimal-leading-zero); width: calc(28 * var(--u)); flex: none; color: var(--charcoal-40); font-variant-numeric: tabular-nums; transition: color .3s; }
+.lg-toc-list a:hover { color: var(--charcoal); transform: translateX(calc(4 * var(--u))); }
+.lg-toc-list a.on { color: var(--charcoal); }
+.lg-toc-list a.on::before { color: var(--orange); }
+.lg-cookie-btn {
+  align-self: flex-start; margin-top: calc(8 * var(--u)); padding: calc(14 * var(--u)) calc(22 * var(--u)); border-radius: 999px;
+  background: var(--white); font-size: calc(18 * var(--u)); line-height: calc(24 * var(--u)); font-weight: 500; transition: background .2s;
+}
+.lg-cookie-btn:hover { background: var(--charcoal); color: var(--white); }
+
+/* ---------- the policy ---------- */
+.lg-doc { flex: 1; min-width: 0; background: var(--white); padding: calc(80 * var(--u)) calc(120 * var(--u)) calc(120 * var(--u)) calc(80 * var(--u)); }
+.lg-sec { max-width: calc(960 * var(--u)); padding: calc(56 * var(--u)) 0; border-top: 1px solid rgba(47,47,47,.12); scroll-margin-top: calc(100 * var(--u)); }
+.lg-sec:first-child { padding-top: 0; border-top: 0; }
+.lg-h {
+  display: flex; align-items: baseline; gap: calc(20 * var(--u)); margin: 0 0 calc(28 * var(--u));
+  font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(56 * var(--u)); line-height: calc(56 * var(--u));
+}
+.lg-h span { font-family: var(--f-body); font-weight: 500; font-size: calc(20 * var(--u)); line-height: 1; color: var(--orange); font-variant-numeric: tabular-nums; }
+.lg-sub { margin: calc(32 * var(--u)) 0 calc(12 * var(--u)); font-family: var(--f-display); font-weight: 700; font-size: calc(32 * var(--u)); line-height: calc(36 * var(--u)); }
+.lg-doc p, .lg-list li, .lg-defs dd, .lg-table td {
+  font-size: calc(22 * var(--u)); line-height: calc(34 * var(--u)); letter-spacing: calc(-.22 * var(--u)); font-weight: 500; color: rgba(47,47,47,.8);
+}
+.lg-doc p + p { margin-top: calc(16 * var(--u)); }
+.lg-doc a:not(.pill) { color: var(--charcoal); text-decoration: underline; text-decoration-color: var(--orange); text-underline-offset: .18em; text-decoration-thickness: 2px; }
+.lg-doc a:not(.pill):hover { color: var(--orange); }
+.lg-list { margin: calc(16 * var(--u)) 0; display: flex; flex-direction: column; gap: calc(10 * var(--u)); }
+.lg-list li { position: relative; padding-left: calc(32 * var(--u)); }
+.lg-list li::before { content: ""; position: absolute; left: calc(4 * var(--u)); top: calc(14 * var(--u)); width: calc(8 * var(--u)); height: calc(8 * var(--u)); border-radius: 50%; background: var(--orange); }
+.lg-defs { margin: calc(20 * var(--u)) 0 0; display: flex; flex-direction: column; }
+.lg-defs > div { display: grid; grid-template-columns: calc(260 * var(--u)) 1fr; gap: calc(24 * var(--u)); padding: calc(16 * var(--u)) 0; border-top: 1px solid rgba(47,47,47,.08); }
+.lg-defs dt { font-size: calc(22 * var(--u)); line-height: calc(34 * var(--u)); font-weight: 700; color: var(--charcoal); }
+.lg-defs dd { margin: 0; }
+
+.lg-table { margin: calc(28 * var(--u)) 0; border-radius: calc(32 * var(--u)); overflow: hidden; background: var(--soft); }
+.lg-table table { width: 100%; border-collapse: collapse; }
+.lg-table th, .lg-table td { text-align: left; vertical-align: top; padding: calc(20 * var(--u)) calc(24 * var(--u)); }
+.lg-table thead th { font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); font-weight: 500; color: var(--charcoal-60); }
+.lg-table tbody th { font-size: calc(22 * var(--u)); line-height: calc(34 * var(--u)); font-weight: 700; white-space: nowrap; }
+.lg-table tbody tr { border-top: 1px solid rgba(47,47,47,.08); }
+.lg-table code { font-size: .9em; padding: 0 .3em; border-radius: .3em; background: var(--white); }
+.lg-tag { display: inline-block; padding: calc(4 * var(--u)) calc(12 * var(--u)); border-radius: 999px; background: var(--white); font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); font-weight: 500; white-space: nowrap; color: var(--charcoal-60); }
+.lg-tag.lg-on { background: var(--green); color: var(--white); }
+.lg-pill { margin-top: calc(28 * var(--u)); background: var(--charcoal); color: var(--white); }
+.lg-pill:hover { background: var(--orange); }
+
+.lg-contact { padding-bottom: 0; }
