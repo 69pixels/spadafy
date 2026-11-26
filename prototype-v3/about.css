@@ -39,6 +39,9 @@
 .ab-stat { display: flex; flex-direction: column; justify-content: space-between; height: calc(104 * var(--u)); }
 .ab-stat-w { width: calc(224 * var(--u)); }
 .ab-stat dt { font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(64 * var(--u)); line-height: calc(64 * var(--u)); color: var(--charcoal); font-variant-numeric: tabular-nums; }
+.cnt { display: inline-grid; }
+.cnt > * { grid-area: 1 / 1; }
+.cnt-g { visibility: hidden; }
 .ab-stat dd { margin: 0; font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: var(--charcoal-60); }
 
 /* ---------- Interactive header: past the jargon, to the people ---------- */

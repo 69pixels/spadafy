@@ -462,7 +462,7 @@
       introLetters[i].style.setProperty('--k', (k * 100).toFixed(0) + '%');
     }
   }
-  const counts = $$('.ab-stat [data-count]').map(el => ({ el, to: +el.dataset.count }));
+  const counts = $$('.ab-stat [data-count]').map(el => ({ el: $('.cnt-v', el), to: +el.dataset.count }));
   const fmt = n => Math.round(n).toLocaleString('en-US');
   let introT0 = -1;
   function introTick(now) {
