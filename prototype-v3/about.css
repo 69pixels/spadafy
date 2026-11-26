@@ -227,12 +227,14 @@
 }
 .mo-w {
   position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: flex-end; justify-content: center; gap: calc(24 * var(--u));
-  white-space: nowrap; user-select: none; will-change: filter, opacity, transform;
+  white-space: nowrap; user-select: none; will-change: filter, opacity, transform; text-transform: uppercase;
 }
-.mo-ast { align-self: flex-start; margin-left: calc(-20 * var(--u)); font-size: .55em; line-height: 1; color: var(--pink); }
-/* the S from Figma (203 × 135, orange); its artwork sits on the text baseline */
+.mo-ast { align-self: flex-start; position: relative; top: -.19em; margin-left: calc(-8 * var(--u)); font-family: var(--f-body); font-weight: 500; font-feature-settings: normal; letter-spacing: 0; font-size: .825em; line-height: 1; color: var(--pink); }
+/* the S from Figma (203 × 135, orange), sized to the caps' height and sitting on the text baseline */
 .mo-s {
-  display: block; flex: none; width: calc(203 * var(--u)); height: calc(135 * var(--u)); background: url(assets/icons/s-better.svg) center / 100% 100% no-repeat;
+  /* the artwork's ink spans y 7–110 of its 135 viewBox: the box is cropped to the ink (203 × 103) */
+  display: block; flex: none; height: .75em; aspect-ratio: 203 / 103; margin-bottom: .1115em;
+  background: url(assets/icons/s-better.svg) 0 21.875% / 100% 131.068% no-repeat;
 }
 .mo-k {
   position: absolute; left: 50%; top: calc(50% + 164 * var(--u)); transform: translateX(-50%); white-space: nowrap;

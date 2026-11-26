@@ -275,12 +275,13 @@
 
   /* =========================================================
      WHY SPADAFY — the story lifts away, then each word melts into the
-     next (blur + alpha threshold): SPADAFY → Spadafied → Better work → Better S tech
+     next (blur + alpha threshold): SPADAFY → Spadafied → SPADAFY (noun) → Better work → Better S tech
      ========================================================= */
   const morph = $('#name'), moA = $('#mo-a'), moB = $('#mo-b'), moK = $('#mo-k'), moSub = $('.mo-sub'), moDots = $$('.mo-dots li');
   const moIn = $$('.mo-in');
   const MO = [
-    ['SPADAFY', ''], ['Spadafied<span class="mo-ast">*</span>', '(action)'], ['Better work', ''],
+    ['SPADAFY', ''], ['Spadafied<span class="mo-ast">*</span>', '(action)'],
+    ['SPADAFY<span class="mo-ast">*</span>', '(noun)'], ['Better work', ''],
     ['<span>Better</span><i class="mo-s"></i><span>tech</span>', '']
   ];
   let moI = -1;
@@ -518,7 +519,7 @@
     layoutUntangle();
     vdi.style.height = (stage + H * 2.4) + 'px';
     layoutHs(stage);
-    morph.style.height = (stage + H * 3.8) + 'px';
+    morph.style.height = (stage + H * 4.8) + 'px';
     next.style.height = (200 * U + H * 2.6) + 'px';
     layoutVdi();
     render();
