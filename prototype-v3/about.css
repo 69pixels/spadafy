@@ -160,21 +160,23 @@
 }
 .tm-drawer.on::backdrop { opacity: 1; }
 .tmd-panel {
-  position: absolute; right: var(--gap); top: var(--gap); bottom: var(--gap); width: calc(1025 * var(--u)); overflow-y: auto; overscroll-behavior: contain;
+  position: absolute; right: var(--gap); top: var(--gap); bottom: var(--gap); width: calc(1236 * var(--u)); overflow-y: auto; overscroll-behavior: contain;
   padding: calc(80 * var(--u)); border-radius: var(--radius); background: var(--white); color: var(--charcoal);
-  display: flex; flex-direction: column; gap: calc(64 * var(--u));
+  display: grid; grid-template-columns: calc(394 * var(--u)) minmax(0, 1fr); column-gap: calc(56 * var(--u)); row-gap: calc(64 * var(--u)); align-content: start;
   transform: translateX(calc(100% + 16px)); transition: transform .7s var(--ease-out);
 }
 .tm-drawer.on .tmd-panel { transform: none; }
 .tmd-panel:focus { outline: none; }
 .tm-drawer.out .tmd-panel { transition-duration: .45s; transition-timing-function: cubic-bezier(.55, 0, .75, .2); }
-.tmd-photo { flex: none; position: relative; width: calc(360 * var(--u)); height: calc(450 * var(--u)); border-radius: var(--radius); overflow: hidden; background: #eeede9; }
+.tmd-photo { position: relative; width: 100%; height: calc(480 * var(--u)); border-radius: calc(40 * var(--u)); overflow: hidden; background: #eeede9; }
 .tmd-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; }
 .tmd-photo .tm-ph { font-size: calc(160 * var(--u)); }
-.tmd-body { display: flex; flex-direction: column; gap: calc(24 * var(--u)); align-items: flex-start; }
+/* name, role and LinkedIn sit beside the photo, on its bottom line; the bio runs under them in large type */
+.tmd-head { align-self: end; display: flex; flex-direction: column; gap: calc(24 * var(--u)); align-items: flex-start; }
 .tmd-id { display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
-.tmd-name { font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(72 * var(--u)); line-height: calc(64 * var(--u)); }
-.tmd-title { color: var(--charcoal-40); }
+.tmd-name { font-family: var(--f-display); font-weight: 700; font-feature-settings: "dlig" 1; font-size: calc(66 * var(--u)); line-height: calc(64 * var(--u)); }
+.tmd-title { color: var(--charcoal-40); font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; }
+.tmd-bio { grid-column: 2; font-size: calc(32 * var(--u)); line-height: calc(40 * var(--u)); letter-spacing: calc(-.64 * var(--u)); font-weight: 500; }
 .tmd-in {
   display: inline-flex; align-items: center; gap: calc(12 * var(--u)); padding: calc(20 * var(--u)) calc(28 * var(--u)); border-radius: 999px;
   background: #0076b2; color: var(--white); font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); font-weight: 500;
@@ -189,14 +191,14 @@
 .tmd-close:hover { background: #e8e8e8; transform: rotate(90deg); }
 .tmd-close img { width: calc(24 * var(--u)); height: calc(24 * var(--u)); }
 /* the drawer content rises in after the panel lands */
-.tmd-photo, .tmd-body > * { opacity: 0; transform: translateY(calc(24 * var(--u))); transition: opacity .5s, transform .8s var(--ease-out); }
-.tm-drawer.on .tmd-photo, .tm-drawer.on .tmd-body > * { opacity: 1; transform: none; }
+.tmd-photo, .tmd-head > *, .tmd-bio { opacity: 0; transform: translateY(calc(24 * var(--u))); transition: opacity .5s, transform .8s var(--ease-out); }
+.tm-drawer.on .tmd-photo, .tm-drawer.on .tmd-head > *, .tm-drawer.on .tmd-bio { opacity: 1; transform: none; }
 .tm-drawer.on .tmd-photo { transition-delay: .2s; }
-.tm-drawer.on .tmd-body > :nth-child(1) { transition-delay: .28s; }
-.tm-drawer.on .tmd-body > :nth-child(2) { transition-delay: .34s; }
-.tm-drawer.on .tmd-body > :nth-child(3) { transition-delay: .4s; }
+.tm-drawer.on .tmd-head > :nth-child(1) { transition-delay: .28s; }
+.tm-drawer.on .tmd-head > :nth-child(2) { transition-delay: .34s; }
+.tm-drawer.on .tmd-bio { transition-delay: .4s; }
 @media (prefers-reduced-motion: reduce) {
-  .tmd-panel, .tmd-photo, .tmd-body > *, .tm-more { transition: none; }
+  .tmd-panel, .tmd-photo, .tmd-head > *, .tmd-bio, .tm-more { transition: none; }
 }
 
 

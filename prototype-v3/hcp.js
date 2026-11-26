@@ -121,103 +121,91 @@
   });
   drawMask();
 
-  /* ---------- orbit sphere: photo cards on a flattened sphere around the centred copy ----------
-     Fibonacci distribution, billboards with depth (scale 0.42 -> 1, opacity 0.3 -> 1), perspective camera (fov 40),
-     idle turn 50 s, bob 6px / 4 s, staggered entrance, drag to spin and tilt with momentum, hover freezes and lifts a card.
-     Cards of different sizes; cards that pass behind the copy fade and blur, cards in front of it turn glassy so it stays readable. */
-  const orbit = $('#hp-orbit'), people = $('#people'), copy = $('.hp-gal-text', people);
-  const DEFS = [                                     // [photo, object-position, zoom, width] (design px); every card is 16:9
-    ['o1', '48% 30%', 1.15, 230], ['o2', '40% 35%', 1, 270], ['o3', '52% 28%', 1.2, 210], ['o4', '50% 38%', 1.05, 250],
-    ['o6', '50% 50%', 1, 290], ['o7', '60% 50%', 1, 220], ['o8', '50% 45%', 1, 260], ['o9', '50% 55%', 1.15, 200],
-    ['o1', '75% 85%', 1.9, 240], ['o2', '80% 86%', 2.4, 200], ['o3', '10% 45%', 1.9, 280], ['o4', '96% 45%', 1.9, 210],
-    ['o6', '88% 25%', 1.9, 250], ['o7', '75% 35%', 1.8, 270], ['o8', '48% 48%', 1.9, 220], ['o9', '50% 14%', 2.2, 260]
-  ];
-  const N = DEFS.length, GOLD = Math.PI * (3 - Math.sqrt(5));
-  const cards = DEFS.map((df, i) => {
-    const [ph, pos, zoom, w] = df, hgt = Math.round(w * 9 / 16);
-    const el = document.createElement('div'); el.className = 'hp-card3';
-    el.style.width = `calc(${w} * var(--u))`; el.style.height = `calc(${hgt} * var(--u))`;
-    const img = document.createElement('img'); img.src = `assets/hc/${ph}.jpg`; img.alt = ''; img.draggable = false;
-    img.style.objectPosition = pos; img.style.transformOrigin = pos; img.style.transform = `scale(${zoom})`; el.appendChild(img);
-    orbit.appendChild(el);
-    const y = 1 - 2 * (i + .5) / N, rr = Math.sqrt(1 - y * y);
-    return { el, w, h: hgt, d: [rr * Math.cos(i * GOLD), y, rr * Math.sin(i * GOLD)], phase: Math.random() * 6.28, hover: 0, hot: false, hold: null, pos: [0, 0, 0], i };
+  /* ---------- field flight: photo cards spawn large and wide around the frame and recede into depth ----------
+     A still camera, a constant speed and a seamless loop: each card wraps its own life value, staggered evenly.
+     Golden-angle ring placement keeps the middle clear for the copy; the cursor swings near cards more than far ones.
+     Photos alternate between two formats, 13:9 and 9:13. */
+  const people = $('#people'), field = $('#hp-field'), copy = $('.hp-gal-text', people);
+  const WIDE = 13 / 9, TALL = 9 / 13;
+  /* [file, format, horizontal focus of the crop]; the order makes tall and wide cards follow one another */
+  const PHOTOS = [['o1', TALL, .5], ['o6', WIDE, .5], ['o3', TALL, .6], ['o7', WIDE, .5], ['o2', TALL, .4], ['o8', WIDE, .5], ['o4', TALL, .52], ['o9', WIDE, .5]];
+  const FF = { cycle: 6, camZ: 2.8, zNear: .85, zFar: -1.05, k: 1.3 * 1.2, spreadX: 1.62, spreadY: 1, ringMin: .58,
+    size: .27, radius: .06, fadeIn: .18, holdTo: .4, arrive: 2.2, swing: .17, depth: 1.8, ease: .075 };
+  const frac = n => n - Math.floor(n);
+  const sprites = PHOTOS.map(([name, ratio, fx]) => {                       // the crop is made once, off screen
+    const img = new Image(), c = document.createElement('canvas'), s = { c, ratio, ready: false };
+    img.onload = () => {
+      const iw = img.naturalWidth, ih = img.naturalHeight, sw = Math.min(iw, ih * ratio), sh = sw / ratio;
+      c.width = ratio > 1 ? 936 : 648; c.height = ratio > 1 ? 648 : 936;
+      const g = c.getContext('2d'); g.imageSmoothingQuality = 'high';
+      g.drawImage(img, (iw - sw) * fx, (ih - sh) / 2, sw, sh, 0, 0, c.width, c.height);
+      s.ready = true; if (reduce) drawField();
+    };
+    img.src = `${IMG}${name}.jpg`;
+    return s;
   });
-  let yaw = 0, pitch = 0, yawV = 0, drag = false, lastX = 0, lastY = 0, lastT = 0, orbitOn = false, tPrev = 0, tStart = 0;
-  let RX = 0, RY = 0, RZ = 0, CAM = 1, TR = null;
-  function layoutOrbit() {
-    const w = people.clientWidth, h = people.clientHeight;
-    CAM = h / 2 / Math.tan(20 * Math.PI / 180);
-    RX = Math.min(w * .36, h * .8); RY = RX * .6; RZ = (RX + RY) / 2;
-    const fits = () => { for (let s = 0; s < 48; s++) { const a = s / 48 * Math.PI * 2, c = Math.cos(a), sn = Math.sin(a);
-      for (const k of cards) { const x = k.d[0] * c - k.d[2] * sn, z = k.d[0] * sn + k.d[2] * c, f = CAM / (CAM - z * RZ), sc = (.42 + .58 * (z + 1) / 2) * f;
-        if (Math.abs(k.d[1] * RY * f) + k.h * U * sc / 2 > h / 2 - 16 || Math.abs(x * RX * f) + k.w * U * sc / 2 > w / 2 - 16) return false; } } return true; };
-    for (let g = 0; g < 40 && !fits(); g++) { RX *= .95; RY *= .95; RZ *= .95; }
-    const a = copy.getBoundingClientRect(), b = people.getBoundingClientRect(), pad = 36 * U;
-    TR = { l: a.left - b.left - pad, r: a.right - b.left + pad, t: a.top - b.top - pad, b: a.bottom - b.top + pad };
+  const N = PHOTOS.length;
+  const flyers = sprites.map((s, i) => {
+    const ang = frac(.11 + i * .6180339887498949) * Math.PI * 2;
+    const band = (((i * 5) % N) + frac(.37 + i * .7548776662466927)) / N, rad = FF.ringMin + (1 - FF.ringMin) * band;
+    return { s: sprites[(i * 3) % N], x: Math.cos(ang) * rad * FF.spreadX, y: Math.sin(ang) * rad * FF.spreadY, offset: i / N };
+  });
+  const ctx = field.getContext('2d');
+  let fw = 0, fh = 0, textBox = null, elapsed = reduce ? 1.5 : 0, tPrev = 0, ffRaf = 0;
+  const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+  function layoutField() {
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    fw = people.clientWidth; fh = people.clientHeight;
+    field.width = Math.round(fw * dpr); field.height = Math.round(fh * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.imageSmoothingQuality = 'high';
+    const pad = 24 * U;
+    textBox = { l: copy.offsetLeft - pad, t: copy.offsetTop - pad, r: copy.offsetLeft + copy.offsetWidth + pad, b: copy.offsetTop + copy.offsetHeight + pad };
+    drawField();
   }
-  cards.forEach(c => {
-    c.el.addEventListener('pointerenter', () => { if (!drag) { c.hot = true; c.hold = c.pos.slice(); } });
-    c.el.addEventListener('pointerleave', () => { c.hot = false; });
-  });
-  orbit.addEventListener('pointerdown', e => { drag = true; lastX = e.clientX; lastY = e.clientY; lastT = performance.now(); yawV = 0; orbit.classList.add('is-drag'); cards.forEach(c => { c.hot = false; }); });
-  addEventListener('pointermove', e => {
-    if (!drag) return;
-    const now = performance.now(), dx = e.clientX - lastX, dy = e.clientY - lastY, dt = Math.max(1, now - lastT) / 1000;
-    yaw += dx * .006; pitch = clamp(pitch + dy * .006, -.436, .436);
-    yawV = clamp(dx * .006 / dt, -6, 6); lastX = e.clientX; lastY = e.clientY; lastT = now;
-  });
-  addEventListener('pointerup', () => { drag = false; orbit.classList.remove('is-drag'); });
-  const easeOut = t => 1 - Math.pow(1 - clamp(t), 3);
-  function orbitFrame(t) {
-    if (!orbitOn) return;
-    const now = t / 1000, dt = Math.min(.05, tPrev ? now - tPrev : .016); tPrev = now;
-    if (!tStart) tStart = now;
-    if (!drag) { yaw += (reduce ? 0 : Math.PI * 2 / 50) * dt + yawV * dt; yawV *= Math.exp(-dt / .7); pitch += (0 - pitch) * (1 - Math.exp(-dt / 1.1)); }
-    const cx = people.clientWidth / 2, cy = people.clientHeight / 2, cp = Math.cos(pitch), sp = Math.sin(pitch), cyw = Math.cos(yaw), syw = Math.sin(yaw);
-    cards.forEach(c => {
-      c.hover += ((c.hot ? 1 : 0) - c.hover) * Math.min(1, dt / (c.hot ? .4 : .6) * 2.2);
-      const hh = c.hover * c.hover * (3 - 2 * c.hover);
-      // tilt about X, then yaw about Y
-      let x = c.d[0] * RX, y = c.d[1] * RY, z = c.d[2] * RZ;
-      const y1 = y * cp - z * sp, z1 = y * sp + z * cp;
-      const x2 = x * cyw + z1 * syw, z2 = -x * syw + z1 * cyw;
-      c.pos = [x2, y1, z2];
-      let px = x2, py = y1, pz = z2;
-      if (c.hold && hh > 0) { px += (c.hold[0] - px) * hh; py += (c.hold[1] - py) * hh; pz += (c.hold[2] - pz) * hh; }
-      if (!c.hot && hh < .001) c.hold = null;
-      const zn = clamp(pz / RZ, -1, 1);
-      const bob = reduce ? 0 : Math.sin(now * Math.PI * 2 / 4 + c.phase) * 6 * U;
-      const zc = pz + 40 * U * hh, f = CAM / (CAM - zc);
-      const depthS = .42 + .58 * (zn + 1) / 2, depthO = .3 + .7 * (zn + 1) / 2;
-      const en = reduce ? 1 : easeOut((now - tStart - c.i * .12) / .6);
-      const sc = depthS * f * (1 + .15 * hh) * (.7 + .3 * en);
-      const sx = cx + px * f, sy = cy + (py + bob) * f;
-      // overlap with the copy: back cards fade and blur behind it, front cards turn glassy
-      let ov = 0;
-      if (TR) {
-        const hw = c.w * U * sc / 2, hh2 = c.h * U * sc / 2;
-        const ix = Math.max(0, Math.min(sx + hw, TR.r) - Math.max(sx - hw, TR.l)), iy = Math.max(0, Math.min(sy + hh2, TR.b) - Math.max(sy - hh2, TR.t));
-        ov = clamp(ix * iy / (4 * hw * hh2));
-      }
-      const back = zn < .05;
-      let op = depthO + (1 - depthO) * hh;
-      op *= back ? 1 - .88 * ov * (1 - hh) : 1 - .62 * ov * (1 - hh);
-      const blur = ((1 - (zn + 1) / 2) * 1.6 + (back ? 3.2 * ov : 0)) * (1 - hh) * U;
-      c.el.style.transform = `translate3d(${sx.toFixed(1)}px, ${sy.toFixed(1)}px, 0) translate(-50%, -50%) scale(${sc.toFixed(3)})`;
-      c.el.style.opacity = (clamp(op) * en).toFixed(3);
-      c.el.style.filter = blur > .05 ? `blur(${blur.toFixed(2)}px)` : 'none';
-      c.el.style.zIndex = hh > .05 ? 60 : (zn >= .05 ? 45 + Math.round(zn * 10) : 10 + Math.round((zn + 1) * 12));
-      c.el.style.boxShadow = `0 ${((10 + 8 * hh) * U).toFixed(1)}px ${((26 + 14 * hh) * U).toFixed(1)}px rgba(0,0,0,${((.14 + .22 * hh) * (.4 + .6 * (zn + 1) / 2)).toFixed(2)})`;
-    });
-    requestAnimationFrame(orbitFrame);
+  function drawField() {
+    if (!fw) return;
+    ctx.clearRect(0, 0, fw, fh);
+    const shorter = Math.min(fw, fh), portrait = fh > fw, arrive = reduce ? 1 : smooth(elapsed / FF.arrive);
+    flyers.map(c => ({ c, life: frac(elapsed / FF.cycle + c.offset) }))
+      .sort((a, b) => b.life - a.life)                                 // far cards first, near ones on top
+      .forEach(({ c, life }) => {
+        const z = FF.zNear + (FF.zFar - FF.zNear) * life, p = FF.k / (FF.camZ - z);
+        let alpha = smooth(life / FF.fadeIn) * (1 - smooth((life - FF.holdTo) / (1 - FF.holdTo))) * arrive;
+        const size = FF.size * shorter * p, w = size * Math.sqrt(c.s.ratio), h = size / Math.sqrt(c.s.ratio);   // both formats cover the same area
+        const follow = FF.swing * Math.pow(p, FF.depth) * shorter;
+        const x = fw / 2 + c.x * p * shorter * (portrait ? .62 : 1) - mouse.x * follow - w / 2;
+        const y = fh / 2 + c.y * p * shorter * (portrait ? 1.8 : 1) - mouse.y * follow - h / 2;
+        if (textBox) {                                                 // a card drifting behind the copy thins out, so the text stays readable
+          const ix = Math.max(0, Math.min(x + w, textBox.r) - Math.max(x, textBox.l)), iy = Math.max(0, Math.min(y + h, textBox.b) - Math.max(y, textBox.t));
+          alpha *= 1 - .86 * smooth(ix * iy / (w * h) * 1.6);
+        }
+        if (!c.s.ready || alpha < .004) return;
+        ctx.save(); ctx.globalAlpha = alpha; ctx.beginPath();
+        const r = Math.min(w, h) * FF.radius;
+        if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h);
+        ctx.clip(); ctx.drawImage(c.s.c, x, y, w, h); ctx.restore();
+      });
   }
-  new IntersectionObserver(en => {
-    const on = en[0].isIntersecting;
-    if (on && !orbitOn) { layoutOrbit(); orbitOn = true; tPrev = 0; requestAnimationFrame(orbitFrame); } else if (!on) { orbitOn = false; tStart = 0; }
-  }, { threshold: .15 }).observe(people);
-  addEventListener('resize', () => { if (orbitOn) layoutOrbit(); });
-  new ResizeObserver(() => { if (orbitOn) layoutOrbit(); }).observe(copy);
+  function fieldFrame(now) {
+    const dt = tPrev ? Math.min(.05, (now - tPrev) / 1000) : 0; tPrev = now;
+    elapsed += dt;
+    mouse.x += (mouse.tx - mouse.x) * FF.ease; mouse.y += (mouse.ty - mouse.y) * FF.ease;
+    drawField();
+    ffRaf = requestAnimationFrame(fieldFrame);
+  }
+  people.addEventListener('pointermove', e => {
+    if (reduce) return;
+    const r = people.getBoundingClientRect();
+    mouse.tx = (e.clientX - r.left) / r.width * 2 - 1; mouse.ty = (e.clientY - r.top) / r.height * 2 - 1;
+  });
+  people.addEventListener('pointerleave', () => { mouse.tx = 0; mouse.ty = 0; });
+  new IntersectionObserver(en => {                                     // runs only while the block is on screen
+    const on = en[en.length - 1].isIntersecting;
+    if (on && !reduce && !ffRaf) { tPrev = 0; ffRaf = requestAnimationFrame(fieldFrame); }
+    else if (!on && ffRaf) { cancelAnimationFrame(ffRaf); ffRaf = 0; }
+  }).observe(people);
+  new ResizeObserver(layoutField).observe(people);
+  new ResizeObserver(layoutField).observe(copy);
 
   /* ---------- forms ---------- */
   const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
