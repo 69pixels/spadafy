@@ -7,7 +7,7 @@
   <meta name="description" content="Better outcomes begin with a clearer picture. Request a free Health Check of your digital workplace.">
   <link rel="stylesheet" href="assets/vendor/lenis.css">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="hcp.css">
+  <link rel="stylesheet" href="hcp.css?v=5">
 </head>
 <body class="hp-page">
 
@@ -109,18 +109,28 @@
         </div>
       </section>
 
-      <!-- ============ steps (2284:3351) ============ -->
-      <section class="hp-steps-sec" id="steps" data-idx="How it works" aria-labelledby="hp-steps-t">
-        <div class="block hp-steps-l">
-          <div class="hp-text">
-            <h2 class="hp-h2 rv" id="hp-steps-t">Simple process.<br>A shared understanding.</h2>
-            <p class="hp-p24 rv" style="--d:120ms">Every good partnership starts with listening. With this straightforward Health Check, we start with understanding your environment, review the key areas and provide recommendations based on what we found.</p>
-          </div>
+      <!-- ============ steps (2480:771): three photo cards, as the package cards on Services ============ -->
+      <section class="block hp-process" id="steps" data-idx="How it works" aria-labelledby="hp-steps-t">
+        <div class="hp-process-head">
+          <h2 class="hp-h2 rv" id="hp-steps-t">Simple process.<br>A shared understanding.</h2>
+          <p class="hp-p24 rv" style="--d:120ms">Every good partnership starts with listening. With this straightforward Health Check, we start with understanding your environment, review the key areas and provide recommendations based on what we found.</p>
         </div>
-        <ol class="hp-steps-r">
-          <li class="hp-st rv"><b>1</b><div><h3>Start with a conversation</h3><p class="hp-p24">We’ll learn about your environment, understand the challenges you’re facing and establish what you’d like to get out of the health check.</p></div></li>
-          <li class="hp-st rv" style="--d:120ms"><b>2</b><div><h3>Review your environment</h3><p class="hp-p24">We’ll assess your existing VDI setup, looking at performance, configuration, capacity and potential areas of risk. We’ll document our findings so you have a clear picture of how things stand.</p></div></li>
-          <li class="hp-st rv" style="--d:240ms"><b>3</b><div><h3>Get a clear view of what’s next</h3><p class="hp-p24">We’ll walk you through the findings, explain what’s working well and highlight the areas worth prioritizing. Then together we can discuss the next steps!</p></div></li>
+        <ol class="hp-pks">
+          <li class="hp-pk rv">
+            <img class="hp-pk-img" src="assets/services/card-managed.jpg" alt="" style="object-position:50% 50%">
+            <h3 class="hp-pk-title">Start with a<br>conversation</h3>
+            <div class="hp-pk-info"><p class="hp-p24">We’ll learn about your environment, understand the challenges you’re facing and establish what you’d like to get out of the health check.</p></div>
+          </li>
+          <li class="hp-pk rv" style="--d:120ms">
+            <img class="hp-pk-img" src="assets/hc/step-2.jpg" alt="" style="object-position:50% 45%">
+            <h3 class="hp-pk-title">Review your<br>environment</h3>
+            <div class="hp-pk-info"><p class="hp-p24">We’ll assess your existing VDI setup, looking at performance, configuration, capacity and potential areas of risk. We’ll document our findings so you have a clear picture of how things stand.</p></div>
+          </li>
+          <li class="hp-pk rv" style="--d:240ms">
+            <img class="hp-pk-img" src="assets/hc/step-3.jpg" alt="" style="object-position:62% 50%">
+            <h3 class="hp-pk-title">Get a clear view of<br>what’s next</h3>
+            <div class="hp-pk-info"><p class="hp-p24">We’ll walk you through the findings, explain what’s working well and highlight the areas worth prioritizing. Then together we can discuss the next steps!</p></div>
+          </li>
         </ol>
       </section>
 
@@ -139,9 +149,9 @@
         </ul>
       </section>
 
-      <!-- ============ people: photo cards orbit the centred copy ============ -->
+      <!-- ============ people: photos fly off into depth around the centred copy ============ -->
       <section class="block hp-people" id="people" data-idx="Better together" aria-labelledby="hp-gal-t">
-        <div class="hp-orbit" id="hp-orbit" aria-hidden="true"></div>
+        <canvas class="hp-field" id="hp-field" aria-hidden="true"></canvas>
         <div class="hp-gal-text">
           <h2 class="hp-h2 rv" id="hp-gal-t">Technology works better<br>when people work together.</h2>
           <p class="hp-p24 rv" style="--d:120ms">At Spadafy, we believe good technology partnerships are built on understanding and strengthened over time. We bring the experience to assess your environment and the human perspective to help you make sense of it.</p>
@@ -174,6 +184,6 @@
   </main>
 
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="hcp.js"></script>
+  <script src="hcp.js?v=6"></script>
 </body>
 </html>
