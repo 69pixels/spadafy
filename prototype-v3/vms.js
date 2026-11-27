@@ -130,7 +130,7 @@
     ['.get', 0, 0], ['.step', 110, 0],
     ['.proof-head > *', 120, 0], ['.case', 0, 200],
     ['.v-faq .h2', 0, 0], ['.qa', 60, 0],
-    ['.v-related .h3', 0, 0], ['.rel', 110, 0],
+    ['.v-related .h3', 0, 0],
     ['.ct-points li', 110, 0], ['.fields > *', 60, 0], ['.legal', 0, 400]
   ];
   const heroReveal = ['.hero h1', '.hero-text .t24', '.vh-btns', '.vh-platforms'].map((sel, i) => {
@@ -140,6 +140,13 @@
   });
   const io = new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .15, rootMargin: '0px 0px -6% 0px' });
   REVEAL.forEach(([sel, step, base]) => $$(sel).forEach((el, i) => { el.classList.add('rv'); el.style.setProperty('--d', Math.min(base + i * step, 700) + 'ms'); io.observe(el); }));
+  /* related cards sit in a sideways row: the ones past the edge never intersect, so the row reveals as a whole */
+  const rowIo = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    $$('.rel', en.target).forEach(el => el.classList.add('in'));
+    rowIo.unobserve(en.target);
+  }), { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+  $$('.rel-cards').forEach(row => { $$('.rel', row).forEach((el, i) => { el.classList.add('rv'); el.style.setProperty('--d', Math.min(i * 110, 330) + 'ms'); }); rowIo.observe(row); });
   requestAnimationFrame(() => setTimeout(() => heroReveal.forEach(el => el.classList.add('in')), 120));
 
   /* =========================================================

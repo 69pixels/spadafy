@@ -1,0 +1,52 @@
+/* Spadafy — custom dropdown for the contact forms' Service field (select.js).
+   The trigger keeps the field look; the list opens on soft grey, set in Aeonik Pro. */
+.csel { cursor: pointer; }
+.csel.is-open { z-index: 30; }
+.csel > select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+.csel-btn {
+  display: block; width: 100%; margin: 0; border: 0; outline: 0; background: none; cursor: pointer; text-align: left;
+  padding: calc(24 * var(--u)); padding-right: calc(56 * var(--u)); border-radius: inherit;
+  font-family: var(--f-body); font-weight: 500; color: var(--charcoal);
+  font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u));
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.csel > img { transition: transform .35s var(--ease-out); }
+.csel.is-open > img { transform: translateY(-50%) rotate(180deg); }
+
+/* the list: soft grey, rounded like the fields, a soft lift off the form */
+/* the list floats on the page (select.js places it), so a form block that clips can't cut it off */
+.csel-list {
+  position: fixed; left: 0; top: 0; width: 0; z-index: 60; margin: 0; padding: calc(8 * var(--u));
+  list-style: none; border-radius: calc(24 * var(--u)); background: var(--soft);
+  box-shadow: 0 calc(24 * var(--u)) calc(64 * var(--u)) rgba(47, 47, 47, .16), 0 0 0 1px rgba(47, 47, 47, .04);
+  max-height: calc(440 * var(--u)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+  opacity: 0; visibility: hidden; transform: translateY(calc(-8 * var(--u))) scale(.98); transform-origin: top center;
+  transition: opacity .2s, transform .35s var(--ease-out), visibility 0s .35s;
+}
+.csel-list::-webkit-scrollbar { display: none; }
+.csel-list.up { transform-origin: bottom center; transform: translateY(calc(8 * var(--u))) scale(.98); }
+.csel-list.is-open { opacity: 1; visibility: visible; transform: none; transition: opacity .2s, transform .45s var(--ease-out), visibility 0s; }
+
+.csel-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: calc(16 * var(--u));
+  padding: calc(14 * var(--u)) calc(16 * var(--u)); border-radius: calc(16 * var(--u));
+  font-family: var(--f-body); font-weight: 500; font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u));
+  color: var(--charcoal-60); cursor: pointer; transition: background .2s, color .2s;
+}
+.csel-opt svg { flex: none; width: calc(20 * var(--u)); height: calc(20 * var(--u)); opacity: 0; transform: scale(.6); transition: opacity .2s, transform .3s var(--ease-out); }
+.csel-opt.is-active { background: var(--white); color: var(--charcoal); }
+.csel-opt[aria-selected="true"] { color: var(--charcoal); }
+.csel-opt[aria-selected="true"] svg { opacity: 1; transform: none; }
+/* options drift in one after another as the list opens */
+.csel-opt { opacity: 0; transform: translateY(calc(6 * var(--u))); }
+.csel-list.is-open .csel-opt { opacity: 1; transform: none; transition: background .2s, color .2s, opacity .3s calc(var(--i) * 25ms), transform .45s calc(var(--i) * 25ms) var(--ease-out); }
+
+@media (max-width: 767px) {
+  .csel-btn { padding: calc(16 * var(--u)); padding-right: calc(40 * var(--u)); font-size: max(16px, calc(16 * var(--u))); line-height: calc(22 * var(--u)); letter-spacing: 0; }
+  .csel-list { padding: calc(6 * var(--u)); border-radius: calc(18 * var(--u)); max-height: calc(320 * var(--u)); }
+  .csel-opt { padding: calc(11 * var(--u)) calc(12 * var(--u)); border-radius: calc(12 * var(--u)); font-size: calc(15 * var(--u)); line-height: calc(20 * var(--u)); letter-spacing: 0; }
+  .csel-opt svg { width: calc(16 * var(--u)); height: calc(16 * var(--u)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .csel-list, .csel-opt, .csel > img { transition: none !important; }
+}

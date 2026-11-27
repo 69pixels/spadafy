@@ -40,8 +40,12 @@
 .vh-btns { display: flex; gap: calc(16 * var(--u)); margin-top: calc(-32 * var(--u)); } /* 48 below the copy, 80 above the platforms */
 .vh-platforms { display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
 .vh-hero .vh-platforms p { width: auto; font-size: calc(16 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.16 * var(--u)); color: var(--soft-60); }
-.vh-logos { display: flex; align-items: center; gap: calc(36 * var(--u)); height: calc(24 * var(--u)); opacity: .6; }
-.vh-logos img { width: calc(var(--w) * var(--u)); height: calc(24 * var(--u)); object-fit: contain; }
+.vh-logos { --ls: .7; display: flex; align-items: center; gap: calc(40 * var(--u)); opacity: .6; }
+/* each logo keeps its own optical width, from the home marquee (same proportions as the Vendor Partners table) */
+.vh-logos img { flex: none; width: calc(var(--w) * var(--ls) * var(--u)); height: auto; }
+@media (max-width: 767px) {
+  .vh-logos { --ls: .42; flex-wrap: wrap; row-gap: calc(12 * var(--u)); column-gap: calc(22 * var(--u)); }
+}
 
 /* ---------- shared blocks ---------- */
 .v-white { background: var(--white); padding: calc(120 * var(--u)) calc(80 * var(--u)); overflow: hidden; }
@@ -181,10 +185,13 @@
 .qa.is-open .qa-a > p { opacity: 1; margin-top: calc(-6 * var(--u)); padding-bottom: calc(32 * var(--u)); transition-delay: .08s; }
 
 /* ---------- Related services (1660:658) ---------- */
-.v-related { background: var(--charcoal); color: var(--white); padding: calc(120 * var(--u)) calc(80 * var(--u)); display: flex; flex-direction: column; gap: calc(48 * var(--u)); }
-.v-related .h3 { font-feature-settings: "dlig" 1; }
-.rel-cards { display: flex; gap: var(--gap); height: calc(560 * var(--u)); }
-.rel { position: relative; flex: 1 1 0; display: flex; align-items: flex-end; border-radius: calc(40 * var(--u)); overflow: hidden; background: var(--soft-30); isolation: isolate; }
+/* Figma 2522:2585: the row starts on the grid and runs off the right edge; drag it (drag.js) */
+.v-related { background: var(--charcoal); color: var(--white); padding: calc(120 * var(--u)) 0; display: flex; flex-direction: column; gap: calc(48 * var(--u)); overflow: hidden; }
+.v-related .h3 { font-feature-settings: "dlig" 1; padding: 0 calc(80 * var(--u)); }
+.rel-cards { display: flex; gap: var(--gap); height: calc(560 * var(--u)); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; scroll-snap-type: x proximity; padding: 0 calc(80 * var(--u)); scroll-padding: 0 calc(80 * var(--u)); }
+/* the row spans the whole block, so dragged cards run under both edges; the padding keeps the resting position on the grid */
+.rel-cards::-webkit-scrollbar { display: none; }
+.rel { position: relative; flex: 0 0 calc(576 * var(--u)); scroll-snap-align: start; display: flex; -webkit-user-drag: none; align-items: flex-end; border-radius: calc(40 * var(--u)); overflow: hidden; background: var(--soft-30); isolation: isolate; }
 .rel-img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; transition: transform .8s var(--ease-out); }
 .rel::before { content: ""; position: absolute; inset: 0; background: rgba(47,47,47,.2); z-index: -1; }
 .rel:hover .rel-img, .rel:focus-visible .rel-img { transform: scale(1.04); }
@@ -205,6 +212,23 @@
 .rel-tag { position: absolute; left: calc(40 * var(--u)); top: calc(40 * var(--u)); padding: calc(8 * var(--u)) calc(12 * var(--u)); border-radius: 999px; font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); white-space: nowrap; }
 .t-orange { background: var(--orange); color: #f4e8e8; }
 .t-green { background: var(--green); color: #e4f5df; }
+.can-drag { cursor: grab; }
+.can-drag.is-drag { scroll-snap-type: none; cursor: grabbing; user-select: none; -webkit-user-select: none; }
+.can-drag.is-drag .rel { pointer-events: none; }
+/* "← Drag →" pill trailing the pointer (same as the homepage team row) */
+.drag-hint { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; will-change: transform; }
+.drag-hint-pill {
+  display: flex; align-items: center; gap: calc(8 * var(--u)); padding: calc(16 * var(--u)) calc(20 * var(--u)); border-radius: 999px;
+  background: rgba(47, 47, 47, .5); -webkit-backdrop-filter: blur(calc(40 * var(--u))); backdrop-filter: blur(calc(40 * var(--u)));
+  color: var(--white); white-space: nowrap; font-weight: 500; font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u));
+  opacity: 0; transform: translate(-50%, -50%) scale(.6); transition: opacity .25s var(--ease-out), transform .4s var(--ease-out);
+}
+.drag-hint.is-on .drag-hint-pill { opacity: 1; transform: translate(-50%, -50%); }
+.drag-hint-pill span { display: inline-block; transition: transform .3s var(--ease-out); }
+.is-drag ~ .drag-hint.is-on .drag-hint-pill { transform: translate(-50%, -50%) scale(.92); }
+.is-drag ~ .drag-hint .dh-l { transform: translateX(calc(-4 * var(--u))); }
+.is-drag ~ .drag-hint .dh-r { transform: translateX(calc(4 * var(--u))); }
+.has-hint, .has-hint * { cursor: none; }
 
 /* ---------- Contact (1660:682) ---------- */
 .v-contact { display: flex; gap: var(--gap); height: calc(760 * var(--u)); }

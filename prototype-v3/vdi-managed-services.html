@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="styles.css?v=4">
   <link rel="stylesheet" href="nav.css?v=5">
   <link rel="stylesheet" href="seam.css?v=1">
-  <link rel="stylesheet" href="vms.css?v=2">
+  <link rel="stylesheet" href="vms.css?v=5">
+  <link rel="stylesheet" href="select.css?v=2">
   <link rel="stylesheet" href="consent.css">
   <script>try { sessionStorage.setItem('spadafy-visited', '1'); if (sessionStorage.getItem('spadafy-nav')) { document.documentElement.classList.add('nav-arriving'); setTimeout(function () { document.documentElement.classList.remove('nav-arriving'); }, 3000); } } catch (e) {}</script>
 </head>
@@ -38,9 +39,9 @@
         <div class="vh-platforms">
           <p>Platforms we run on:</p>
           <div class="vh-logos">
-            <img src="assets/vms/logo-omnissa.png" alt="Omnissa" style="--w:134.4">
-            <img src="assets/vms/logo-microsoft.svg" alt="Microsoft" style="--w:123.8">
-            <img src="assets/vms/logo-citrix.png" alt="Citrix" style="--w:77.1">
+            <img src="assets/vms/logo-omnissa.png" alt="Omnissa" style="--w:190">
+            <img src="assets/vms/logo-microsoft.svg" alt="Microsoft" style="--w:165">
+            <img src="assets/vms/logo-citrix.png" alt="Citrix" style="--w:120">
           </div>
         </div>
       </div>
@@ -211,24 +212,29 @@
         </div>
       </section>
 
-      <!-- Related services (1660:658) -->
+      <!-- Related services (Figma 2522:2585): a draggable row of cards -->
       <section class="block v-related" aria-labelledby="rel-t">
         <h2 class="h3" id="rel-t">Related services</h2>
-        <div class="rel-cards">
-          <a class="rel" href="free-vdi-health-check.html">
-            <img src="assets/vms/rel-health-check.jpg" alt="" class="rel-img">
+        <div class="rel-cards" data-drag>
+          <a class="rel" draggable="false" href="free-vdi-health-check.html">
+            <img src="assets/vms/rel-health-check.jpg" alt="" class="rel-img" draggable="false">
             <span class="rel-tag t-orange">Core VDI</span>
             <span class="rel-info"><span class="h6">Free VDI Health Check</span><span class="t20 soft-60">See where things stand before you hand them over.</span></span>
           </a>
-          <a class="rel" href="vdi-infrastructure.html">
-            <img src="assets/vms/rel-infrastructure.jpg" alt="" class="rel-img" style="height:127.68%;top:-5.55%">
+          <a class="rel" draggable="false" href="vdi-infrastructure.html">
+            <img src="assets/vms/rel-infrastructure.jpg" alt="" class="rel-img" draggable="false" style="height:127.68%;top:-5.55%">
             <span class="rel-tag t-orange">Core VDI</span>
             <span class="rel-info"><span class="h6">VDI Infrastructure</span><span class="t20 soft-60">When change goes beyond day-to-day operations.</span></span>
           </a>
-          <a class="rel" href="nerdio-solutions.html">
-            <img src="assets/vms/rel-nerdio.jpg" alt="" class="rel-img" style="height:157.38%;top:-37.46%">
+          <a class="rel" draggable="false" href="nerdio-solutions.html">
+            <img src="assets/vms/rel-nerdio.jpg" alt="" class="rel-img" draggable="false" style="height:157.38%;top:-37.46%">
             <span class="rel-tag t-green">Partner solutions</span>
             <span class="rel-info"><span class="h6">Nerdio Solutions</span><span class="t20 soft-60">Automation for the AVD environments we manage.</span></span>
+          </a>
+          <a class="rel" draggable="false" href="igel-endpoint-solutions.html">
+            <img src="assets/services/card-igel.jpg" alt="" class="rel-img" draggable="false">
+            <span class="rel-tag t-green">Partner solutions</span>
+            <span class="rel-info"><span class="h6">IGEL Endpoint Solutions</span><span class="t20 soft-60">Evaluate and deploy IGEL endpoints.</span></span>
           </a>
         </div>
       </section>
@@ -277,6 +283,8 @@
   <script src="assets/vendor/lenis.min.js"></script>
   <script src="nav.js?v=8"></script>
   <script src="vms.js?v=2"></script>
+  <script src="drag.js"></script>
+  <script src="select.js?v=3"></script>
   <script src="seam.js?v=1"></script>
   <script src="consent.js"></script>
 </body>

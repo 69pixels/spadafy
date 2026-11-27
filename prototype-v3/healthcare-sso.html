@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Healthcare SSO and Authentication — Spadafy</title>
+  <meta name="description" content="Spadafy implements Imprivata Enterprise Access Management across clinical applications, shared workstations, virtual desktops and identity services.">
+  <link rel="stylesheet" href="assets/vendor/lenis.css">
+  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="nav.css?v=5">
+  <link rel="stylesheet" href="seam.css?v=1">
+  <link rel="stylesheet" href="vms.css?v=36">
+  <link rel="stylesheet" href="svc.css?v=36">
+  <link rel="stylesheet" href="select.css?v=36">
+  <link rel="stylesheet" href="consent.css">
+  <script>try { sessionStorage.setItem('spadafy-visited', '1'); if (sessionStorage.getItem('spadafy-nav')) { document.documentElement.classList.add('nav-arriving'); setTimeout(function () { document.documentElement.classList.remove('nav-arriving'); }, 3000); } } catch (e) {}</script>
+</head>
+<body class="vms sv-page" data-next="health">
+
+  <!-- ============ NAV (same component as the homepage) ============ -->
+  <header class="nav" id="nav" data-active="services"></header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero vh-hero" aria-label="Healthcare SSO and Authentication">
+      <img class="hero-bg" src="assets/services/card-sso.jpg" alt="">
+      <div class="hero-shade"></div>
+      <div class="hero-fade"></div>
+      <div class="hero-text vh-text">
+        <div class="vh-main">
+          <p class="t32 vh-sub">Access built around clinical workflows</p>
+          <h1 class="nw">Healthcare SSO and<br>Authentication</h1>
+          <p class="t24">Spadafy implements Imprivata Enterprise Access Management across clinical applications, shared workstations, virtual desktops and identity services.</p>
+        </div>
+        <div class="vh-btns">
+          <a class="pill pill-orange" href="#contact">Discuss your SSO and authentication project</a>
+          <a class="pill pill-white" href="#scope">See the implementation services</a>
+        </div>
+        <div class="vh-platforms">
+          <p>Imprivata Enterprise Access Management with SSO and MFA</p>
+          <div class="vh-logos"><img src="assets/logos/imprivata.svg" alt="Imprivata" style="--w:220"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BODY: blocks slide over the hero ============ -->
+    <div class="body" id="body">
+      <div class="body-bg" aria-hidden="true"></div>
+
+      <!-- First block (Figma 2525:2721): the statement runs the letter wave on scroll, then the lead -->
+      <section class="block sv-glance" id="glance" data-index="At a glance" aria-labelledby="glance-t">
+        <h2 class="sv-glance-st" id="glance-t"><span class="sr-only">Clinicians sign in, move and sign out all day. We design access around that, then prove it with the people who use it.</span><span class="sv-wave" aria-hidden="true">Clinicians sign in, move and sign out all day. <em>We design access around that</em>, then prove it with the people who use it.</span></h2>
+        <p class="t24 sv-glance-p">Align access with your authentication policies and the way clinicians actually move through a shift.</p>
+      </section>
+
+      <!-- What your team gets back (from VDI Managed Services, 1660:461) -->
+      <section class="block v-white v-back" id="back" data-index="What you get back" aria-labelledby="back-t">
+        <div class="v-head">
+          <h2 class="h2" id="back-t">What your team gets back</h2>
+        </div>
+        <ul class="back-list">
+          <li><h3 class="t24">One team that knows your setup</h3><p class="t20 ch-60">From desktops to infrastructure, one dedicated team takes care of the whole picture.</p></li>
+          <li><h3 class="t24">Fewer surprises, fewer disruptions</h3><p class="t20 ch-60">We spot issues early, fix them before they grow and make sure changes work before they go live.</p></li>
+          <li><h3 class="t24">A team that remembers</h3><p class="t20 ch-60">Your systems, your history and your documentation stay in good hands. No starting from scratch or relying on one person.</p></li>
+        </ul>
+      </section>
+
+      <!-- Service modules (Figma 2497:1574): three columns of cards, icon + title + checklist -->
+      <section class="block v-white sv-mods" id="scope" data-index="Implementation services" aria-labelledby="scope-t">
+        <div class="sv-mods-head">
+          <h2 class="h2" id="scope-t">Implementation services</h2>
+          <p class="t24 ch-80">From mapping clinical workflows to handing over a validated rollout: Imprivata implementation, integration, upgrades and clinical workflow validation.</p>
+        </div>
+        <div class="sv-mods-grid">
+          <article class="sv-mod" id="m1">
+            <div class="sv-mod-h"><img class="sv-mod-ic" src="assets/iconoteka/work-group.svg" alt="" width="48" height="48"><h3>Clinical workflow<br>and access design</h3></div>
+            <ul><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Set access requirements with IT, security and clinical stakeholders.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Map application access across roles, departments and devices.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Define sign-in, additional authentication, reconnect, user switching, locking and sign-out behavior.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Document application dependencies and exception workflows before configuration.</li></ul>
+          </article>
+          <article class="sv-mod" id="m2">
+            <div class="sv-mod-h"><img class="sv-mod-ic" src="assets/iconoteka/device-update.svg" alt="" width="48" height="48"><h3>Imprivata deployment<br>and upgrades</h3></div>
+            <ul><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Configure agreed Imprivata components and supported identity, endpoint, agent and desktop-platform integrations.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Confirm compatibility; plan enrollment, authentication policies, pilots, production rollout and recovery.</li></ul>
+          </article>
+          <article class="sv-mod" id="m3">
+            <div class="sv-mod-h"><img class="sv-mod-ic" src="assets/iconoteka/login.svg" alt="" width="48" height="48"><h3>Application<br>SSO integration</h3></div>
+            <ul><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Configure single sign-on for supported applications.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Validate authentication, application launch and session behavior with application owners.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Document application requirements and dependencies to support future changes.</li></ul>
+          </article>
+          <article class="sv-mod" id="m4">
+            <div class="sv-mod-h"><img class="sv-mod-ic" src="assets/iconoteka/fingerprint.svg" alt="" width="48" height="48"><h3>Authentication and<br>shared workstations</h3></div>
+            <ul><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Configure supported authentication methods and MFA requirements for agreed workflows.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Integrate badge access, reauthentication, desktop reconnect and shared-workstation behavior where supported.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Verify intended sessions and access transitions against approved policies.</li></ul>
+          </article>
+          <article class="sv-mod" id="m5">
+            <div class="sv-mod-h"><img class="sv-mod-ic" src="assets/iconoteka/handshake.svg" alt="" width="48" height="48"><h3>Pilot testing and<br>operational handoff</h3></div>
+            <ul><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Test agreed workflows with representative users, devices and applications before broader rollout.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Record clinical application-owner acceptance, technical results and outstanding issues.</li><li><img src="assets/iconoteka/check.svg" alt="" width="20" height="29">Prepare administrators and support teams to maintain the implementation.</li></ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- Illustration (Figma 2538:56): the steps of a shift -->
+      <section class="block v-white sv-shift" id="architecture" data-index="Clinical access" aria-labelledby="arch-t">
+        <h2 class="h2" id="arch-t">A shift, from sign-in to sign-out</h2>
+        <ol class="sv-shift-grid">
+          <li class="sv-shift-card"><h3>Sign in</h3><p>At a shared workstation, with the authentication methods your policy requires.</p><ul class="sv-shift-chips"><li>Badge tap</li><li>Password or PIN</li><li>MFA where required</li></ul></li>
+          <li class="sv-shift-card"><h3>Application access</h3><p>Single sign-on into supported clinical applications, validated with their owners.</p><ul class="sv-shift-chips"><li>Application SSO</li><li>Role-based access</li></ul></li>
+          <li class="sv-shift-card"><h3>Workstation movement</h3><p>Locking, user switching and reconnecting to a virtual desktop as clinicians move.</p><ul class="sv-shift-chips"><li>Lock and switch user</li><li>Desktop reconnect</li><li>Reauthentication</li></ul></li>
+          <li class="sv-shift-card"><h3>Session ending</h3><p>Sign-out and locking behave as designed, so the next person starts clean.</p><ul class="sv-shift-chips"><li>Sign-out</li><li>Auto-lock</li></ul></li>
+        </ol>
+      </section>
+
+      <!-- From first call to steady state (from VDI Managed Services, 1660:525) -->
+      <section class="v-steps" id="steps" data-index="How it works" aria-labelledby="steps-t">
+        <div class="block v-white steps-left">
+          <div class="v-head">
+            <h2 class="h2" id="steps-t">From day one<br>to day-to-day</h2>
+            <p class="t24 ch-80">No complicated handovers. No guessing who’s doing what. Just good people keeping your technology in good shape.</p>
+          </div>
+          <div class="get">
+            <p class="t20 ch-60">The great stuff you get</p>
+            <ul class="chips">
+              <li><img src="assets/vms/ic-check.svg" alt="">A dedicated engineering team</li>
+              <li><img src="assets/vms/ic-check.svg" alt="">Clear responsibilities from the start</li>
+              <li><img src="assets/vms/ic-check.svg" alt="">Your systems, properly documented</li>
+              <li><img src="assets/vms/ic-check.svg" alt="">Patching, updates and maintenance</li>
+              <li><img src="assets/vms/ic-check.svg" alt="">A clear history of issues and changes</li>
+              <li><img src="assets/vms/ic-check.svg" alt="">We’ll handle your vendors, too</li>
+            </ul>
+          </div>
+        </div>
+        <div class="steps-right">
+          <ol class="steps-list">
+            <li class="step"><p class="step-k"><span>01</span><span>First, let’s talk.</span></p><p class="t20 soft-80">We get to know your business, understand what you need and agree on who’s doing what. No surprises later.</p></li>
+            <li class="step"><p class="step-k"><span>02</span><span>We’ll get to know the ropes.</span></p><p class="t20 soft-80">We get familiar with your systems, document the important stuff and make sure nothing gets lost in translation.</p></li>
+            <li class="step"><p class="step-k"><span>03</span><span>Leave the day-to-day to us.</span></p><p class="t20 soft-80">Monitoring, maintenance, support. We’ve got the everyday covered, so you can get on with yours.</p></li>
+            <li class="step"><p class="step-k"><span>04</span><span>Good is good. Better is better.</span></p><p class="t20 soft-80">We don’t just keep things ticking. We check in, spot opportunities and find ways to make things work even harder for you.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Related services (Figma 2522:2585): a draggable row of cards -->
+      <section class="block v-related" id="related" data-index="Related services" aria-labelledby="rel-t">
+        <h2 class="h3" id="rel-t">Related services</h2>
+        <div class="rel-cards" data-drag>
+          <a class="rel" href="vdi-infrastructure.html" draggable="false">
+            <img src="assets/services/card-infra.jpg" alt="" class="rel-img" draggable="false">
+            <span class="rel-tag t-orange">Core VDI</span>
+            <span class="rel-info"><span class="h6">VDI Infrastructure</span><span class="t20 soft-60">Supporting platform implementation for the desktops behind clinical access.</span></span>
+          </a>
+          <a class="rel" href="health-check.html" draggable="false">
+            <img src="assets/vms/rel-health-check.jpg" alt="" class="rel-img" draggable="false">
+            <span class="rel-tag t-orange">Core VDI</span>
+            <span class="rel-info"><span class="h6">Free VDI Health Check</span><span class="t20 soft-60">Review reported access and user-experience issues using available evidence.</span></span>
+          </a>
+          <a class="rel" href="vdi-managed-services.html" draggable="false">
+            <img src="assets/services/card-managed.jpg" alt="" class="rel-img" draggable="false">
+            <span class="rel-tag t-orange">Core VDI</span>
+            <span class="rel-info"><span class="h6">VDI Managed Services</span><span class="t20 soft-60">Ongoing support of the agreed components after go-live.</span></span>
+          </a>
+          <a class="rel" href="nerdio-solutions.html" draggable="false">
+            <img src="assets/services/card-nerdio.jpg" alt="" class="rel-img" draggable="false">
+            <span class="rel-tag t-green">Partner solutions</span>
+            <span class="rel-info"><span class="h6">Nerdio Solutions</span><span class="t20 soft-60">Deploy and automate your Microsoft desktops.</span></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Inquiry -->
+      <section class="v-contact" id="contact" data-index="Let’s talk" aria-labelledby="contact-t">
+        <div class="block v-white ct-left">
+          <div class="v-head">
+            <h2 class="h2" id="contact-t">Discuss your clinical access requirements</h2>
+            <p class="t24 ch-80">Share your applications, workstations, desktop platforms and authentication process. We’ll help define the implementation scope, integrations and validation approach.</p>
+          </div>
+          <div>
+            <p class="ct-scope-l">Useful to include</p>
+            <ul class="ct-scope"><li><img src="assets/vms/ic-check-green.svg" alt="">Clinical applications</li><li><img src="assets/vms/ic-check-green.svg" alt="">Shared workstations</li><li><img src="assets/vms/ic-check-green.svg" alt="">Desktop platforms</li><li><img src="assets/vms/ic-check-green.svg" alt="">Current authentication process</li></ul>
+          </div>
+        </div>
+        <form class="block v-white ct-form" action="#" novalidate data-send="Discuss your SSO and authentication project">
+          <div class="fields">
+            <label class="field"><span class="sr-only">Name (required)</span><input name="name" placeholder="Name" required autocomplete="name"><img src="assets/vms/ic-required.svg" alt=""></label>
+            <label class="field"><span class="sr-only">Company (required)</span><input name="company" placeholder="Company" required autocomplete="organization"><img src="assets/vms/ic-required.svg" alt=""></label>
+            <label class="field"><span class="sr-only">Email (required)</span><input name="email" type="email" placeholder="Email" required autocomplete="email"><img src="assets/vms/ic-required.svg" alt=""></label>
+            <label class="field field-select"><span class="sr-only">Service</span>
+              <select name="service"><option>VDI Managed Services</option><option>Free VDI Health Check</option><option>VDI Infrastructure</option><option selected>Healthcare SSO and Authentication</option><option>IGEL Endpoint Solutions</option><option>Nerdio Solutions</option><option>Hybrid Cloud &amp; Infrastructure Modernization</option><option>Vendor Partners</option></select>
+              <img src="assets/vms/ic-caret.svg" alt="">
+            </label>
+            <label class="field field-msg"><span class="sr-only">Message</span><textarea name="message" placeholder="Message"></textarea></label>
+            <button class="send" type="submit"><span>Discuss your SSO and authentication project</span><img src="assets/vms/ic-arrow-up-right.svg" alt=""></button>
+          </div>
+          <p class="legal">By pressing send you agree with our <a href="privacy-policy.html">Privacy Policy</a> and <a href="#">Terms of Use</a></p>
+        </form>
+      </section>
+    </div>
+
+  </main>
+
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="nav.js?v=8"></script>
+  <script src="svc.js?v=36"></script>
+  <script src="drag.js?v=36"></script>
+  <script src="select.js?v=36"></script>
+  <script src="seam.js?v=1"></script>
+  <script src="consent.js"></script>
+</body>
+</html>
