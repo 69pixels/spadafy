@@ -33,19 +33,19 @@
 
   /* ---------- content ---------- */
   /* one photo per service, the same ones as on the Services page (services-data.js).
-     Vendor Partners has no card there, so it borrows the IGEL one. */
+     Vendor Partners has no card there, so it uses its page hero. */
   const PREVIEWS = {
     overview: { title: 'Services', img: ICON + 'preview-overview.jpg' },
     managed: { title: 'VDI Managed Services', img: 'assets/services/card-managed.jpg', at: '50% 30%' },
     infra: { title: 'VDI Infrastructure', img: 'assets/services/card-infra.jpg' },
     sso: { title: 'Healthcare SSO and Authentication', img: 'assets/services/card-sso.jpg' },
     cloud: { title: 'Hybrid Cloud & Infrastructure Modernization', img: 'assets/services/hero.jpg' },
-    vendors: { title: 'Vendor Partners', img: 'assets/services/card-igel.jpg' }
+    vendors: { title: 'Vendor Partners', img: 'assets/img/hero.jpg' }
   };
-  /* pages that do not exist yet lead to the Services page: swap the href when they land */
+  /* each item opens its own page; the preview photo is that page's hero */
   const GROUPS = [
-    ['Core VDI', [['managed', 'VDI Managed Services', 'vdi-managed-services.html'], ['infra', 'VDI Infrastructure', 'services.html']]],
-    ['Beyond VDI', [['sso', 'Healthcare SSO and Authentication', 'services.html'], ['cloud', 'Hybrid Cloud &amp; Infrastructure Modernization', 'services.html'], ['vendors', 'Vendor Partners', 'services.html']]]
+    ['Core VDI', [['managed', 'VDI Managed Services', 'vdi-managed-services.html'], ['infra', 'VDI Infrastructure', 'vdi-infrastructure.html']]],
+    ['Beyond VDI', [['sso', 'Healthcare SSO and Authentication', 'healthcare-sso.html'], ['cloud', 'Hybrid Cloud &amp; Infrastructure Modernization', 'hybrid-cloud.html'], ['vendors', 'Vendor Partners', 'vendor-partners.html']]]
   ];
   /* no profile or terms URLs yet: href "#" does nothing until they are filled in */
   const SOCIALS = [['LinkedIn', '#'], ['X / Twitter', '#'], ['Youtube', '#']];

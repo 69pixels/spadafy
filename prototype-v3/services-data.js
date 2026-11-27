@@ -12,7 +12,7 @@ window.SERVICE_TABS = [
     cards: [
       { title: ['VDI Managed', 'Services'], text: 'We run your VDI day to day, or add engineers to your team', img: 'assets/services/card-managed.jpg', href: 'vdi-managed-services.html' },
       { title: ['VDI', 'Infrastructure'], text: 'Design, build, refresh or migrate a VDI environment', img: 'assets/services/card-infra.jpg', href: 'vdi-infrastructure.html' },
-      { title: ['Free VDI', 'Health Check'], text: 'A free review of your current environment', img: 'assets/services/card-health.jpg', href: 'free-vdi-health-check.html' }
+      { title: ['Free VDI', 'Health Check'], text: 'A free review of your current environment', img: 'assets/hc/hero.png', href: 'health-check.html' }
     ]
   },
   {
