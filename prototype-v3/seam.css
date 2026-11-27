@@ -1,0 +1,42 @@
+/* =========================================================
+   Spadafy — the seam between pages (behaviour in seam.js)
+   ========================================================= */
+/* the page is a sheet with round bottom corners; it covers what lies underneath */
+html.has-seam main {
+  position: relative; z-index: 1; background-color: var(--charcoal); overflow: clip;
+  border-radius: 0 0 calc(60 * var(--u)) calc(60 * var(--u)); box-shadow: 0 calc(30 * var(--u)) calc(80 * var(--u)) rgba(0,0,0,.55);
+}
+.seam-under { position: fixed; z-index: 0; inset: 0; background: #171717; visibility: hidden; }
+.seam-under p {
+  position: absolute; right: calc(72 * var(--u)); bottom: calc(28 * var(--u));
+  font-size: calc(20 * var(--u)); line-height: calc(24 * var(--u)); letter-spacing: calc(-.2 * var(--u)); font-weight: 500; color: rgba(244,244,244,.6);
+}
+/* an open menu uses the same layer under the page */
+html.menu-on .seam-under, html.menu-on .seam { visibility: hidden !important; }
+
+/* --g: 0 = preview at the seam, 1 = full screen, laid out like the hero of the next page */
+.seam { --g: 0; position: fixed; z-index: 0; left: 0; top: 0; overflow: hidden; visibility: hidden; background: var(--charcoal); color: var(--white); }
+.seam > * { position: absolute; display: block; }
+.seam img { inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transform: scale(var(--zoom, 1)); }
+.seam-shade { inset: 0; }
+.seam-fade { left: 0; right: 0; bottom: 0; height: calc(var(--fade, 256) * var(--u)); background: linear-gradient(to bottom, rgba(47,47,47,0) 38%, rgba(47,47,47,.5)); }
+.seam-fade.is-blur {
+  opacity: var(--g); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%); mask-image: linear-gradient(to bottom, transparent, #000 45%);
+}
+/* extra shade behind the words at the seam, gone by full screen */
+.seam-veil { inset: 0; opacity: calc(1 - var(--g)); background: linear-gradient(rgba(20,20,20,.5), transparent 45%, rgba(20,20,20,.35)); }
+.seam-top { left: calc(56 * var(--u)); top: calc(40 * var(--u)); opacity: calc(1 - var(--g) * 2.5); font-weight: 500; text-shadow: 0 1px 12px rgba(0,0,0,.5); }
+.seam-name, .seam-hint { display: block; line-height: calc(32 * var(--u)); letter-spacing: calc(-.24 * var(--u)); }
+.seam-name { font-size: calc(24 * var(--u)); }
+.seam-hint { font-size: calc(20 * var(--u)); opacity: .6; }
+.seam-eyebrow {
+  left: calc(80 * var(--u)); bottom: calc(var(--eyebrow, 0) * var(--u)); opacity: calc(var(--g) * var(--g) * var(--g));
+  font-size: calc(24 * var(--u)); line-height: calc(32 * var(--u)); letter-spacing: calc(-.48 * var(--u)); font-weight: 500;
+}
+.seam-title {
+  left: calc(var(--left, 56) * var(--u)); bottom: calc(var(--bottom, 58) * var(--u)); width: var(--width, auto);
+  font-family: var(--f-display); font-weight: 700; font-size: calc(var(--size, 96) * var(--u)); line-height: var(--line, .9); letter-spacing: var(--track, 0em);
+}
+.seam-bar { left: calc(56 * var(--u)); right: calc(56 * var(--u)); bottom: calc(26 * var(--u)); height: calc(8 * var(--u)); border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.28); opacity: calc((1 - var(--g)) * 4); }
+.seam-bar i { display: block; height: 100%; width: calc(var(--g) * 100%); background: var(--white); }

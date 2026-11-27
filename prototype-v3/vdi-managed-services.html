@@ -6,41 +6,17 @@
   <title>VDI Managed Services — Spadafy</title>
   <meta name="description" content="Less time fixing what’s broken. More time making things better. We take the everyday IT headaches off your hands, so your team can focus on the bigger picture.">
   <link rel="stylesheet" href="assets/vendor/lenis.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="vms.css">
+  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="nav.css?v=5">
+  <link rel="stylesheet" href="seam.css?v=1">
+  <link rel="stylesheet" href="vms.css?v=2">
   <link rel="stylesheet" href="consent.css">
+  <script>try { sessionStorage.setItem('spadafy-visited', '1'); if (sessionStorage.getItem('spadafy-nav')) { document.documentElement.classList.add('nav-arriving'); setTimeout(function () { document.documentElement.classList.remove('nav-arriving'); }, 3000); } } catch (e) {}</script>
 </head>
-<body class="vms">
+<body class="vms" data-next="health">
 
   <!-- ============ NAV (same component as the homepage) ============ -->
-  <header class="nav" id="nav" data-state="default">
-    <div class="nav-box">
-      <div class="nav-row">
-        <a class="nav-logo" href="index.html" aria-label="Spadafy — home">
-          <img class="logo-full" src="assets/icons/logo-full.svg" alt="Spadafy">
-          <img class="logo-s" src="assets/icons/menu-logo.svg" alt="">
-        </a>
-        <nav class="nav-links" aria-label="Main">
-          <button class="nav-link" type="button" data-panel="services" aria-expanded="false" aria-controls="nav-panel">Services <img src="assets/icons/caret.svg" alt=""></button>
-          <a class="nav-link" href="about.html">About</a>
-          <a class="nav-link" href="free-vdi-health-check.html">Health Check</a>
-          <button class="nav-link" type="button" data-panel="index" aria-expanded="false" aria-controls="nav-panel">Index <img src="assets/icons/caret.svg" alt=""></button>
-        </nav>
-        <div class="nav-cta-wrap"><a class="nav-cta" href="#contact">Let’s talk <span aria-hidden="true">→</span></a></div>
-      </div>
-
-      <div class="nav-panel" id="nav-panel" aria-hidden="true">
-        <div class="np-info">
-          <div>
-            <p class="np-title" data-np-title>Services</p>
-            <p class="np-text" data-np-text>From the first assessment to everyday support.</p>
-          </div>
-          <a class="np-view" href="services.html">View <span aria-hidden="true">→</span></a>
-        </div>
-        <ul class="np-grid" data-np-grid></ul>
-      </div>
-    </div>
-  </header>
+  <header class="nav" id="nav" data-active="services"></header>
 
   <main id="top">
 
@@ -296,20 +272,12 @@
       </section>
     </div>
 
-    <!-- ============ Fall into the next page (homepage pattern) ============ -->
-    <section class="s-next" id="s-next" aria-label="Next service: Free VDI Health Check">
-      <div class="next-stage">
-        <a class="next-card" href="free-vdi-health-check.html" aria-label="Go to Free VDI Health Check">
-          <img src="assets/vms/rel-health-check.jpg" alt="">
-          <span class="next-shade" aria-hidden="true"></span>
-          <span class="next-title">Health Check</span>
-        </a>
-      </div>
-    </section>
   </main>
 
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="vms.js"></script>
+  <script src="nav.js?v=8"></script>
+  <script src="vms.js?v=2"></script>
+  <script src="seam.js?v=1"></script>
   <script src="consent.js"></script>
 </body>
 </html>

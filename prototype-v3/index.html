@@ -6,46 +6,22 @@
   <title>Spadafy — Your First &amp; Last VDI Partner</title>
   <meta name="description" content="Spadafy designs, deploys and supports virtual desktop environments. Big brains, no ego.">
   <link rel="stylesheet" href="assets/vendor/lenis.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="nav.css?v=5">
+  <link rel="stylesheet" href="seam.css?v=1">
   <link rel="stylesheet" href="consent.css">
+  <script>try { if (sessionStorage.getItem('spadafy-visited')) document.documentElement.classList.add('no-intro'); sessionStorage.setItem('spadafy-visited', '1'); if (sessionStorage.getItem('spadafy-nav')) { document.documentElement.classList.add('nav-arriving'); setTimeout(function () { document.documentElement.classList.remove('nav-arriving'); }, 3000); } } catch (e) {}</script>
 </head>
-<body>
+<body data-next="services">
 
-  <!-- ============ INTRO: S film (plays on every load) ============ -->
+  <!-- ============ INTRO: S film (first visit only) ============ -->
   <div class="intro" id="intro" aria-hidden="true">
     <video id="intro-video" muted playsinline preload="auto" src="assets/video/s-intro.mp4"></video>
   </div>
   <noscript><style>.intro { display: none; }</style></noscript>
 
   <!-- ============ NAV ============ -->
-  <header class="nav" id="nav" data-state="default">
-    <div class="nav-box">
-      <div class="nav-row">
-        <a class="nav-logo" href="#top" aria-label="Spadafy — back to top">
-          <img class="logo-full" src="assets/icons/logo-full.svg" alt="Spadafy">
-          <img class="logo-s" src="assets/icons/menu-logo.svg" alt="">
-        </a>
-        <nav class="nav-links" aria-label="Main">
-          <button class="nav-link" type="button" data-panel="services" aria-expanded="false" aria-controls="nav-panel">Services <img src="assets/icons/caret.svg" alt=""></button>
-          <a class="nav-link" href="about.html">About</a>
-          <a class="nav-link" href="#health">Health Check</a>
-          <button class="nav-link" type="button" data-panel="index" aria-expanded="false" aria-controls="nav-panel">Index <img src="assets/icons/caret.svg" alt=""></button>
-        </nav>
-        <div class="nav-cta-wrap"><a class="nav-cta" href="#contact">Let’s talk <span aria-hidden="true">→</span></a></div>
-      </div>
-
-      <div class="nav-panel" id="nav-panel" aria-hidden="true">
-        <div class="np-info">
-          <div>
-            <p class="np-title" data-np-title>Services</p>
-            <p class="np-text" data-np-text>From the first assessment to everyday support.</p>
-          </div>
-          <a class="np-view" href="services.html">View <span aria-hidden="true">→</span></a>
-        </div>
-        <ul class="np-grid" data-np-grid></ul>
-      </div>
-    </div>
-  </header>
+  <header class="nav" id="nav" data-home="#top"></header>
 
   <main id="top">
 
@@ -290,22 +266,14 @@
       </section>
     </div>
 
-    <!-- ============ Fall into the next page ============ -->
-    <section class="s-next" id="s-next" aria-label="Next page: Services">
-      <div class="next-stage">
-        <a class="next-card" href="services.html" aria-label="Go to Services">
-          <img src="assets/img/outro-services.jpg" alt="">
-          <span class="next-shade" aria-hidden="true"></span>
-          <span class="next-title">Services</span>
-        </a>
-      </div>
-    </section>
   </main>
 
   <script src="assets/vendor/lenis.min.js"></script>
   <script src="flag-maps-points.js"></script>
   <script src="flag-maps.js"></script>
-  <script src="script.js"></script>
+  <script src="nav.js?v=8"></script>
+  <script src="script.js?v=3"></script>
+  <script src="seam.js?v=1"></script>
   <script src="consent.js"></script>
 </body>
 </html>

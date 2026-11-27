@@ -276,7 +276,6 @@
 /* ---------- Talk ---------- */
 
 /* ---------- outro: two-line title ---------- */
-.ab .next-title { white-space: normal; }
 
 @media (prefers-reduced-motion: reduce) {
   .vdi-fade { opacity: 1; transform: none; }
