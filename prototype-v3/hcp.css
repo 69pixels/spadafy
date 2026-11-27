@@ -3,7 +3,6 @@
    Builds on styles.css (tokens, nav, hero base, blocks, .field, .rv).
    ========================================================= */
 
-.hp-page .nav-link.is-current { background: rgba(255,255,255,.24); }
 .hp-page .field input { text-overflow: ellipsis; }
 
 /* ---------- shared bits ---------- */

@@ -15,6 +15,7 @@
 
   /* smooth scroll + anchors */
   const lenis = (!reduce && window.Lenis) ? new Lenis({ lerp: 0.09, smoothWheel: true }) : null;
+  if (lenis) window.lenis = lenis;
   if (lenis) { const tick = t => { lenis.raf(t); requestAnimationFrame(tick); }; requestAnimationFrame(tick); }
   const scrollToY = y => lenis ? lenis.scrollTo(y, { duration: 1.4 }) : window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
   const goTo = el => scrollToY(el === document.body ? 0 : el.getBoundingClientRect().top + window.scrollY - 8 * U);
@@ -26,29 +27,6 @@
     if (a.hasAttribute('data-open-form')) setTimeout(() => cta.open(), reduce ? 0 : 900);
   });
 
-  /* NAV */
-  const nav = $('#nav');
-  const PANELS = {
-    services: { title: 'Services', text: 'From the first assessment to everyday support.',
-      items: [['VDI Managed Services', 'vdi-managed-services.html'], ['Free VDI Health Check', '#top'], ['VDI Infrastructure', 'vdi-infrastructure.html'], ['Healthcare SSO and Authentication', 'healthcare-sso.html'], ['Hybrid Cloud & Infrastructure Modernization', 'hybrid-cloud.html'], ['Vendor Partners', 'vendor-partners.html']] },
-    index: { title: 'Index', text: 'Jump to any part of this page.', items: $$('[data-idx]').map(el => [el.dataset.idx, '#' + el.id]) }
-  };
-  const npTitle = $('[data-np-title]'), npText = $('[data-np-text]'), npGrid = $('[data-np-grid]');
-  const panelBtns = $$('[data-panel]', nav);
-  let openKey = null;
-  function fillPanel(k) {
-    const p = PANELS[k]; npTitle.textContent = p.title; npText.textContent = p.text; npGrid.innerHTML = '';
-    p.items.slice(0, 8).forEach(([l, h]) => { const li = document.createElement('li'), a = document.createElement('a'); a.textContent = l; a.href = h; li.appendChild(a); npGrid.appendChild(li); });
-  }
-  function setNav() {
-    const s = openKey ? 'open' : (scrollY > 24 ? 'collapsed' : 'default');
-    if (nav.dataset.state !== s) nav.dataset.state = s;
-    $('#nav-panel').setAttribute('aria-hidden', openKey ? 'false' : 'true');
-    panelBtns.forEach(b => b.setAttribute('aria-expanded', String(b.dataset.panel === openKey)));
-  }
-  panelBtns.forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const k = b.dataset.panel; if (openKey === k) openKey = null; else { openKey = k; fillPanel(k); } setNav(); }));
-  document.addEventListener('click', e => { if (openKey && (!e.target.closest('.nav-box') || e.target.closest('.np-grid a, .np-view'))) { openKey = null; setNav(); } });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && openKey) { openKey = null; setNav(); } });
 
   /* HERO: the body slides over it */
   const hero = $('.hero'), heroText = $('#hp-hero-text'), body = $('#body');
@@ -299,9 +277,9 @@
   cta.set('closed');
   initForm($('#hp-cta-card'), () => cta.set('done'));
   ctaBtn.addEventListener('click', () => { if (ctaEl.dataset.state === 'closed') cta.open(); else if (ctaEl.dataset.state === 'open') cta.close(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && ctaEl.dataset.state === 'open' && !openKey) cta.close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && ctaEl.dataset.state === 'open' && !e.defaultPrevented) cta.close(); });
 
-  function render() { setNav(); renderHero(); renderBreak(); }
+  function render() { renderHero(); renderBreak(); }
   addEventListener('scroll', render, { passive: true });
   if (lenis) lenis.on('scroll', render);
   addEventListener('resize', () => { setUnits(); render(); });

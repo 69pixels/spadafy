@@ -47,53 +47,6 @@
   }
   const inView = el => { const r = el.getBoundingClientRect(); return r.bottom > -50 && r.top < H + 50; };
 
-  /* =========================================================
-     NAV — default → collapsed after 24px → open panel
-     ========================================================= */
-  const nav = $('#nav');
-  const PANELS = {
-    services: {
-      title: 'Services', text: 'From the first assessment to everyday support.',
-      items: [['VDI Managed Services', 'vdi-managed-services.html'], ['Free VDI Health Check', 'health-check.html'],
-              ['VDI Infrastructure', 'vdi-infrastructure.html'], ['Healthcare SSO and Authentication', 'healthcare-sso.html'],
-              ['IGEL Endpoint Solutions', 'igel-endpoint-solutions.html'], ['Nerdio Solutions', 'nerdio-solutions.html'],
-              ['Hybrid Cloud & Infrastructure Modernization', 'hybrid-cloud.html'], ['Vendor Partners', 'vendor-partners.html']]
-    },
-    index: {
-      title: 'Index', text: 'Jump to any part of this page.',
-      items: [['Who we are', '#intro'], ['Great engineers', '#untangle'], ['Very Damn Invested', '#vdi'], ['Our team', '#team'],
-              ['Why Spadafy?', '#name'], ['Our point of view', '#pov'], ['Health check', '#health-check'], ['Let’s talk', '#contact']]
-    }
-  };
-  const npTitle = $('[data-np-title]'), npText = $('[data-np-text]'), npGrid = $('[data-np-grid]');
-  const panelBtns = $$('[data-panel]', nav);
-  let openKey = null, openAtY = 0;
-  function fillPanel(key) {
-    const p = PANELS[key];
-    npTitle.textContent = p.title; npText.textContent = p.text; npGrid.innerHTML = '';
-    p.items.forEach(([label, href]) => {
-      const li = document.createElement('li'), a = document.createElement('a');
-      a.textContent = label; a.href = href;
-      li.appendChild(a); npGrid.appendChild(li);
-    });
-  }
-  function setNav() {
-    const state = openKey ? 'open' : (window.scrollY > 24 ? 'collapsed' : 'default');
-    if (nav.dataset.state !== state) nav.dataset.state = state;
-    $('#nav-panel').setAttribute('aria-hidden', openKey ? 'false' : 'true');
-    panelBtns.forEach(b => b.setAttribute('aria-expanded', String(b.dataset.panel === openKey)));
-  }
-  function togglePanel(key) {
-    if (openKey === key) openKey = null;
-    else { openKey = key; fillPanel(key); openAtY = window.scrollY; }
-    setNav();
-  }
-  panelBtns.forEach(b => b.addEventListener('click', e => { e.stopPropagation(); togglePanel(b.dataset.panel); }));
-  document.addEventListener('click', e => {
-    if (!openKey) return;
-    if (!e.target.closest('.nav-box') || e.target.closest('.np-grid a, .np-view')) { openKey = null; setNav(); }
-  });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && openKey) { openKey = null; setNav(); } });
 
   /* =========================================================
      HERO — sticky; the body slides over it and dims it
@@ -407,35 +360,6 @@
   }
 
   /* =========================================================
-     OUTRO — the card grows to fill the screen, then the Health Check opens
-     ========================================================= */
-  const next = $('#s-next'), nextCard = $('.next-card'), nextTitle = $('.next-title'), nextShade = $('.next-shade');
-  let leaving = false, leaveTimer = 0;
-  function renderNext() {
-    const r = next.getBoundingClientRect();
-    if (r.bottom < 0 || r.top > H) return;
-    const pad = 200 * U, range = Math.max(1, r.height - pad - H);
-    const p = clamp(-(r.top + pad) / range);
-    const w0 = 431 * U, h0 = 600 * U, w1 = 1261 * U, h1 = 714 * U, r0 = 60 * U;
-    let w, h, rad;
-    if (p < .45) { const k = easeIO(p / .45); w = lerp(w0, w1, k); h = lerp(h0, h1, k); rad = r0; }
-    else { const k = easeIO((p - .45) / .45); w = lerp(w1, W, k); h = lerp(h1, H, k); rad = lerp(r0, 0, k); }
-    nextCard.style.width = w + 'px'; nextCard.style.height = h + 'px'; nextCard.style.borderRadius = rad + 'px';
-    nextTitle.style.opacity = String(p < .3 ? 1 - clamp((p - .1) / .2) : clamp((p - .7) / .2));
-    nextTitle.style.fontSize = (p < .5 ? 56 * U : 140 * U) + 'px';
-    nextTitle.style.lineHeight = p < .5 ? '.9' : '.84';
-    nextShade.style.opacity = String(clamp((p - .6) / .3));
-    if (p >= .995 && !leaving) {
-      clearTimeout(leaveTimer);
-      leaveTimer = setTimeout(() => {
-        const q = next.getBoundingClientRect();
-        if (clamp(-(q.top + pad) / range) >= .995) { leaving = true; window.location.href = nextCard.getAttribute('href'); }
-      }, 450);
-    }
-  }
-  window.addEventListener('pageshow', () => { leaving = false; });
-
-  /* =========================================================
      INTRO — like the Services statement: once it nears the middle of the screen, a wave runs
      through the letters, gray → orange → charcoal, and the stats count up
      ========================================================= */
@@ -520,14 +444,12 @@
     vdi.style.height = (stage + H * 2.4) + 'px';
     layoutHs(stage);
     morph.style.height = (stage + H * 4.8) + 'px';
-    next.style.height = (200 * U + H * 2.6) + 'px';
     layoutVdi();
     render();
   }
-  function render() { setNav(); renderHero(); renderUntangle(); renderVdi(); renderHs(); renderMorph(); renderRing(); renderNext(); }
+  function render() { renderHero(); renderUntangle(); renderVdi(); renderHs(); renderMorph(); renderRing(); }
   let ticking = false;
   function onScroll() {
-    if (openKey && Math.abs(window.scrollY - openAtY) > 400) { openKey = null; }
     if (ticking) return; ticking = true;
     requestAnimationFrame(() => { ticking = false; render(); });
   }

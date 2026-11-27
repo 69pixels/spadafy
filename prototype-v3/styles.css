@@ -70,79 +70,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .intro { position: fixed; inset: 0; z-index: 300; background: #040404; display: grid; place-items: center; transition: transform 1.1s cubic-bezier(.75, 0, .15, 1); will-change: transform; }
 .intro video { display: block; width: 100%; height: 100%; object-fit: contain; background: #040404; }
 .intro.is-out { transform: translateY(-100%); }
-.intro.is-gone { display: none; }
+.intro.is-gone, html.no-intro .intro { display: none; }
 html.is-loading, html.is-loading body { overflow: hidden; }
-
-/* =========================================================
-   NAV — default (top), collapsed pill (scrolled), open panel  (+30% vs Figma)
-   ========================================================= */
-.nav { position: fixed; z-index: 100; top: calc(24 * var(--u)); left: 0; right: 0; pointer-events: none; color: var(--white); }
-.nav-box {
-  position: relative; pointer-events: auto; margin: 0 auto;
-  width: calc(1760 * var(--u)); height: calc(62 * var(--u));
-  border-radius: calc(21 * var(--u)); padding: 0; overflow: hidden;
-  transition: width .43s var(--ease-io), height .43s var(--ease-io), padding .43s var(--ease-io);
-}
-.nav-box::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .36s;
-  background: linear-gradient(rgba(47,47,47,.6), rgba(47,47,47,.6)), rgba(255,255,255,.24);
-  -webkit-backdrop-filter: blur(calc(40 * var(--u))); backdrop-filter: blur(calc(40 * var(--u)));
-}
-.nav-row { display: flex; align-items: center; gap: calc(21 * var(--u)); height: calc(62 * var(--u)); transition: height .43s var(--ease-io); }
-.nav-logo { position: relative; display: block; flex: 1 1 0; height: calc(42 * var(--u)); min-width: calc(77 * var(--u)); overflow: hidden; transition: flex .43s var(--ease-io); }
-.nav-logo img { position: absolute; left: 0; top: 50%; transform: translateY(-50%); height: auto; transition: opacity .25s; }
-.logo-full { width: calc(335 * var(--u)); }
-.logo-s { width: calc(77 * var(--u)); opacity: 0; }
-.nav[data-state="collapsed"] .logo-full, .nav[data-state="open"] .logo-full { pointer-events: none; }
-.nav-links { display: flex; gap: calc(5 * var(--u)); height: calc(52 * var(--u)); }
-.nav-link {
-  display: flex; align-items: center; gap: calc(10 * var(--u)); height: 100%; padding: 0 calc(21 * var(--u));
-  border-radius: calc(16 * var(--u)); font-size: calc(21 * var(--u)); line-height: 1.2; letter-spacing: calc(-.21 * var(--u)); white-space: nowrap;
-  transition: background .18s;
-}
-.nav-link img { width: calc(10 * var(--u)); height: calc(10 * var(--u)); transition: transform .21s; }
-.nav-link:hover, .nav-link[aria-expanded="true"] { background: rgba(255,255,255,.24); }
-.nav-link[aria-expanded="true"] img { transform: rotate(180deg); }
-.nav-cta-wrap { display: flex; justify-content: flex-end; flex: 1 1 0; transition: flex .43s var(--ease-io); }
-.nav-cta {
-  display: flex; align-items: center; gap: calc(10 * var(--u)); height: calc(62 * var(--u)); padding: 0 calc(26 * var(--u));
-  border-radius: calc(16 * var(--u)); background: var(--orange); font-size: calc(21 * var(--u)); letter-spacing: calc(-.21 * var(--u)); white-space: nowrap;
-  transition: height .43s var(--ease-io), padding .43s var(--ease-io), filter .14s;
-}
-.nav-cta:hover { filter: brightness(1.08); }
-
-.nav[data-state="collapsed"] .nav-box, .nav[data-state="open"] .nav-box { padding: calc(4 * var(--u)); }
-.nav[data-state="collapsed"] .nav-box { width: calc(790 * var(--u)); height: calc(60 * var(--u)); }
-.nav[data-state="collapsed"] .nav-box::before, .nav[data-state="open"] .nav-box::before { opacity: 1; }
-.nav[data-state="collapsed"] .nav-row, .nav[data-state="open"] .nav-row { height: calc(52 * var(--u)); justify-content: center; }
-.nav[data-state="collapsed"] .nav-logo, .nav[data-state="open"] .nav-logo { flex: 0 0 calc(77 * var(--u)); }
-.nav[data-state="collapsed"] .nav-cta-wrap, .nav[data-state="open"] .nav-cta-wrap { flex: 0 0 auto; }
-.nav[data-state="collapsed"] .nav-cta, .nav[data-state="open"] .nav-cta { height: calc(52 * var(--u)); padding: 0 calc(21 * var(--u)); }
-.nav[data-state="collapsed"] .nav-cta span, .nav[data-state="open"] .nav-cta span { display: none; }
-.nav[data-state="collapsed"] .logo-full, .nav[data-state="open"] .logo-full { opacity: 0; }
-.nav[data-state="collapsed"] .logo-s, .nav[data-state="open"] .logo-s { opacity: 1; }
-.nav[data-state="open"] .nav-box { width: calc(1448 * var(--u)); height: calc(437 * var(--u)); }
-
-.nav-panel {
-  position: absolute; left: calc(4 * var(--u)); right: calc(4 * var(--u)); top: calc(60 * var(--u)); bottom: calc(4 * var(--u));
-  display: flex; gap: calc(8 * var(--u)); opacity: 0; visibility: hidden; transform: translateY(calc(-8 * var(--u)));
-  transition: opacity .21s, transform .36s var(--ease-out), visibility 0s .21s;
-}
-.nav[data-state="open"] .nav-panel { opacity: 1; visibility: visible; transform: none; transition: opacity .29s .14s, transform .43s .14s var(--ease-out); }
-.np-info { flex: 0 0 calc(236 * var(--u)); display: flex; flex-direction: column; justify-content: space-between; padding: calc(14 * var(--u)); }
-.np-title { font-size: calc(29 * var(--u)); line-height: calc(38 * var(--u)); letter-spacing: calc(-.58 * var(--u)); font-weight: 500; }
-.np-text { margin-top: calc(5 * var(--u)); font-size: calc(19 * var(--u)); line-height: 1.2; letter-spacing: calc(-.19 * var(--u)); color: var(--soft-60); }
-.np-view {
-  align-self: flex-start; display: flex; align-items: center; gap: calc(14 * var(--u)); height: calc(62 * var(--u)); padding: 0 calc(26 * var(--u));
-  border-radius: calc(18 * var(--u)); background: var(--soft-30); font-size: calc(21 * var(--u)); letter-spacing: calc(-.21 * var(--u)); transition: background .14s;
-}
-.np-view:hover { background: rgba(244,244,244,.45); }
-.np-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: calc(5 * var(--u)); }
-.np-grid a {
-  display: flex; align-items: flex-end; height: 100%; padding: calc(14 * var(--u)); border-radius: calc(14 * var(--u)); background: var(--soft-30);
-  font-size: calc(19 * var(--u)); line-height: 1.2; letter-spacing: calc(-.19 * var(--u)); transition: background .18s;
-}
-.np-grid a:hover { background: rgba(244,244,244,.48); }
 
 /* =========================================================
    HERO — sticky, the body slides over it
@@ -441,12 +370,6 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .legal a:hover { color: var(--charcoal); }
 
 /* ---- Fall into the next page ---- */
-.s-next { background: var(--charcoal); padding-top: calc(200 * var(--u)); }
-.next-stage { position: sticky; top: 0; height: var(--vh); display: grid; place-items: center; overflow: hidden; }
-.next-card { position: relative; display: grid; place-items: center; width: calc(431 * var(--u)); height: calc(600 * var(--u)); border-radius: var(--radius); overflow: hidden; background: #515151; color: var(--white); }
-.next-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.next-shade { position: absolute; inset: 0; background: rgba(0,0,0,.2); opacity: 0; }
-.next-title { position: relative; font-family: var(--f-display); font-weight: 700; font-size: calc(64 * var(--u)); line-height: .9; text-align: center; white-space: nowrap; }
 
 
 /* ---- small reveals ---- */
@@ -455,13 +378,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .logos.rv.in { opacity: .6; }
 
 /* ---- hover: arrows on key buttons ---- */
-.nav-cta span { display: inline-block; transition: transform .3s var(--ease-out); }
-.nav-cta:hover span { transform: translateX(calc(5 * var(--u))); }
-.np-view span { display: inline-block; transition: transform .3s var(--ease-out); }
-.np-view:hover span { transform: translateX(calc(5 * var(--u))); }
 /* the pager and orange buttons keep the Figma sizes: no reserved arrow padding */
-.np-grid a { transition: background .25s, transform .3s var(--ease-out); }
-.np-grid a:hover { transform: translateY(calc(-2 * var(--u))); }
 
 @media (prefers-reduced-motion: reduce) {
   .intro { display: none; }

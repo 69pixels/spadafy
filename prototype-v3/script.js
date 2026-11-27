@@ -50,59 +50,6 @@
   }
   const inView = el => { const r = el.getBoundingClientRect(); return r.bottom > -50 && r.top < H + 50; };
 
-  /* =========================================================
-     NAV
-     ========================================================= */
-  const nav = $('#nav');
-  const PANELS = {
-    services: {
-      title: 'Services', text: 'From the first assessment to everyday support.',
-      items: [['VDI Managed Services', 0], ['Free VDI Health Check', '#health'], ['VDI Infrastructure', 0], ['Healthcare SSO and Authentication', 1],
-              ['Hybrid Cloud & Infrastructure Modernization', 1], ['Vendor Partners', 1]]
-    },
-    index: {
-      title: 'Index', text: 'Jump to any part of this page.',
-      items: [['Services', '#services'], ['About', '#about'], ['Our green flags', '#flags'], ['Team', '#team'],
-              ['What we care about', '#care'], ['Testimonials', '#testimonials'], ['Free health check', '#health'], ['All services', 'services.html']]
-    }
-  };
-  const npTitle = $('[data-np-title]'), npText = $('[data-np-text]'), npGrid = $('[data-np-grid]');
-  const panelBtns = $$('[data-panel]', nav);
-  let openKey = null, openAtY = 0;
-
-  function fillPanel(key) {
-    const p = PANELS[key];
-    npTitle.textContent = p.title; npText.textContent = p.text;
-    npGrid.innerHTML = '';
-    p.items.forEach(([label, href]) => {
-      const li = document.createElement('li'), a = document.createElement('a');
-      a.textContent = label; a.href = typeof href === 'number' ? '#services' : href;
-      if (typeof href === 'number') a.dataset.svc = href;
-      li.appendChild(a); npGrid.appendChild(li);
-    });
-  }
-  function setNav() {
-    const state = openKey ? 'open' : (window.scrollY > 24 ? 'collapsed' : 'default');
-    if (nav.dataset.state !== state) nav.dataset.state = state;
-    $('#nav-panel').setAttribute('aria-hidden', openKey ? 'false' : 'true');
-    panelBtns.forEach(b => b.setAttribute('aria-expanded', String(b.dataset.panel === openKey)));
-  }
-  function togglePanel(key) {
-    if (openKey === key) openKey = null;
-    else { openKey = key; fillPanel(key); openAtY = window.scrollY; }
-    setNav();
-  }
-  panelBtns.forEach(b => b.addEventListener('click', e => { e.stopPropagation(); togglePanel(b.dataset.panel); }));
-  npGrid.addEventListener('click', e => {
-    const a = e.target.closest('a[data-svc]');
-    if (!a) return;
-    e.preventDefault(); openKey = null; setNav(); scrollToService(+a.dataset.svc);
-  });
-  document.addEventListener('click', e => {
-    if (!openKey) return;
-    if (!e.target.closest('.nav-box') || e.target.closest('.np-grid a, .np-view')) { openKey = null; setNav(); }
-  });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && openKey) { openKey = null; setNav(); } });
 
   /* =========================================================
      HERO — the body slides over it
@@ -350,33 +297,6 @@
   showT(0);
 
   /* =========================================================
-     OUTRO — the card grows to fill the screen, then we land on Services
-     ========================================================= */
-  const next = $('#s-next'), nextCard = $('.next-card'), nextTitle = $('.next-title'), nextShade = $('.next-shade');
-  let leaving = false, leaveTimer = 0;
-  function renderNext() {
-    const r = next.getBoundingClientRect();
-    if (r.bottom < 0 || r.top > H) return;
-    const pad = 200 * U, range = Math.max(1, r.height - pad - H);
-    const p = clamp(-(r.top + pad) / range);
-    /* one continuous grow, linear in scroll: every side moves outward together until the card fills the screen */
-    const k = p;
-    const w = lerp(431 * U, W, k), h = lerp(600 * U, H, k), rad = lerp(60 * U, 0, k);
-    nextCard.style.width = w.toFixed(1) + 'px'; nextCard.style.height = h.toFixed(1) + 'px'; nextCard.style.borderRadius = rad.toFixed(1) + 'px';
-    nextTitle.style.fontSize = lerp(64 * U, 140 * U, k).toFixed(1) + 'px';
-    nextTitle.style.lineHeight = lerp(.9, .84, k).toFixed(3);
-    nextShade.style.opacity = k.toFixed(3);
-    if (p >= .995 && !leaving) {
-      clearTimeout(leaveTimer);
-      leaveTimer = setTimeout(() => {
-        const q = next.getBoundingClientRect();
-        if (clamp(-(q.top + pad) / range) >= .995) { leaving = true; window.location.href = 'services.html'; }
-      }, 450);
-    }
-  }
-  window.addEventListener('pageshow', () => { leaving = false; });
-
-  /* =========================================================
      SMALL REVEALS — fade + rise, staggered, once
      ========================================================= */
   const REVEAL = [
@@ -398,7 +318,7 @@
   REVEAL.forEach(([sel, step, base]) => $$(sel).forEach((el, i) => { el.classList.add('rv'); el.style.setProperty('--d', Math.min(base + i * step, 700) + 'ms'); io.observe(el); }));
 
   /* =========================================================
-     INTRO — the S film, then the curtain lifts (every load / refresh)
+     INTRO — the S film, then the curtain lifts (first visit only)
      ========================================================= */
   const intro = $('#intro'), film = $('#intro-video');
   let introDone = false;
@@ -415,7 +335,8 @@
       setTimeout(layout, 120);
     }, 1150);
   }
-  if (reduce || !intro || !film) {
+  /* the film opens the first visit only: coming from another page of the site (or reloading) skips it */
+  if (reduce || !intro || !film || root.classList.contains('no-intro')) {
     if (intro) intro.classList.add('is-gone');
     showHero();
   } else {
@@ -453,18 +374,16 @@
     const stage = H - 16 * U;
     about.style.height = (stage + H * .7) + 'px';          // half the scroll it had (1.4 screens)
     care.style.height = (stage + H * 4.2) + 'px';
-    next.style.height = (200 * U + H * 2.6) + 'px';
     syncTeam();
     layoutServices();
     layoutCare();
     render();
   }
   function render() {
-    setNav(); renderHero(); renderServices(); renderAbout(); renderCare(); renderNext();
+    renderHero(); renderServices(); renderAbout(); renderCare();
   }
   let ticking = false;
   function onScroll() {
-    if (openKey && Math.abs(window.scrollY - openAtY) > 400) openKey = null;
     if (ticking) return; ticking = true;
     requestAnimationFrame(() => { ticking = false; render(); });
   }
